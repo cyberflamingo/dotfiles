@@ -36,7 +36,7 @@ Host *
     IdentitiesOnly yes
     IdentityFile ~/.ssh/id_ed25519
     IdentityFile ~/.ssh/id_rsa
-    IdentityFile ~/.ssh/id_ecdsa
+#   IdentityFile ~/.ssh/id_ecdsa
 #   IdentityFile ~/.ssh/id_dsa
 #   IdentityFile ~/.ssh/identity
 #   Port 22
