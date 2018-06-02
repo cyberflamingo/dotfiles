@@ -16,6 +16,15 @@
 # list of available options, their meanings and defaults, please see the
 # ssh_config(5) man page.
 
+#Host server
+#    User sysad
+#    HostName 00.00.00.00
+#    Port 2222 
+#    IdentityFile ~/.ssh/id_ed25519
+
+Host github.com
+    IdentityFile ~/.ssh/id_ed25519_github
+
 Host *
 #   ForwardAgent no
     ForwardX11 no
