@@ -1,0 +1,11 @@
+PATH=$PATH:~/homebrew/sbin:~/homebrew/bin
+
+
+# Go development
+export GOPATH="${HOME}/go"
+export GOROOT="$(brew --prefix golang)/libexec"
+export GOBIN=$HOME/go/bin
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+PATH="$GOPATH/bin:$PATH"
