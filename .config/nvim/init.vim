@@ -1,6 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" We're running Vim, not Vi!
+set nocompatible
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -12,6 +15,9 @@ au FocusGained,BufEnter * checktime
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set number
+set numberwidth=3
+
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
@@ -81,8 +87,14 @@ set titlelen=90
 " Enable syntax highlighting
 syntax enable 
 
+" Enable filetype detection
 filetype on
+
+" Enable filetype-specific indenting
 filetype indent on
+
+" Enable filetype-specific plugins
+"filetype plugin on
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
