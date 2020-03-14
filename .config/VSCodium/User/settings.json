@@ -1,0 +1,19 @@
+{
+    "editor.tabSize": 2,
+    "editor.fontSize": 16,
+    "editor.fontFamily": "'MeslolGS NF Regular' 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.cursorStyle": "underline",
+    "editor.renderWhitespace": "boundary",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSurroundingLines": 7,
+    "editor.cursorSurroundingLinesStyle": "all",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "workbench.commandPalette.preserveInput": true,
+    "workbench.enableExperiments": false,
+    "workbench.colorTheme": "1984 - Fancy",
+    "workbench.sideBar.location": "right",
+    "workbench.editor.labelFormat": "medium",
+    "workbench.settings.enableNaturalLanguageSearch": false,
+    "search.showLineNumbers": true
+}
