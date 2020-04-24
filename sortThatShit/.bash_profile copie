@@ -1,4 +1,0 @@
-# Go development
-export GOPATH=$HOME/go
-# export GOROOT=/usr/local/opt/go/libexec
-export GOBIN=$HOME/go/bin
