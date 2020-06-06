@@ -37,6 +37,10 @@ Fonts I like to use for programming.
 * Meslo Nerd Font patched for Powerlevel10k
 * IBM Plex Mono
 
+## Wallpaper
+
+https://josan.artstation.com/
+
 ## Thanks to this people
 
 ... for the inspiration in making my dotfiles.
