@@ -78,4 +78,12 @@ gsettings set org.gnome.shell.extensions.user-theme name Pop-dark
 gsettings set org.gnome.shell.extensions.user-theme name 'Matcha-dark-aliz'
 
 
+###############################################################################
+# Themes: Gnome Terminal                                                      #
+###############################################################################
+
+# Save with this command (replacing the string with whatever it is you have):
+# dconf dump /org/gnome/terminal/legacy/profiles:/:49cc915e-fb7c-4bfb-be99-f4839b4c63d2/ > gnome-terminal.dconf
+dconf load /org/gnome/terminal/legacy/profiles:/:49cc915e-fb7c-4bfb-be99-f4839b4c63d2/ < gnome-terminal.dconf
+
 echo 'Every tasks done.'

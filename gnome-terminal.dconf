@@ -1,0 +1,19 @@
+[/]
+audible-bell=false
+background-color='rgb(15,9,16)'
+background-transparency-percent=20
+bold-color-same-as-fg=true
+bold-is-bright=true
+cursor-background-color='rgb(245,229,248)'
+cursor-blink-mode='on'
+cursor-foreground-color='rgb(119,108,201)'
+cursor-shape='underline'
+font='MesloLGS NF 12'
+foreground-color='rgb(245,229,248)'
+highlight-background-color='rgb(119,108,201)'
+highlight-foreground-color='rgb(245,229,248)'
+palette=['rgb(15,9,16)', 'rgb(210,80,97)', 'rgb(118,171,165)', 'rgb(208,172,95)', 'rgb(87,101,159)', 'rgb(207,83,104)', 'rgb(101,95,143)', 'rgb(184,172,186)', 'rgb(45,26,48)', 'rgb(255,85,112)', 'rgb(72,185,172)', 'rgb(255,230,103)', 'rgb(97,121,222)', 'rgb(255,89,122)', 'rgb(119,108,201)', 'rgb(245,229,248)']
+use-theme-colors=false
+use-theme-transparency=false
+use-transparent-background=true
+visible-name='the_future2'

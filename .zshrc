@@ -89,3 +89,11 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # Ruby
 eval "$(rbenv init -)"
+
+# GO
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+# Rust
+export CARGOPATH=$HOME/.cargo
+export PATH=$PATH:$CARGOPATH/bin
