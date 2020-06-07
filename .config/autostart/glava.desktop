@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Glava
+Comment=OpenGL audio spectrum visualizer
+Exec=#sh -c 'sleep 10 && glava --desktop'
+Hidden=false
+Categories=Audio;

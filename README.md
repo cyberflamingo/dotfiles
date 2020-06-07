@@ -22,7 +22,6 @@ A lot.
 * [tmux](https://leanpub.com/the-tao-of-tmux/read)
 * Alacritty
 * cmus
-* GLava (for the fun of it)
 
 ### Script to... script
 
