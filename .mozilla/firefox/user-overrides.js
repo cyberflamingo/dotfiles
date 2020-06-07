@@ -148,6 +148,11 @@ user_pref("dom.battery.enabled", false);
  * [1] https://bugzilla.mozilla.org/1343184 ***/
 user_pref("browser.tabs.remote.allowLinkedWebInFileUriProcess", true);
 
+/* 2651: enforce user interaction for security by always asking where to download
+ * [SETUP-CHROME] On Android this blocks longtapping and saving images
+ * [SETTING] General>Downloads>Always ask you where to save files ***/
+user_pref("browser.download.useDownloadDir", true);
+
 /** EXTENSIONS ***/
 /* 2660: lock down allowed extension directories
  * [SETUP-CHROME] This will break extensions, language packs, themes and any other
@@ -341,6 +346,10 @@ user_pref("extensions.pocket.oAuthConsumerKey", "");
 user_pref("extensions.pocket.site", "");
 user_pref("extensions.webservice.discoverURL", "");
 
+
+// Highlight All find results
+user_pref("findbar.highlightAll", true);
+
 // Override mailto: preferences and block Yahoo Mail & Gmail
 user_pref("gecko.handlerService.schemes.mailto.0.name", "");
 user_pref("gecko.handlerService.schemes.mailto.0.uriTemplate", "");
@@ -413,5 +422,12 @@ user_pref("privacy.trackingprotection.pbmode.enabled", true);
 // TODO check ArchWiki pages for Firefox
 // https://wiki.archlinux.org/index.php/Firefox
 // https://wiki.archlinux.org/index.php/Firefox/Tweaks
+
+/* PREF: Force hardware acceleration to make Firefox snappier
+ * https://wiki.mozilla.org/Blocklisting/Blocked_Graphics_Drivers#On_X11
+ * [WARNING] Potential security risk
+ * https://security.stackexchange.com/a/13840
+***/
+user_pref("layers.acceleration.force-enabled", false);
 
 user_pref("_user.js.parrot", "SUCCESS");
