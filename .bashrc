@@ -123,3 +123,11 @@ fi
 
 # Ruby
 eval "$(rbenv init -)"
+
+# GO
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+# Rust 
+export CARGOPATH=$HOME/.cargo
+export PATH=$PATH:$CARGOPATH/bin
