@@ -28,8 +28,8 @@ ICO_DEST_DIR="/usr/share/icons"
 
 sudo add-apt-repository ppa:papirus/papirus
 sudo apt-get update
-sudo apt-get install gtk2-engines-murrine gtk2-engines-pixbuf \
-  papirus-icon-theme
+sudo apt-get -y install gtk2-engines-murrine gtk2-engines-pixbuf \
+  papirus-icon-theme papirus-folders libreoffice-style-papirus
 
 
 ###############################################################################
@@ -41,6 +41,8 @@ git clone https://github.com/vinceliuice/Matcha-gtk-theme.git "$THEME_APP_DIR"
 sudo bash "$THEME_APP_DIR"/install.sh --color dark --theme aliz
 
 gsettings set org.gnome.desktop.interface gtk-theme 'Matcha-dark-aliz'
+
+flatpak install -y flathub org.gtk.Gtk3theme.Matcha-dark-azul
 
 rm -rf "$THEME_APP_DIR"
 
@@ -72,9 +74,8 @@ papirus-folders -C red --theme Papirus-Dark
 # Themes: Shell                                                               #
 ###############################################################################
 
-# Returns "No such schema “org.gnome.shell.extensions.user-theme”"
-# Therefore needs to be activated manually like a savage.
-#gsettings set org.gnome.shell.extensions.user-theme name 'Matcha-dark-aliz'
-echo 'Shell theme needs to be activated manually, like a savage.'
+gsettings set org.gnome.shell.extensions.user-theme name Pop-dark
+gsettings set org.gnome.shell.extensions.user-theme name 'Matcha-dark-aliz'
+
 
 echo 'Every tasks done.'
