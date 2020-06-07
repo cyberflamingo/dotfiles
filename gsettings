@@ -2,16 +2,16 @@
 # Appearance Settings                                                         #
 ###############################################################################
 
-org.gnome.desktop.background picture-uri 'file:///home/reiki/.local/share/backgrounds/2020-03-15-00-02-57-jo-san-cover22.jpg'
+org.gnome.desktop.background picture-uri 'file:///'"$HOME"'/Pictures/Wallpaper/JosanGonzalez/jo-san-cover22.jpg'
 org.gnome.desktop.interface clock-format '24h'
 org.gnome.desktop.interface clock-show-weekday true
 org.gnome.desktop.interface gtk-theme 'Pop-dark'
 org.gnome.desktop.interface monospace-font-name 'MesloLGS NF 11'
 org.gnome.desktop.interface show-battery-percentage true
 org.gnome.desktop.interface text-scaling-factor 1.25
-org.gnome.desktop.screensaver picture-uri 'file:///home/reiki/.local/share/backgrounds/2020-03-15-00-02-57-jo-san-cover22.jpg'
+org.gnome.desktop.screensaver picture-uri 'file:///'"$HOME"'/Pictures/Wallpaper/JosanGonzalez/jo-san-cover22.jpg'
 org.gnome.settings-daemon.plugins.color night-light-enabled true
-org.gnome.shell favorite-apps ['firefox.desktop', 'brave-browser.desktop', 'org.gnome.Nautilus.desktop', 'clementine.desktop', 'codium.desktop', 'org.gnome.Terminal.desktop']
+org.gnome.shell favorite-apps ['firefox.desktop', 'brave_brave.desktop', 'org.gnome.Nautilus.desktop', 'com.visualstudio.code.oss.desktop', 'org.gnome.Terminal.desktop', 'standard-notes_standard-notes.desktop']
 org.gtk.Settings.FileChooser clock-format '24h'
 
 
@@ -19,14 +19,12 @@ org.gtk.Settings.FileChooser clock-format '24h'
 # Input Settings                                                              #
 ###############################################################################
 
-#org.gnome.desktop.input-sources mru-sources [('xkb', 'us'), ('ibus', 'anthy'), ('xkb', 'fr+azerty')]
-#org.gnome.desktop.input-sources show-all-sources true
-#org.gnome.desktop.input-sources sources [('xkb', 'us'), ('ibus', 'anthy'), ('xkb', 'fr+azerty')]
-#org.gnome.desktop.interface gtk-im-module 'ibus'
+org.gnome.desktop.input-sources mru-sources [('xkb', 'us'), ('ibus', 'anthy'), ('xkb', 'fr+azerty')]
+org.gnome.desktop.input-sources sources [('xkb', 'us'), ('ibus', 'anthy'), ('xkb', 'fr+azerty')]
+org.gnome.desktop.interface gtk-im-module 'ibus'
 org.gnome.desktop.peripherals.touchpad disable-while-typing false
 org.gnome.desktop.peripherals.touchpad natural-scroll true
 org.gnome.desktop.peripherals.touchpad speed 0.75
-#org.gnome.desktop.wm.preferences action-middle-click-titlebar 'minimize'
 
 
 ###############################################################################
@@ -37,7 +35,7 @@ org.gnome.desktop.privacy old-files-age uint32 7
 org.gnome.desktop.privacy recent-files-max-age 7
 org.gnome.desktop.privacy remove-old-temp-files true
 org.gnome.desktop.privacy remove-old-trash-files true
-org.gnome.desktop.notifications show-in-lock-screen false
+#org.gnome.desktop.notifications show-in-lock-screen false
 org.gnome.desktop.search-providers disabled ['org.gnome.seahorse.Application.desktop', 'io.elementary.appcenter.desktop', 'org.gnome.Terminal.desktop']
 
 
@@ -72,7 +70,7 @@ org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
 # Extensions                                                                  #
 ###############################################################################
 
-org.gnome.shell enabled-extensions ['appfolders-manager@maestroschan.fr', 'dash-to-dock@micxgx.gmail.com', 'gsconnect@andyholmes.github.io', 'pomodoro@arun.codito.in', 'batteryiconfix@kylecorry31.github.io','pop-shop-details@system76.com', 'system76-power@system76.com', 'user-theme@gnome-shell-extensions.gcampax.github.com']
+org.gnome.shell enabled-extensions ['pop-shop-details@system76.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'system76-power@system76.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'batteryiconfix@kylecorry31.github.io', 'alt-tab-raise-first-window@system76.com', 'ubuntu-appindicators@ubuntu.com', 'pop-shell@system76.com', 'always-show-workspaces@system76.com']
 
 
 ###############################################################################
