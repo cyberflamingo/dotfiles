@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Conky
+Comment=Infotainment system monitor for the X Window System
+Exec=sh -c 'nm-online --quiet && sleep 5 && conky'
+Hidden=false
+Categories=Network;System;
