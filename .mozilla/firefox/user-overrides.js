@@ -394,17 +394,34 @@ user_pref("media.navigator.video.enabled", false);
 // Proxy settings
 user_pref("network.proxy.http", "127.0.0.1");
 user_pref("network.proxy.http_port", "8118");
-user_pref("network.proxy.ssl", "127.0.0.1");
-user_pref("network.proxy.ssl_port", "8118");
+   // user_pref("network.proxy.ssl", "127.0.0.1");
+   // user_pref("network.proxy.ssl_port", "8118");
 //user_pref("network.proxy.socks_remote_dns", true);
 user_pref("network.proxy.type", 1);
 
-
-// PREF: Trusted Recursive Resolver (DNS-over-HTTPS)
-// https://wiki.mozilla.org/Trusted_Recursive_Resolver
-user_pref("network.trr.bootstrapAddress", "9.9.9.9");
-user_pref("network.trr.mode", 2);
-user_pref("network.trr.uri", "https://dns.quad9.net/dns-query");
+/*** [SECTION 6750]: DoH ***/
+/* 6751: DoH mode ***/
+user_pref("network.trr.mode", 2); // enable TRR (with System fallback)
+   // user_pref("network.trr.mode", 3); // enable TRR (without System fallback)
+   // user_pref("network.trr.mode", 5); // Disable TRR
+/* 6752: DoH resolver
+ * The second pref is optional for DoH mode 2 and required for mode 3 ***/
+   // user_pref("network.trr.uri", "https://dns.quad9.net/dns-query");
+   // user_pref("network.trr.custom_uri", "https://dns.quad9.net/dns-query");
+   // user_pref("network.trr.bootstrapAddress", "9.9.9.9");
+user_pref("network.trr.uri", "https://127.0.0.1:3000/dns-query");
+user_pref("network.trr.custom_uri", "https://127.0.0.1:3000/dns-query");
+user_pref("network.trr.bootstrapAddress", "");
+/* 6753: DoH resolver list
+ DEFAULT(72): [{ "name": "Cloudflare", "url": "https://mozilla.cloudflare-dns.com/dns-query" }]
+ DEFAULT(73): "[{ \"name\": \"Cloudflare\", \"url\": \"https://mozilla.cloudflare-dns.com/dns-query\" },{ \"name\": \"NextDNS\", \"url\": \"https://trr.dns.nextdns.io/\" }]"
+***/
+   // user_pref("network.trr.resolvers", "[{ \"name\": \"<NAME1>\", \"url\": \"https://<URL1>\" }, { \"name\": \"<NAME2>\", \"url\": \"https://<URL2>\" }]");
+/* 6754: ***/
+user_pref("network.dns.skipTRR-when-parental-control-enabled", false);,
+/* 6755: enable ESNI
+ * ESNI has nothing to do with DoH, but the implementation in Firefox requires it ***/
+user_pref("network.security.esni.enabled", true);
 
 // PREF: Enable Firefox Tracking Protection
 // https://wiki.mozilla.org/Security/Tracking_protection
