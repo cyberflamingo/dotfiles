@@ -128,6 +128,116 @@ ppa.launchpad.net/system76/pop/ubuntu/
 { +block{Nasty ads.} }
 www.example.com/nasty-ads/sponsor.gif
 
+{ +block{html} }
+/(.*/)adhandler/
+/(.*/)partnerads.*.js
+/(aff|adx|scrollad).php
+/.*adEvents.*
+/.*adimage*/*
+/.*ads.js
+/.*ads/.*
+/.*adserver/*
+/.*adtech.*
+/.*advert.js.*
+/.*advtcontent*/*
+/.*affiliate/
+/.*analytics.js.*
+/.*banner*/*
+/.*email=.*
+/.*facebook.*
+/.*fb.js.*
+/.*linkedin.*
+/.*php?stats.*
+/.*rate.php
+/.*shareBar.js
+/.*smartads.*
+/.*sponsor*/*
+/.*track/ping.*
+/.*tracking.*.js.*
+/.adserv/
+/?wordfence_logHuman.*
+/FloatingAd.*.js
+/ad-loader.js.*
+/ad.html
+/adGallery.html
+/adReload.html
+/ad_index_.*
+/adheader.*
+/adhtml/.*
+/adplayer/*
+/adtest/*
+/adunit.php.*
+/advert*/*
+/affiliate.js
+/ajax/ligatus/*
+/analytics/
+/banner*.*
+/beacon.*
+/cms_media/module_adbanner/
+/cnt.php.*
+/connect.ashx.*
+/displayads/
+/extjs/smartad.*\.js
+/gather.asp.*
+/gfx/layer/*
+/gujAd/
+/log/webtracker
+/metriweb.*
+/track.*
+/urldata.act.*
+/vtrack/
+ad.
+adimg.
+admonkey.
+ads.
+ads.*.co.*/
+ads.*.com/
+ads2.
+adserver.
+analytics.*.
+emailtrk.*
+log.pinterest.com
+pixel.*
+
+{ +block{image} +handle-as-image }
+/.*1x1.*
+/.*beacon.*
+/.*buttons.js
+/.*facebook.*
+/.*fb-icon.*
+/.*follow_us.*
+/.*images/social.*
+/.*linkedin.*
+/.*loading.gif
+/.*measure.gif
+/.*myspace.*
+/.*share-buttons.*
+/.*share-this.*
+/.*static/button.*
+/.*tracking-pixel.*
+/adv_banner_.*
+/assets/social-.*
+/banner.php
+/btn_ad_.*
+/cleardot.gif
+/followus-buttons.*
+/iframe/ad/.*
+/iframe/ads/.*
+/image/ad/.*
+/images/ad/.*
+/images/ads.*
+/images/ads/.*
+/images/adv.*
+/images/banners/
+/images/sponsored/.*
+/images_ad/.*
+/img.ads.*
+/img/ad-.*
+/img/ad_.*
+/img/social.*
+/imgad_.*
+/socialicons.*
+
 # The URLs of dynamically generated banners, especially from large banner
 # farms, often don't use the well-known image file name extensions, which
 # makes it impossible for Privoxy to guess the file type just by looking
@@ -181,6 +291,9 @@ www.example.com/nasty-ads/sponsor.gif
 #
 #{+fast-redirects{check-decoded-url}}
 #news.google.com/news/url.*&url=http.*&
+
+{ +redirect{s@google.com/amp/s/@@} }
+google.com/amp/s/.*
 
 # Enable the following section (not the regression-test directives)
 # to block various Facebook "like" and similar tracking URLs.  At the
