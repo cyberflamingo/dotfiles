@@ -1,0 +1,36 @@
+[user]
+	name = Alexandre Mercier
+	email = alex@cyberflamingo.net
+[core]
+	editor = kak
+	autocrlf = input
+	excludesfile = ~/.config/git/gitignore_global
+	protectHFS = true
+	protectNTFS = true
+	fileMode = true
+	pager = less
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[commit]
+	template = ~/.config/git/gitmessage.txt
+[help]
+	autocorrect = 30
+[receive]
+	fsckObjects = true
+[fetch]
+	fsckObjects = true
+[transfer]
+	fsckObjects = true
+[http]
+	sslTry = true
+[diff]
+	tool = vimdiff
+	renames = copies
+[merge]
+	log = true
+[push]
+	default = simple
+[pull]
+	rebase = merges
