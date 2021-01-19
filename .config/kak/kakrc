@@ -7,18 +7,49 @@
 #    ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
 #}
 
+# Plugins
+source "%val{config}/plugins/plug.kak/rc/plug.kak"
+
+plug "dracula/kakoune" theme
+
+plug "lenormf/kakoune-extra" subset %{
+    git-branch.kak
+}
+
+plug "kakoune-editor/kakoune-extra-filetypes" subset %{
+    conky.kak
+    git-commit-overflow.kak
+    mutt.kak
+}
+
+plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
+    # WARNING: state-save-reg-load has security implications
+    # hook global KakBegin .* %{
+    #     state-save-reg-load colon
+    #     state-save-reg-load pipe
+    #     state-save-reg-load slash
+    # }
+
+    hook global KakEnd .* %{
+        state-save-reg-save colon
+        # state-save-reg-save pipe
+        state-save-reg-save slash
+    }
+}
+
+# Use gnome-terminal
+hook global ModuleLoaded x11 %{
+    set-option global termcmd "gnome-terminal -e"
+}
+
 # Use the system clipboard (replace with bellow with ver. July 2020)
-#hook global RegisterModified '"' %{ nop %sh{
-#    printf %s "$kak_main_reg_dquote" | xclip -in -selection clipboard >&- 2>&-
-#}}
+# hook global RegisterModified '"' %{ nop %sh{
 hook global NormalKey y|d|c %{ nop %sh{
     printf %s "$kak_main_reg_dquote" | xclip -in -selection clipboard >&- 2>&-
 }}
 
-# Paste before
+# Paste before/after
 map global user -docstring 'paste (before) from clipboard' P '!xclip -out -selection clipboard<ret>'
-
-# Paste after
 map global user -docstring 'paste (after) from clipboard' p '<a-!>xclip -out -selection clipboard<ret>'
 
 # <tab> for completion
@@ -63,7 +94,7 @@ hook global WinCreate .* %{ evaluate-commands %sh{
     if [ "${is_work_tree}" = 'true' ]; then
         # Branch name in status
         printf 'set-option window modelinefmt %%{%s}' "  %opt{modeline_git_branch} ${kak_opt_modelinefmt}"
-    fi 
+    fi
 }}
 
 hook global WinCreate ^[^*]+$ %{ evaluate-commands %sh{
@@ -72,16 +103,16 @@ hook global WinCreate ^[^*]+$ %{ evaluate-commands %sh{
     if [ "${is_git_tracked}" -eq 0 ]; then
         # git diff status in gutter
         printf 'git show-diff'
-    fi 
+    fi
 }}
 
 hook global BufWritePost ^[^*]+$ %{ evaluate-commands %sh{
     cd "$(dirname "${kak_buffile}")" && git ls-files --error-unmatch "${kak_bufname}" > /dev/null 2>&1
     is_git_tracked=$?
     if [ "${is_git_tracked}" -eq 0 ]; then
-        # Uodate git diff
+        # Update git diff in gutter
         printf 'git update-diff'
-    fi 
+    fi
 }}
 
 
@@ -89,6 +120,7 @@ hook global BufWritePost ^[^*]+$ %{ evaluate-commands %sh{
 # Colors and Fonts
 #########################################################################
 colorscheme the_future2
+# set-option global ui_options 'ncurses_assistant=cat'
 
 
 #########################################################################
@@ -109,12 +141,25 @@ hook global WinSetOption filetype=.* %{
 # Wrap lines
 add-highlighter global/ wrap -indent -marker '→'
 
+# Remove whitespace
+hook global BufWritePre ^[^*]+$ %{
+    try %{ execute-keys -draft \%s \h+$<ret>d }
+}
+
 
 #########################################################################
 # Moving around, tabs, windows and buffers
 #########################################################################
 # Return to last edit position when opening files (You want this!)
-# Find a way to emulate it.
+# https://gitlab.com/Screwtapello/kakoune-state-save
+
+
+#########################################################################
+# Custom mapping
+#########################################################################
+map global user -docstring 'Open in nvim' v ':terminal nvim "+%val{cursor_line}" "%val{buffile}"<ret>'
+map global user -docstring '(un)comment selected lines using line comments' c ':comment-line<ret>'
+map global user -docstring '(un)comment selections using block comments' C ':comment-block<ret>'
 
 
 #########################################################################
@@ -123,9 +168,9 @@ add-highlighter global/ wrap -indent -marker '→'
 # Markdown
 hook global WinSetOption filetype=markdown %{
     lint-enable
-    set-option window lintcmd 'write-good --parse'
-#    set-option window lintcmd 'mdl'
 #    set-option window lintcmd 'proselint --compact'
+#    set-option window lintcmd 'mdl'
+    set-option window lintcmd 'write-good --parse'
     lint
 }
 
@@ -133,11 +178,10 @@ hook global BufSetOption filetype=markdown %{
     set-option buffer formatcmd 'markdownfmt'
 }
 
-
 # Ruby
 hook global WinSetOption filetype=ruby %{
     lint-enable
-    set-option window lintcmd 'rubocop --format emacs'
+    set-option window lintcmd 'rubocop -l --format emacs'
     lint
 }
 
@@ -151,4 +195,3 @@ hook global WinSetOption filetype=sh %{
     set-option window lintcmd 'shellcheck -fgcc -Cnever'
     lint
 }
-
