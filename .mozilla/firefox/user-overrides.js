@@ -447,4 +447,10 @@ user_pref("privacy.trackingprotection.pbmode.enabled", true);
 ***/
 user_pref("layers.acceleration.force-enabled", false);
 
+
+// Checkout this new feature
+// https://blog.mozilla.org/security/2021/01/07/encrypted-client-hello-the-future-of-esni-in-firefox/
+// network.dns.echconfig.enabled
+// network.dns.use_https_rr_as_altsvc
+
 user_pref("_user.js.parrot", "SUCCESS");
