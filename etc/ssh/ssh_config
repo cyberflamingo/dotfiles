@@ -19,11 +19,17 @@
 #Host server
 #    User sysad
 #    HostName 00.00.00.00
-#    Port 2222 
+#    Port 2222
 #    IdentityFile ~/.ssh/id_ed25519
 
 Host github.com
     IdentityFile ~/.ssh/id_ed25519_github
+
+Host gitlab.nic.cz
+    IdentityFile ~/.ssh/id_ed25519_gitlab_nic
+
+Host bitbucket.org
+    IdentityFile ~/.ssh/id_ed25519_bitbucket
 
 Host *
 #   ForwardAgent no
