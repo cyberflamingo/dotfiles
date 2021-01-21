@@ -11,7 +11,7 @@
         create: false
         relink: false
         force: false
-    /etc/caddy:
+    /etc/caddy/Caddyfile:
         if: # is a server
         path: Caddyfile
         create: true
