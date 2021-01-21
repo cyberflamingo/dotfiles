@@ -17,5 +17,14 @@
         create: true
         relink: false
         force: false
-
+    /etc/dnscrypt-proxy/blocklists.txt:
+        path: dnscrypt-proxy/blocklists.txt
+        create: false
+        relink: false
+        force: false
+    /etc/dnscrypt-proxy/dnscrypt-proxy.toml:
+        path: dnscrypt-proxy/dnscrypt-proxy.toml
+        create: false
+        relink: false
+        force: false
 
