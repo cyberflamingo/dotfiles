@@ -27,4 +27,15 @@
         create: false
         relink: false
         force: false
+    /etc/privoxy/default.action:
+        path: privoxy/default.action
+        create: false
+        relink: false
+        force: false
+    /etc/privoxy/user.action:
+        path: privoxy/user.action
+        create: false
+        relink: false
+        force: false
+
 
