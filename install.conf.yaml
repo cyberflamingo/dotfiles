@@ -1,0 +1,25 @@
+- clean: ['~']
+
+- link:
+
+
+- clean: ['~']
+
+- link:
+
+
+- clean: ['~']
+
+- link:
+    ~/.bashrc:
+        path: bashrc
+        create: false
+        relink: false
+        force: false
+    ~/.zshrc:
+        path: zshrc
+        create: false
+        relink: false
+        force: false
+
+
