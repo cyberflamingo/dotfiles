@@ -37,5 +37,16 @@
         create: false
         relink: false
         force: false
+    /etc/ssh/ssh_config:
+        path: ssh/ssh_config
+        create: false
+        relink: false
+        force: false
+    /etc/ssh/sshd_config:
+        if: # is a server
+        path: ssh/sshd_config
+        create: false
+        relink: false
+        force: false
 
 
