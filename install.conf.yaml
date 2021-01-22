@@ -85,4 +85,11 @@
         create: false
         relink: false
         force: false
-
+    # Windows (Git Bash)
+    /c/ProgramData/bin:
+        if: '[ `uname -o` = Msys ]'
+        glob: true
+        path: Windows/bin/*
+        create: false
+        relink: false
+        force: false
