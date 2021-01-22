@@ -73,5 +73,11 @@
         create: false
         relink: false
         force: false
-
+    # OpenWrt
+    /etc/config/nut_monitor:
+        if: '[ `uname -n` = turrismox ]'
+        path: nut_monitor.openwrt
+        create: false
+        relink: false
+        force: false
 
