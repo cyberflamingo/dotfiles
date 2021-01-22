@@ -1,107 +1,67 @@
-- clean: ['~']
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- clean: ['~', '~/.config']
 
 - link:
     ~/.bashrc:
-        path: bashrc
-        create: false
-        relink: false
-        force: false
     ~/.zshrc:
-        path: zshrc
-        create: false
-        relink: false
-        force: false
     ~/.p10k.zsh:
-        path: p10k.zsh
-        create: false
-        relink: false
-        force: false
     ~/.config/:
         glob: true
         path: config/*
-        create: false
-        relink: false
-        force: false
     ~/.local/bin/:
         glob: true
         path: bin/*
-        create: false
-        relink: false
-        force: false
-    /etc/caddy/Caddyfile:
-          if: # is a server
-        path: Caddyfile
-        create: true
-        relink: false
-        force: false
-    /etc/dnscrypt-proxy/blocklists.txt:
-        path: dnscrypt-proxy/blocklists.txt
-        create: false
-        relink: false
-        force: false
-    /etc/dnscrypt-proxy/dnscrypt-proxy.toml:
-        path: dnscrypt-proxy/dnscrypt-proxy.toml
-        create: false
-        relink: false
-        force: false
-    /etc/privoxy/default.action:
-        path: privoxy/default.action
-        create: false
-        relink: false
-        force: false
-    /etc/privoxy/user.action:
-        path: privoxy/user.action
-        create: false
-        relink: false
-        force: false
-    /etc/ssh/ssh_config:
-        path: ssh/ssh_config
-        create: false
-        relink: false
-        force: false
-    /etc/ssh/sshd_config:
-        if: # is a server
-        path: ssh/sshd_config
-        create: false
-        relink: false
-        force: false
+#     /etc/caddy/Caddyfile:
+#         if: # is a server
+#         path: Caddyfile
+#         create: false
+#     /etc/dnscrypt-proxy/blocklists.txt:
+#         path: dnscrypt-proxy/blocklists.txt
+#         create: false
+#     /etc/dnscrypt-proxy/dnscrypt-proxy.toml:
+#         path: dnscrypt-proxy/dnscrypt-proxy.toml
+#         create: false
+#     /etc/privoxy/default.action:
+#         path: privoxy/default.action
+#         create: false
+#     /etc/privoxy/user.action:
+#         path: privoxy/user.action
+#         create: false
+#     /etc/ssh/ssh_config:
+#         path: ssh/ssh_config
+#     /etc/ssh/sshd_config:
+#         if: # is a server
+#         path: ssh/sshd_config
     # macOS
     /usr/local/etc/dnscrypt-proxy.toml:
         if: '[ `uname` = Darwin ]'
         path: dnscrypt-proxy/dnscrypt-proxy.toml.macos
-        create: false
-        relink: false
-        force: false
     /usr/local/etc/privoxy/config:
         if: '[ `uname` = Darwin ]'
         path: privoxy/config.macos
         create: false
-        relink: false
-        force: false
     /usr/local/etc/privoxy/user.action:
-          if: '[ `uname` = Darwin ]'
+        if: '[ `uname` = Darwin ]'
         path: privoxy/user.action.macos
         create: false
-        relink: false
-        force: false
     /usr/local/etc/dnsmasq.conf:
         if: '[ `uname` = Darwin ]'
         path: dnsmasq/dnsmasq.conf.macos
-        create: false
-        relink: false
-        force: false
     # OpenWrt
     /etc/config/nut_monitor:
         if: '[ `uname -n` = turrismox ]'
         path: nut_monitor.openwrt
-        create: false
-        relink: false
-        force: false
     # Windows (Git Bash)
     /c/ProgramData/bin/:
         if: '[ `uname -o` = Msys ]'
         glob: true
         path: Windows/bin/*
-        create: false
-        relink: false
-        force: false
+
+- create:
+    - ~/Development
+
+
