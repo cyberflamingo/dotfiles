@@ -2,3 +2,6 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
+[submodule "config/kak/plugins/plug.kak"]
+	path = config/kak/plugins/plug.kak
+	url = https://github.com/robertmeta/plug.kak.git
