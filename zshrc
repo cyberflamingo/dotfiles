@@ -97,9 +97,9 @@ if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc
 eval "$(rbenv init -)"
 
 # GO
-export GOPATH=$HOME/go
+export GOPATH=$XDG_DATA_HOME/go
 export PATH=$PATH:$GOPATH/bin
 
 # Rust
-export CARGOPATH=$HOME/.cargo
-export PATH=$PATH:$CARGOPATH/bin
+export CARGO_HOME=$XDG_DATA_HOME/cargo
+export PATH=$PATH:$CARGO_HOME/bin
