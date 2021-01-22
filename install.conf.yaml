@@ -48,5 +48,30 @@
         create: false
         relink: false
         force: false
+    # macOS
+    /usr/local/etc/dnscrypt-proxy.toml:
+        if: '[ `uname` = Darwin ]'
+        path: dnscrypt-proxy/dnscrypt-proxy.toml.macos
+        create: false
+        relink: false
+        force: false
+    /usr/local/etc/privoxy/config:
+        if: '[ `uname` = Darwin ]'
+        path: privoxy/config.macos
+        create: false
+        relink: false
+        force: false
+    /usr/local/etc/privoxy/user.action:
+          if: '[ `uname` = Darwin ]'
+        path: privoxy/user.action.macos
+        create: false
+        relink: false
+        force: false
+    /usr/local/etc/dnsmasq.conf:
+        if: '[ `uname` = Darwin ]'
+        path: dnsmasq/dnsmasq.conf.macos
+        create: false
+        relink: false
+        force: false
 
 
