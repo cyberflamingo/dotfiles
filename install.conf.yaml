@@ -11,6 +11,11 @@
         create: false
         relink: false
         force: false
+    ~/.p10k.zsh:
+        path: p10k.zsh
+        create: false
+        relink: false
+        force: false
     /etc/caddy/Caddyfile:
         if: # is a server
         path: Caddyfile
