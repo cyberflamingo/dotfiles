@@ -16,6 +16,12 @@
         create: false
         relink: false
         force: false
+    ~/.config/:
+        glob: true
+        path: config/*
+        create: false
+        relink: false
+        force: false
     ~/.local/bin/:
         glob: true
         path: bin/*
