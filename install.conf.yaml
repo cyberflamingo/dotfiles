@@ -16,8 +16,14 @@
         create: false
         relink: false
         force: false
+    ~/.local/bin/:
+        glob: true
+        path: bin/*
+        create: false
+        relink: false
+        force: false
     /etc/caddy/Caddyfile:
-        if: # is a server
+          if: # is a server
         path: Caddyfile
         create: true
         relink: false
@@ -86,7 +92,7 @@
         relink: false
         force: false
     # Windows (Git Bash)
-    /c/ProgramData/bin:
+    /c/ProgramData/bin/:
         if: '[ `uname -o` = Msys ]'
         glob: true
         path: Windows/bin/*
