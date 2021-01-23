@@ -195,3 +195,8 @@ hook global WinSetOption filetype=sh %{
     set-option window lintcmd 'shellcheck -fgcc -Cnever'
     lint
 }
+
+# YAML
+hook global BufSetOption filetype=yaml %{
+    set-option buffer formatcmd 'prettier --write'
+}
