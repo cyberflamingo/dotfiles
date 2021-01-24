@@ -29,6 +29,52 @@
       /usr/local/etc/dnsmasq.conf:
           if: '[ `uname` = Darwin ]'
           path: dnsmasq/dnsmasq.conf.macos
+  - apt:
+    # Tooling, Settings
+    - conky-all
+    - curl
+    - fonts-ibm-plex
+    - fonts-noto-cjk
+    - fonts-noto-cjk-extra
+    - fonts-noto-color-emoji
+    - ibus-anthy
+    - jq
+    - snapd
+    - unattended-upgrades
+    - webext-ublock-origin-firefox
+    - zsh
+    # Security/Privacy
+    - bleachbit
+    - clamav
+    - clamav-daemon
+    - dnscrypt-proxy
+    - privoxy
+    # Programming
+    - cargo
+    - git
+    - git-cola
+    - golang-go
+    - kakoune
+    - neovim
+    - npm
+    - ruby-full # Install first
+    - rbenv
+    - shellcheck
+    - virt-manager # Install first
+    - qemu-kvm
+    - spice-vdagent
+    # Other
+    - cmus
+    - digikam
+    - gimp
+    - gnome-shell-pomodoro
+    - hugo
+    - newsboat
+    - picard
+    # Needs to add Signal repository first
+    # - signal-desktop
+    - slack-desktop
+    - steam
   - snap:
     - brave
     - standard-notes
