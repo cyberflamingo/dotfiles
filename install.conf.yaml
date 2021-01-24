@@ -64,4 +64,7 @@
 - create:
     - ~/Development
 
+- shell:
+  - [git submodule sync --recursive, Syncing submodules]
+  - [git submodule update --init --recursive, Installing submodules]
 
