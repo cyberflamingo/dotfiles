@@ -10,7 +10,7 @@ export GEOCODE_CACHE=$HOME/.cache/geocode-glib
 export CONKY_CACHE=$HOME/.cache/conky
 LAST_MODIFIED=$(ls -t "$GEOCODE_CACHE" | head -n1)
 export LAST_MODIFIED
-export GOBIN=$HOME/go/bin
+export GOBIN=$XDG_DATA_HOME/go/bin
 
 # TODO check if Geocode exist, otherwise don't copy
 # Could use geoclue where-am-i for backup
