@@ -7,6 +7,8 @@
 
 - link:
     ~/.bashrc:
+    # ~/.bash_logout:
+    # ~/.profile:
     ~/.zshrc:
     ~/.p10k.zsh:
     ~/.config/:
@@ -31,4 +33,4 @@
 - shell:
   - [git submodule sync --recursive, Syncing submodules]
   - [git submodule update --init --recursive, Installing submodules]
-
+  # - [chsh -s $(which zsh), Making zsh the default shell]
