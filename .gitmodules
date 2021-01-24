@@ -10,6 +10,10 @@
 	path = dotbot-plugins/dotbot-golang
 	url = https://github.com/delicb/dotbot-golang
 	ignore = dirty
+[submodule "dotbot-plugins/dotbot-pip"]
+	path = dotbot-plugins/dotbot-pip
+	url = https://github.com/sobolevn/dotbot-pip.git
+	ignore = dirty
 [submodule "config/kak/plugins/plug.kak"]
 	path = config/kak/plugins/plug.kak
 	url = https://github.com/robertmeta/plug.kak.git

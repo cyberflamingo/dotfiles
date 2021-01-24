@@ -1,0 +1,4 @@
+- pip:
+    file: requirements.txt
+    binary: /usr/local/bin/pip3
+    user: true    # Like --user
