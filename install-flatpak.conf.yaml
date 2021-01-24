@@ -1,0 +1,6 @@
+- flatpak:
+    - com.calibre_ebook.calibre
+    - com.synology.SynologyDrive
+    - com.vscodium.codium
+    - org.keepassxc.KeePassXC
+    - us.zoom.Zoom

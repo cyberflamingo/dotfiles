@@ -26,6 +26,10 @@
 	path = dotbot-plugins/dotbot-git
 	url = https://github.com/DrDynamic/dotbot-git.git
 	ignore = dirty
+[submodule "dotbot-plugins/dotbot-flatpak"]
+	path = dotbot-plugins/dotbot-flatpak
+	url = https://github.com/DrDynamic/dotbot-flatpak.git
+	ignore = dirty
 [submodule "config/kak/plugins/plug.kak"]
 	path = config/kak/plugins/plug.kak
 	url = https://github.com/robertmeta/plug.kak.git
