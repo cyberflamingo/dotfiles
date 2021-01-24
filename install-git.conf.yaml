@@ -1,0 +1,4 @@
+- git:
+    ~/powerlevel10k:
+       url: 'https://github.com/romkatv/powerlevel10k.git'
+       description: 'powerlevel10k - A Zsh theme'
