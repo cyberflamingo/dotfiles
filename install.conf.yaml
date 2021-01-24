@@ -7,8 +7,8 @@
 
 - link:
     ~/.bashrc:
-    # ~/.bash_logout:
-    # ~/.profile:
+    ~/.bash_logout:
+    ~/.profile:
     ~/.zshrc:
     ~/.p10k.zsh:
     ~/.config/:
