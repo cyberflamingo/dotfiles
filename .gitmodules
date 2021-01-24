@@ -14,6 +14,10 @@
 	path = dotbot-plugins/dotbot-pip
 	url = https://github.com/sobolevn/dotbot-pip.git
 	ignore = dirty
+[submodule "dotbot-plugins/dotbot-rust"]
+	path = dotbot-plugins/dotbot-rust
+	url = https://github.com/alexcormier/dotbot-rust
+	ignore = dirty
 [submodule "config/kak/plugins/plug.kak"]
 	path = config/kak/plugins/plug.kak
 	url = https://github.com/robertmeta/plug.kak.git
