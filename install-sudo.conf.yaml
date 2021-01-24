@@ -29,3 +29,6 @@
       /usr/local/etc/dnsmasq.conf:
           if: '[ `uname` = Darwin ]'
           path: dnsmasq/dnsmasq.conf.macos
+  - snap:
+    - brave
+    - standard-notes
