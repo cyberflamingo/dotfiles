@@ -6,6 +6,10 @@
 	path = dotbot-plugins/dotbot-apt
 	url = https://github.com/bryant1410/dotbot-apt
 	ignore = dirty
+[submodule "dotbot-plugins/dotbot-golang"]
+	path = dotbot-plugins/dotbot-golang
+	url = https://github.com/delicb/dotbot-golang
+	ignore = dirty
 [submodule "config/kak/plugins/plug.kak"]
 	path = config/kak/plugins/plug.kak
 	url = https://github.com/robertmeta/plug.kak.git
