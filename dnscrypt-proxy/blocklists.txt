@@ -93007,9 +93007,9 @@ lobi.co @work-time-to-sleep
 # Updated: June 20, 2019
 
 # Google Plus
-#127.0.0.1 plus.l.google.com
-#127.0.0.1 plus.sandbox.google.com
-#127.0.0.1 plusone.google.com
+plus.l.google.com @work-time-to-sleep
+plus.sandbox.google.com @work-time-to-sleep
+plusone.google.com @work-time-to-sleep
 plus.google.com @work-time-to-sleep
 
 # Facebook
@@ -93036,7 +93036,7 @@ cdninstagram.com @work-time-to-sleep
 whatsapp.* @work-time-to-sleep
 
 # Twitter
-#twitter.com @work-time-to-sleep
+twitter.com @work-time-to-sleep
 twimg.com @work-time-to-sleep
 ads-twitter.com @work-time-to-sleep
 t.co @work-time-to-sleep
@@ -93055,7 +93055,7 @@ pinimg.com @work-time-to-sleep
 pin.it @work-time-to-sleep
 
 # Tumblr
-#tumblr.com @work-time-to-sleep
+tumblr.com @work-time-to-sleep
 
 # Reddit
 redditmedia.com @work-time-to-sleep
@@ -93078,7 +93078,7 @@ muscdn.com @work-time-to-sleep
 tiktokv.com @work-time-to-sleep
 
 # Lobsters
-#lobste.rs @work-time-to-sleep
+lobste.rs @work-time-to-sleep
 
 # NewsPicks
 newspicks.com @work-time-to-sleep
