@@ -6,11 +6,16 @@
 - clean: ['~', '~/.config']
 
 - link:
+    # Bash
+    ~/.profile:
     ~/.bashrc:
     ~/.bash_logout:
-    ~/.profile:
+    # Z shell
+    ~/.zshenv:
     ~/.zshrc:
+    ~/.zlogout:
     ~/.p10k.zsh:
+    # User
     ~/.config/:
         glob: true
         path: config/*
