@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Drive Synology
+Comment=Powerful private cloud storage with no recurring fees
+Exec=sh -c 'nm-online --quiet && sleep 5 && flatpak run com.synology.SynologyDrive'
+Hidden=false
+Categories=Network;System;
