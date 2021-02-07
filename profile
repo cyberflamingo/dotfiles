@@ -6,7 +6,7 @@
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
-#umask 022
+umask 022
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
@@ -25,4 +25,24 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+
+## Custom configuration
+
+# Editor
+export EDITOR='/usr/bin/kak'
+
+# XDG Base Directory Specification
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+
+# GO
+export GOPATH=$XDG_DATA_HOME/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+
+# Rust
+export CARGO_HOME=$XDG_DATA_HOME/cargo
+export PATH=$PATH:$CARGO_HOME/bin
 

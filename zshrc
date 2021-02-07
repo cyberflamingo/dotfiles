@@ -72,9 +72,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-## Custom configuration
 
-umask 022
+## Custom configuration
 
 # Other keybindings
 bindkey "^[[1;5C" vi-forward-word
@@ -88,24 +87,9 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Add XDG Base Directory Specification
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-
-# Editor
-export EDITOR='/usr/bin/kak'
-
 # Nix
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 # Ruby
 eval "$(rbenv init -)"
 
-# GO
-export GOPATH=$XDG_DATA_HOME/go
-export PATH=$PATH:$GOPATH/bin
-
-# Rust
-export CARGO_HOME=$XDG_DATA_HOME/cargo
-export PATH=$PATH:$CARGO_HOME/bin

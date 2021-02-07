@@ -116,15 +116,8 @@ fi
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+
 ## Custom configuration
-
-# Add XDG Base Directory Specification
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-
-# Editor
-export EDITOR='/usr/bin/kak'
 
 # Nix
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
@@ -132,10 +125,3 @@ if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc
 # Ruby
 eval "$(rbenv init -)"
 
-# GO
-export GOPATH=$XDG_DATA_HOME/go
-export PATH=$PATH:$GOPATH/bin
-
-# Rust
-export CARGO_HOME=$XDG_DATA_HOME/cargo
-export PATH=$PATH:$CARGO_HOME/bin
