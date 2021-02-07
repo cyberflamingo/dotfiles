@@ -1,122 +1,93 @@
-##
-## the_future2.kak by CyberFlamingo
-##
+# the_future2 theme for Kakoune
+# https://github.com/cyberflamingo
+#
+# Inspired by Dracula theme for Kakoune
+# https://draculatheme.com/kakoune
 
-evaluate-commands %sh{
-    black_lighterer='rgb:383838'
-    black_lighter='rgb:2D2D2D'
-    black_light='rgb:1C1C1C'
-    cyan_light='rgb:7CB0FF'
-    green_dark='rgb:A1B56C'
-    grey_dark='rgb:585858'
-    grey_light='rgb:D8D8D8'
-    magenta_dark='rgb:AB4642'
-    magenta_light='rgb:AB4434'
-    orange_dark='rgb:DC9656'
-    orange_light='rgb:F7CA88'
-    purple_dark='rgb:BA8BAF'
+# Color palette
+declare-option str black             'rgb:0F0910'
+declare-option str purple_dark       'rgb:2D1A30'
+declare-option str red               'rgb:FF5570'
+declare-option str cyan              'rgb:7CB0FF'
+declare-option str green             'rgb:48B9AC'
+declare-option str yellow            'rgb:FFE667'
+declare-option str blue              'rgb:6179DE'
+declare-option str orange            'rgb:DC9656'
+declare-option str orange_light      'rgb:F7CA88'
+declare-option str purple            'rgb:776CC9'
+declare-option str white             default
 
-    red_light='rgb:FF5570'
-    blue_light='rgb:6179DE'
-    red_dark='rgb:D25061'
-    yellow_light='rgb:FFE667'
-    green_dark='rgb:76ABA5'
-    green_light='rgb:48B9AC'
-    purple_light='rgb:776CC9'
-    black_dark='rgb:0F0910'
+declare-option str background        "%opt{black}"
+declare-option str dimmed_background "%opt{purple_dark}"
+declare-option str foreground        "%opt{white}"
 
-    ## Code
-    echo "
-        face global value      ${green_light}+b
-        face global type       ${blue_light}+b
-        face global identifier ${red_dark}
-        face global string     ${red_light}
-        face global error      default,white+b
-        face global keyword    ${yellow_light}+b
-        face global operator   ${cyan_light}
-        face global attribute  ${orange_dark}
-        face global comment    ${purple_light}
+# Reference
+# https://github.com/mawww/kakoune/blob/master/colors/default.kak
+# For code
+set-face global value      "%opt{green}+b"
+set-face global type       "%opt{blue}+b"
+set-face global variable   "%opt{red}"
+set-face global module     "%opt{green}"
+set-face global function   "%opt{cyan}"
+set-face global string     "%opt{red}"
+set-face global keyword    "%opt{yellow}+b"
+set-face global operator   "%opt{orange}"
+set-face global attribute  "%opt{orange_light}"
+set-face global comment    "%opt{purple}+i"
+# #include <...>
+set-face global meta       "%opt{orange_light}"
+set-face global builtin    "%opt{white}+b"
+# set-face global identifier "%opt{red}"
 
-        face global variable   ${magenta_dark}
-        face global module     ${green_dark}
-        face global function   ${cyan_light}
+# For markup
+set-face global title  "%opt{red}+b"
+set-face global header "%opt{orange}+b"
+set-face global bold   "%opt{orange_light}+b"
+set-face global italic "%opt{orange_light}+i"
+set-face global mono   "%opt{green}"
+set-face global block  "%opt{cyan}"
+set-face global link   "%opt{cyan}+i"
+set-face global bullet "%opt{green}"
+set-face global list   "%opt{red}"
 
-        # #include <...>
-        face global meta ${orange_light}
-        face global builtin default+b
-    "
-
-    ## Markup
-    echo "
-        face global title  ${purple_light}+b
-        face global header ${cyan_light}
-        face global bold   ${orange_light}
-        face global italic ${orange_dark}
-        face global mono   ${green_dark}
-        face global block  ${orange_dark}
-        face global link   blue
-        face global bullet ${magenta_light}
-        face global list   ${magenta_dark}
-    "
-
-    # Builtin
-    # fg,bg+attributes
-    # face global Default default,rgb:262626 <- change the terminal bg color instead
-    echo "
-        face global Default            default,default
-
-        face global PrimarySelection   white,${blue_light}
-        face global SecondarySelection ${black_dark},${blue_light}
-
-        face global PrimaryCursor      ${black_dark},white+fg
-        face global SecondaryCursor    ${black_dark},white+fg
-
-        face global PrimaryCursorEol   black,${cyan_light}+fg
-        face global SecondaryCursorEol black,${cyan_light}+fg
-
-        face global LineNumbers        ${purple_light}
-        face global LineNumberCursor   ${grey_light},rgb:282828+b
-
-        # Bottom menu:
-        # text + background
-        face global MenuBackground ${black_dark},${orange_light}
-        # selected entry in the menu (use 302028 when true color support is fixed)
-        face global MenuForeground white,${red_light}+b
-
-        # completion menu info
-        face global MenuInfo ${green_dark}
-
-        # assistant, [+]
-        face global Information ${black_dark},${yellow_light}
-
-        face global Error      ${red_light},${black_dark}
-        face global StatusLine ${green_light},default
-
-        # Status line modes and prompts:
-        # insert, prompt, enter key...
-        face global StatusLineMode ${yellow_light}
-
-        # 1 sel
-        face global StatusLineInfo ${purple_light},${black_dark}
-
-        # param=value, reg=value. ex: \"ey
-        face global StatusLineValue ${green_light},${black_dark}
-
-        face global StatusCursor ${black_dark},${yellow_light}
-
-        # :
-        face global Prompt ${black_dark},${yellow_light}
-
-        # (), {}
-        face global MatchingChar ${cyan_light},${black_light}+b
-
-        # EOF tildas (~)
-        face global BufferPadding ${red_light}
-
-        # Whitespace characters
-        face global Whitespace ${grey_dark}+f
-
-        # Search
-        face global Search default,rgb:333333+i
-    "
-}
+# Builtin faces
+set-face global Default            "%opt{foreground}"
+set-face global PrimarySelection   "%opt{black},%opt{orange_light}"
+set-face global SecondarySelection "%opt{black},%opt{purple}"
+set-face global PrimaryCursor      "%opt{black},%opt{cyan}"
+set-face global SecondaryCursor    "%opt{black},%opt{orange}"
+set-face global PrimaryCursorEol   "%opt{black},%opt{cyan}"
+set-face global SecondaryCursorEol "%opt{black},%opt{orange}"
+set-face global LineNumbers        "%opt{purple}"
+set-face global LineNumberCursor   "%opt{white},%opt{purple}+b"
+set-face global LineNumbersWrapped "%opt{dimmed_background}+i"
+# Bottom menu:
+# selected entry in the menu
+set-face global MenuForeground     "%opt{white},%opt{red}+b"
+# text + background
+set-face global MenuBackground     "%opt{black},%opt{orange_light}"
+# completion menu info
+set-face global MenuInfo           "%opt{purple_dark}+i"
+# assistant, [+]
+set-face global Information        "%opt{purple_dark},%opt{yellow}"
+set-face global Error              "%opt{black},%opt{red}"
+set-face global StatusLine         "%opt{white},%opt{background}"
+# Status line modes and prompts:
+# insert, prompt, enter key...
+set-face global StatusLineMode     "%opt{black},%opt{green}"
+# 1 sel
+set-face global StatusLineInfo     "%opt{purple},%opt{background}"
+# param=value, reg=value. ex: \"ey
+set-face global StatusLineValue    "%opt{orange}"
+set-face global StatusCursor       "%opt{white},%opt{blue}"
+# :
+set-face global Prompt             "%opt{black},%opt{yellow}"
+# (), {}
+set-face global MatchingChar       "%opt{black},%opt{blue}"
+# Whitespace characters
+set-face global Whitespace         "%opt{purple}+f"
+set-face global WrapMarker         Whitespace
+# EOF tildas (~)
+set-face global BufferPadding      "%opt{red}"
+# Search
+# set-face global Search             Prompt
