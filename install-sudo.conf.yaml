@@ -3,12 +3,15 @@
       # /etc/caddy/Caddyfile:
       #     # if: # is a server
       #     path: Caddyfile
-      /etc/dnscrypt-proxy/blocklists.txt:
-          path: dnscrypt-proxy/blocklists.txt
-      /etc/dnscrypt-proxy/dnscrypt-proxy.toml:
-          path: dnscrypt-proxy/dnscrypt-proxy.toml
+      # Does not work with a symlink. Needs to be copied
+      # /etc/dnscrypt-proxy/blocklists.txt:
+      #     path: dnscrypt-proxy/blocklists.txt
+      # /etc/dnscrypt-proxy/dnscrypt-proxy.toml:
+      #     path: dnscrypt-proxy/dnscrypt-proxy.toml
       /etc/privoxy/default.action:
           path: privoxy/default.action
+      /etc/privoxy/config:
+          path: privoxy/config
       /etc/privoxy/user.action:
           path: privoxy/user.action
       /etc/ssh/ssh_config:
