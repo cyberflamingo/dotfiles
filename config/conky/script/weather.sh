@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
+set -euf pipefail
+
 # Requires:
 # * Geocode (GNOME)
 # * wego (Go)
 # * ansito (Python)
 
+# Variables (that need to be global)
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+
 # Variables
-export GEOCODE_CACHE=$HOME/.cache/geocode-glib
-export CONKY_CACHE=$HOME/.cache/conky
+export GEOCODE_CACHE=$XDG_CACHE_HOME/geocode-glib
+export CONKY_CACHE=$XDG_CACHE_HOME/conky
 LAST_MODIFIED=$(ls -t "$GEOCODE_CACHE" | head -n1)
 export LAST_MODIFIED
 export GOBIN=$XDG_DATA_HOME/go/bin
@@ -22,5 +28,5 @@ export LAT
 LON=$(jq -r '.lon' "$CONKY_CACHE"/location.json)
 export LON
 
-
+# Run wego
 "$GOBIN"/wego "$LAT","$LON" | head -n 7 | ansito -
