@@ -47,9 +47,11 @@
     - webext-ublock-origin-firefox
     - zsh
     # Security/Privacy
+    - apt-show-versions
     - bleachbit
     - clamav
     - clamav-daemon
+    - debsums
     - dnscrypt-proxy
     - privoxy
     # Programming
