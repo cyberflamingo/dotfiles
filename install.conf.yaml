@@ -12,7 +12,6 @@
     ~/.bash_logout:
     # Z shell
     ~/.zshenv:
-    ~/.p10k.zsh:
     # User
     ~/.aliases:
     ~/.config/:
