@@ -10,6 +10,9 @@ export XDG_CACHE_HOME=$HOME/.cache
 export VISUAL='/usr/bin/kak'
 export EDITOR='/usr/bin/kak'
 
+# zsh
+export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
+
 # GO
 export GOPATH=$XDG_DATA_HOME/go
 export GOBIN=$GOPATH/bin
