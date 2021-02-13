@@ -29,13 +29,13 @@ fi
 
 ## Custom configuration
 
-# Editor
-export EDITOR='/usr/bin/kak'
-
-# XDG Base Directory Specification
+# XDG Base Directory
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
+
+# Editor
+export EDITOR='kak'
 
 # GO
 export GOPATH=$XDG_DATA_HOME/go
