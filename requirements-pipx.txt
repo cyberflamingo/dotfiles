@@ -1,5 +1,6 @@
 ansito
+fawkes
 ialauncher
 proselint
-protonvpn-cli
+stonky
 youtube-dl
