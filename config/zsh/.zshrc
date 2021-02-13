@@ -23,7 +23,7 @@ HISTFILE="$XDG_DATA_HOME"/zsh/history
 
 # Use modern completion system
 autoload -Uz compinit
-compinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
@@ -97,7 +97,7 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Nix
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 # Ruby
 if command -v rbenv 1>/dev/null 2>&1; then
@@ -107,7 +107,7 @@ fi
 # Python
 if command -v pipx 1>/dev/null 2>&1; then
   autoload -U bashcompinit
-  bashcompinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
+  bashcompinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
   eval "$(register-python-argcomplete pipx)"
 fi
 
