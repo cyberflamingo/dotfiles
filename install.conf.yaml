@@ -16,6 +16,7 @@
     ~/.zlogout:
     ~/.p10k.zsh:
     # User
+    ~/.aliases:
     ~/.config/:
         glob: true
         path: config/*
