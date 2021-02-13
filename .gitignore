@@ -10,7 +10,11 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 
+
+# Z shell
+# Because $ZDOTDIR seems to be taking precedence over `compinit -d`
+config/zsh/.zcompdump
+
 # Kakoune plugins folder
 config/kak/plugins
 config/kak/colors
-config/zsh/.zcompdump
