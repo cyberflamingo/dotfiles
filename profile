@@ -65,3 +65,7 @@ export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
 # rbenv
 export RBENV_ROOT="$XDG_DATA_HOME"/rbenv
 
+# VSCodium
+# Note: not documented, might break
+export VSCODE_PORTABLE="$XDG_DATA_HOME"/vscode
+
