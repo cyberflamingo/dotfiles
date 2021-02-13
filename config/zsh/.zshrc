@@ -91,10 +91,10 @@ bindkey "^[[1;5D" vi-backward-word
 bindkey "^[[1;3D" backward-word
 
 # Add powerlevel10k
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+source "$ZDOTDIR"/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f "$ZDOTDIR"/p10k.zsh ]] || source "$ZDOTDIR"/p10k.zsh
 
 # Nix
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
