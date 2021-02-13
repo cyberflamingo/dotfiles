@@ -23,7 +23,7 @@ HISTFILE=~/.zsh_history
 
 # Use modern completion system
 autoload -Uz compinit
-compinit
+compinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
 
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
@@ -107,7 +107,7 @@ fi
 # Python
 if command -v pipx 1>/dev/null 2>&1; then
   autoload -U bashcompinit
-  bashcompinit
+  bashcompinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
   eval "$(register-python-argcomplete pipx)"
 fi
 
