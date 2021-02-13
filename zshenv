@@ -7,6 +7,7 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 
 # Editor
+export VISUAL='/usr/bin/kak'
 export EDITOR='/usr/bin/kak'
 
 # GO
