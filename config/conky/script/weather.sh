@@ -17,6 +17,9 @@ export CONKY_CACHE=$XDG_CACHE_HOME/conky
 LAST_MODIFIED=$(ls -t "$GEOCODE_CACHE" | head -n1)
 export LAST_MODIFIED
 export GOBIN=$XDG_DATA_HOME/go/bin
+# Wego
+export WEGORC=$XDG_CONFIG_HOME/wego/wegorc
+
 
 # TODO check if Geocode exist, otherwise don't copy
 # Could use geoclue where-am-i for backup

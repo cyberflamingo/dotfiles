@@ -41,3 +41,6 @@ export RBENV_ROOT="$XDG_DATA_HOME"/rbenv
 # Note: not documented, might break
 export VSCODE_PORTABLE="$XDG_DATA_HOME"/vscode
 
+# Wego
+export WEGORC=$XDG_CONFIG_HOME/wego/wegorc
+
