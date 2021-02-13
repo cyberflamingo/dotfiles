@@ -13,3 +13,4 @@ Thumbs.db
 # Kakoune plugins folder
 config/kak/plugins
 config/kak/colors
+config/zsh/.zcompdump

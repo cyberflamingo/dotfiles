@@ -41,12 +41,12 @@ export EDITOR='/usr/bin/kak'
 # Bash
 export HISTFILE="$XDG_DATA_HOME"/bash/history
 
+# Cargo
+export CARGO_HOME=$XDG_DATA_HOME/cargo
+export PATH=$PATH:$CARGO_HOME/bin
+
 # GO
 export GOPATH=$XDG_DATA_HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
-
-# Rust
-export CARGO_HOME=$XDG_DATA_HOME/cargo
-export PATH=$PATH:$CARGO_HOME/bin
 

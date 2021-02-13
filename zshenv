@@ -13,12 +13,13 @@ export EDITOR='/usr/bin/kak'
 # zsh
 export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
 
+# Cargo
+export CARGO_HOME=$XDG_DATA_HOME/cargo
+export PATH=$PATH:$CARGO_HOME/bin
+
 # GO
 export GOPATH=$XDG_DATA_HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 
-# Rust
-export CARGO_HOME=$XDG_DATA_HOME/cargo
-export PATH=$PATH:$CARGO_HOME/bin
 
