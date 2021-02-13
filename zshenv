@@ -28,3 +28,6 @@ export PATH=$PATH:$GOBIN
 # LESS
 export LESSHISTFILE=-
 
+# npm
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
+
