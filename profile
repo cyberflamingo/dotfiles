@@ -38,6 +38,9 @@ export XDG_CACHE_HOME=$HOME/.cache
 export VISUAL='/usr/bin/kak'
 export EDITOR='/usr/bin/kak'
 
+# Bash
+export HISTFILE="$XDG_DATA_HOME"/bash/history
+
 # GO
 export GOPATH=$XDG_DATA_HOME/go
 export GOBIN=$GOPATH/bin
