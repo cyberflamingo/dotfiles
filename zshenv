@@ -31,3 +31,9 @@ export LESSHISTFILE=-
 # npm
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 
+# Ruby
+export GEM_HOME="$XDG_DATA_HOME"/gem
+export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
+# rbenv
+export RBENV_ROOT="$XDG_DATA_HOME"/rbenv
+
