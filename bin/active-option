@@ -2,4 +2,5 @@
 
 set -euf -o pipefail
 
-egrep -v '#|^ *$' "$@"
+grep -E -v '#|^ *$' "$@"
+
