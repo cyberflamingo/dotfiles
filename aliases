@@ -4,5 +4,6 @@ alias pip='python3 -m pip'
 # Tools that can't be bothered to use XDG base directory by default
 alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
 alias stonky='stonky --config "$XDG_CONFIG_HOME"/stonky/stonky.cfg'
+alias fleets='ENV_FILE_PATH="$XDG_CONFIG_HOME"/fleets/prod.env fleets'
 
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
