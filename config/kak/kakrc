@@ -70,6 +70,14 @@ hook global InsertCompletionShow .* %{
     }
 }
 
+# IM制御を行う
+map global insert <esc> '<esc>:iminactive<ret>'
+
+define-command iminactive %{
+    nop %sh{
+        ibus engine xkb:us::eng
+    }
+}
 
 #########################################################################
 # Kakoune user interface
