@@ -25,6 +25,15 @@ export GOPATH=$XDG_DATA_HOME/go
 export GOBIN=$GOPATH/bin
 export PATH="$PATH:$GOBIN"
 
+# Java
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java
+export JAVA_HOME=/usr/lib/jvm/default-java
+export PATH="$PATH:$JAVA_HOME/bin"
+# Gradle
+# export GRADLE_USER_HOME=$XDG_DATA_HOME/gradle
+# Maven
+# mvn -gs "$XDG_CONFIG_HOME"/maven/settings.xml
+
 # LESS
 export LESSHISTFILE=-
 
@@ -44,3 +53,5 @@ export VSCODE_PORTABLE=$XDG_DATA_HOME/vscode
 # Wego
 export WEGORC=$XDG_CONFIG_HOME/wego/wegorc
 
+# Zoom
+export SSB_HOME=$XDG_DATA_HOME/zoom
