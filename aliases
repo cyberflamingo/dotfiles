@@ -7,3 +7,5 @@ alias stonky='stonky --config "$XDG_CONFIG_HOME"/stonky/stonky.cfg'
 alias fleets='ENV_FILE_PATH="$XDG_CONFIG_HOME"/fleets/prod.env fleets'
 
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
+
+alias date='date --iso-8601=seconds'
