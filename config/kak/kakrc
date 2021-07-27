@@ -188,6 +188,12 @@ hook global BufSetOption filetype=markdown %{
 
 # Ruby
 hook global WinSetOption filetype=ruby %{
+    set window autowrap_column 80
+    # Remove EOF newline
+    hook global BufWritePre ^[^*]+$ %{
+        try %{ execute-keys -draft \%s \s*\z<ret>d }
+    }
+
     lint-enable
     set-option window lintcmd 'rubocop -l --format emacs'
     lint
