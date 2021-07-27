@@ -40,7 +40,7 @@
     - fonts-noto-cjk
     - fonts-noto-cjk-extra
     - fonts-noto-color-emoji
-    - ibus-anthy
+    - ibus-mozc
     - jq
     - snapd
     - unattended-upgrades
@@ -60,6 +60,7 @@
     - git-cola
     - golang-go
     - kakoune
+    - mozc-utils-gui
     - neovim
     - npm
     - ruby-full # Install first
