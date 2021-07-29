@@ -1,5 +1,12 @@
-## Custom configuration
 umask 022
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+
+## Custom configuration
 
 # XDG Base Directory
 export XDG_DATA_HOME=$HOME/.local/share
