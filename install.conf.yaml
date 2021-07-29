@@ -7,7 +7,7 @@
 
 - link:
     # Bash
-    ~/.profile:
+    # ~/.profile:
     ~/.bashrc:
     ~/.bash_logout:
     # Z shell
