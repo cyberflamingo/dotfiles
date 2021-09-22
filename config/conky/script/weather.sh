@@ -7,18 +7,16 @@ set -euf pipefail
 # * wego (Go)
 # * ansito (Python)
 
-# Variables (that need to be global)
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-
 # Variables
-export GEOCODE_CACHE=$XDG_CACHE_HOME/geocode-glib
-export CONKY_CACHE=$XDG_CACHE_HOME/conky
+# Config
+export GEOCODE_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}"/geocode-glib
+export CONKY_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}"/conky
 LAST_MODIFIED=$(ls -t "$GEOCODE_CACHE" | head -n1)
 export LAST_MODIFIED
-export GOBIN=$XDG_DATA_HOME/go/bin
-# Wego
-export WEGORC=$XDG_CONFIG_HOME/wego/wegorc
+export WEGORC="${XDG_CONFIG_HOME:-$HOME/.config}"/wego/wegorc
+# bin
+export GOBIN="${XDG_DATA_HOME:-$HOME/.local/share}"/go/bin
+export LOCALBIN=$HOME/.local/bin
 
 
 # TODO check if Geocode exist, otherwise don't copy
@@ -32,4 +30,4 @@ LON=$(jq -r '.lon' "$CONKY_CACHE"/location.json)
 export LON
 
 # Run wego
-"$GOBIN"/wego "$LAT","$LON" | head -n 7 | ansito -
+"$GOBIN"/wego "$LAT","$LON" | head -n 7 | "$LOCALBIN"/ansito -
