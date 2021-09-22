@@ -104,6 +104,15 @@ user_pref("dom.event.contextmenu.enabled", false);
  * [1] https://bugzilla.mozilla.org/1528289 ***/
 user_pref("dom.event.clipboardevents.enabled", false);
 
+/* 2421: disable Ion and baseline JIT to harden against JS exploits [SETUP-HARDEN]
+ * [NOTE] In FF75+, when **both** Ion and JIT are disabled, **and** the new
+ * hidden pref is enabled, then Ion can still be used by extensions (1599226)
+ * [WARNING] Disabling Ion/JIT can cause some site issues and performance loss
+ * [1] https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-0817 ***/
+user_pref("javascript.options.ion", false);
+user_pref("javascript.options.baselinejit", false);
+user_pref("javascript.options.jit_trustedprincipals", true); // [FF75+] [HIDDEN PREF]
+
 /** DOWNLOADS ***/
 /* 2651: enforce user interaction for security by always asking where to download
  * [SETUP-CHROME] On Android this blocks longtapping and saving images
@@ -128,9 +137,13 @@ user_pref("security.dialog_enable_delay", 3000);
 user_pref("network.cookie.lifetimePolicy", 2);
 
 /*** [SECTION 2800]: SHUTDOWN
-     You should set the values to what suits you best.
-     - "Offline Website Data" includes appCache (2730), localStorage (2710),
-       service worker cache (2740), and QuotaManager (IndexedDB (2720), asm-cache)
+     - Sanitizing on shutdown is all or nothing. It does not use Managed Exceptions under
+       Privacy & Security>Delete cookies and site data when Firefox is closed (1681701)
+     - If you want to keep some sites' cookies (exception as "Allow") and optionally other site
+       data but clear all the rest on close, then you need to set the "cookie" and optionally the
+       "offlineApps" prefs below to false, and to set the cookie lifetime pref to 2 (2703)
+     - "Offline Website Data" includes appCache (2730), localStorage (2720),
+       service worker cache (2740), and QuotaManager (IndexedDB, asm-cache)
      - In both 2803 + 2804, the 'download' and 'history' prefs are combined in the
        Firefox interface as "Browsing & Download History" and their values will be synced
 ***/
