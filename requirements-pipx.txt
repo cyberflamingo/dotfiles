@@ -1,6 +1,9 @@
 ansito
+black
 fawkes
 ialauncher
+mypy
 proselint
+ranger-fm
 stonky
 youtube-dl
