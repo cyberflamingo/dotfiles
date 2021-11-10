@@ -15,8 +15,15 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 
 # Editor
-export VISUAL='/usr/bin/kak'
-export EDITOR='/usr/bin/kak'
+if command -v kak 1>/dev/null 2>&1; then
+  KAK="$(which kak)"
+  export VISUAL=$KAK
+  export EDITOR=$KAK
+else
+  VI="$(which vi)"
+  export VISUAL=$VI
+  export EDITOR=$VI
+fi
 
 # zsh
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
