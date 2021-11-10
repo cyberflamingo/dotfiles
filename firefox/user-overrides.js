@@ -180,6 +180,8 @@ user_pref("browser.newtabpage.activity-stream.topSitesRows", 2);
    // user_pref("security.webauth.webauthn, false");
 
 /* APPEARANCE ***/
+// Smaller tab
+user_pref("uidensity", 1);
 // Devtools dark theme
 user_pref("devtools.theme", "dark");
 
