@@ -49,6 +49,11 @@ fi
 # Bash
 export HISTFILE=$XDG_STATE_HOME/bash/history
 
+# Aspell
+export ASPELL_CONF="per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; \
+                    personal $XDG_CONFIG_HOME/aspell/en.pws;      \
+                    repl $XDG_CONFIG_HOME/aspell/en.prepl"
+
 # Cargo
 export CARGO_HOME=$XDG_DATA_HOME/cargo
 export PATH="$PATH:$CARGO_HOME/bin"
