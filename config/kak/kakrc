@@ -9,17 +9,27 @@
 
 # Plugins
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
+plug "andreyorst/plug.kak" noload
 
 plug "dracula/kakoune" theme
 
-plug "lenormf/kakoune-extra" subset %{
-    git-branch.kak
+plug "lenormf/kakoune-extra" noload %{
+    source "%val{config}/plugins/kakoune-extra/widgets/git-branch.kak"
+} config %{
+    # Add git informations
+    hook global WinCreate .* %{ evaluate-commands %sh{
+        is_work_tree=$(cd "$(dirname "${kak_buffile}")" && git rev-parse --is-inside-work-tree 2>/dev/null)
+        if [ "${is_work_tree}" = 'true' ]; then
+            # Branch name in status
+            printf 'set-option window modelinefmt %%{%s}' "  %opt{modeline_git_branch} ${kak_opt_modelinefmt}"
+        fi
+    }}
 }
 
-plug "kakoune-editor/kakoune-extra-filetypes" subset %{
-    conky.kak
-    git-commit-overflow.kak
-    mutt.kak
+plug "kakoune-editor/kakoune-extra-filetypes" noload %{
+    source "%val{config}/plugins/kakoune-extra-filetypes/rc/conky.kak"
+    source "%val{config}/plugins/kakoune-extra-filetypes/rc/git-commit-overflow.kak"
+    source "%val{config}/plugins/kakoune-extra-filetypes/rc/mutt.kak"
 }
 
 plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
@@ -95,15 +105,6 @@ map global normal / ':exec /<ret>(?i)'
 
 # Show matching brackets when text indicator is over them
 add-highlighter global/ show-matching
-
-# Add git informations
-hook global WinCreate .* %{ evaluate-commands %sh{
-    is_work_tree=$(cd "$(dirname "${kak_buffile}")" && git rev-parse --is-inside-work-tree 2>/dev/null)
-    if [ "${is_work_tree}" = 'true' ]; then
-        # Branch name in status
-        printf 'set-option window modelinefmt %%{%s}' "  %opt{modeline_git_branch} ${kak_opt_modelinefmt}"
-    fi
-}}
 
 hook global WinCreate ^[^*]+$ %{ evaluate-commands %sh{
     cd "$(dirname "${kak_buffile}")" && git ls-files --error-unmatch "${kak_bufname}" > /dev/null 2>&1
