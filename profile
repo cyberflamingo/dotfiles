@@ -97,5 +97,8 @@ export VSCODE_PORTABLE=$XDG_DATA_HOME/vscode
 # Wego
 export WEGORC=$XDG_CONFIG_HOME/wego/wegorc
 
+# Wine
+export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
+
 # Zoom
 export SSB_HOME=$XDG_DATA_HOME/zoom
