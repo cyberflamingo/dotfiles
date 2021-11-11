@@ -38,7 +38,7 @@ export CARGO_HOME=$XDG_DATA_HOME/cargo
 export PATH="$PATH:$CARGO_HOME/bin"
 
 # GnuPG
-export GNUPGHOME=$XDG_DATA_HOME/gnupg
+# export GNUPGHOME=$XDG_DATA_HOME/gnupg
 
 # GO
 export GOPATH=$XDG_DATA_HOME/go
