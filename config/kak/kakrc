@@ -175,7 +175,6 @@ map global user -docstring '(un)comment selections using block comments' C ':com
 #########################################################################
 # Markdown
 hook global WinSetOption filetype=markdown %{
-    lint-enable
 #    set-option window lintcmd 'proselint --compact'
 #    set-option window lintcmd 'mdl'
     set-option window lintcmd 'write-good --parse'
@@ -194,7 +193,6 @@ hook global WinSetOption filetype=ruby %{
         try %{ execute-keys -draft \%s \s*\z<ret>d }
     }
 
-    lint-enable
     set-option window lintcmd 'rubocop -l --format emacs'
     lint
 }
@@ -205,7 +203,6 @@ hook global BufSetOption filetype=ruby %{
 
 # Shell
 hook global WinSetOption filetype=sh %{
-    lint-enable
     set-option window lintcmd 'shellcheck -fgcc -Cnever'
     lint
 }
