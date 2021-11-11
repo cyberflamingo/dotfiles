@@ -3,4 +3,3 @@
 set -euf -o pipefail
 
 exiftool -all= "$@"
-

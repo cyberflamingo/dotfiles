@@ -1,10 +1,9 @@
 umask 022
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
+if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-
 
 ## Custom configuration
 
@@ -16,13 +15,13 @@ export XDG_CACHE_HOME=$HOME/.cache
 
 # Editor
 if command -v kak 1>/dev/null 2>&1; then
-  KAK="$(which kak)"
-  export VISUAL=$KAK
-  export EDITOR=$KAK
+    KAK="$(which kak)"
+    export VISUAL=$KAK
+    export EDITOR=$KAK
 else
-  VI="$(which vi)"
-  export VISUAL=$VI
-  export EDITOR=$VI
+    VI="$(which vi)"
+    export VISUAL=$VI
+    export EDITOR=$VI
 fi
 
 # zsh

@@ -17,17 +17,16 @@ formulas=(
     apptrap
     atom
     brave
-    #clementine # Doesn't work on non-admin account...
+    # clementine # Doesn't work on non-admin account...
     cryptomator
-    #dupeguru
+    # dupeguru
     firefox
     imageoptim
     keepassxc
     keka
-    #master-password # Cask is dead. PR if I have time
-    #minecraft # This is a work computer
+    # minecraft # This is a work computer
     standard-notes
-    #steam # What did I told ya?
+    # steam # What did I told ya?
     torbrowser
     vlc
     wire

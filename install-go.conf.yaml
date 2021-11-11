@@ -4,3 +4,4 @@
   - github.com/shurcooL/markdownfmt
   - github.com/schachmat/wego
   - github.com/Narasimha1997/fake-sms
+  - mvdan.cc/sh/v3/cmd/shfmt@latest

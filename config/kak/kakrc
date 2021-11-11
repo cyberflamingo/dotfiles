@@ -2,10 +2,10 @@
 # General
 #########################################################################
 # Load all the standard plugins (Note: currently using symlink)
-#nop %sh{
-#    mkdir -p "$kak_config/autoload"
-#    ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
-#}
+# nop %sh{
+#     mkdir -p "$kak_config/autoload"
+#     ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
+# }
 
 # Plugins
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
@@ -19,6 +19,7 @@ plug "lenormf/kakoune-extra" noload %{
     # Add git informations
     hook global WinCreate .* %{ evaluate-commands %sh{
         is_work_tree=$(cd "$(dirname "${kak_buffile}")" && git rev-parse --is-inside-work-tree 2>/dev/null)
+
         if [ "${is_work_tree}" = 'true' ]; then
             # Branch name in status
             printf 'set-option window modelinefmt %%{%s}' "  %opt{modeline_git_branch} ${kak_opt_modelinefmt}"
@@ -107,7 +108,7 @@ map global normal / ':exec /<ret>(?i)'
 add-highlighter global/ show-matching
 
 hook global WinCreate ^[^*]+$ %{ evaluate-commands %sh{
-    cd "$(dirname "${kak_buffile}")" && git ls-files --error-unmatch "${kak_bufname}" > /dev/null 2>&1
+    cd "$(dirname "${kak_buffile}")" && git ls-files --error-unmatch "${kak_bufname}" >/dev/null 2>&1
     is_git_tracked=$?
     if [ "${is_git_tracked}" -eq 0 ]; then
         # git diff status in gutter
@@ -116,7 +117,7 @@ hook global WinCreate ^[^*]+$ %{ evaluate-commands %sh{
 }}
 
 hook global BufWritePost ^[^*]+$ %{ evaluate-commands %sh{
-    cd "$(dirname "${kak_buffile}")" && git ls-files --error-unmatch "${kak_bufname}" > /dev/null 2>&1
+    cd "$(dirname "${kak_buffile}")" && git ls-files --error-unmatch "${kak_bufname}" >/dev/null 2>&1
     is_git_tracked=$?
     if [ "${is_git_tracked}" -eq 0 ]; then
         # Update git diff in gutter
@@ -235,6 +236,8 @@ hook global BufSetOption filetype=ruby %{
 hook global WinSetOption filetype=sh %{
     set-option window lintcmd 'shellcheck -fgcc -Cnever'
     lint
+
+    set-option buffer formatcmd "shfmt -p -i 4 -bn -ci"
 }
 
 # YAML

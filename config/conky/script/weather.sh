@@ -18,7 +18,6 @@ export WEGORC="${XDG_CONFIG_HOME:-$HOME/.config}"/wego/wegorc
 export GOBIN="${XDG_DATA_HOME:-$HOME/.local/share}"/go/bin
 export LOCALBIN=$HOME/.local/bin
 
-
 # TODO check if Geocode exist, otherwise don't copy
 # Could use geoclue where-am-i for backup
 mkdir -p "$CONKY_CACHE"
