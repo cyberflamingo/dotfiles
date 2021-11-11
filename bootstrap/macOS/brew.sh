@@ -14,7 +14,7 @@ echo -e "\\n\\nInstalling Homebrew packages..."
 echo "==============================="
 
 formulas=(
-    #caddy
+    # caddy
     'curl --with-openssl'
     dnscrypt-proxy
     'dnsmasq --with-dnssec'
@@ -22,18 +22,18 @@ formulas=(
     git-flow-avh
     gnupg
     go
-    #hugo
+    # hugo
     kakoune
     neovim
     openssl
-    #openvpn
+    # openvpn
     privoxy
-    #profanity
+    # profanity
     python3
-    #ruby
+    # ruby
     rsync
     tmux
-    #zsh
+    # zsh
 )
 
 for formula in "${formulas[@]}"; do

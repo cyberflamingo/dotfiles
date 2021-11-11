@@ -1,17 +1,17 @@
 #!/bin/bash
 
-#set -o errtrace
-#set -o nounset
-#set -o pipefail
+# set -o errtrace
+# set -o nounset
+# set -o pipefail
 
 ###############################################################################
 # FireVault hardening                                                         #
 ###############################################################################
 
 if fdesetup status | grep -q 'Off'; then
-  echo "Wait. FireVault if OFF. You need to activate it first."
-  echo
-  bash macos_1firevault.sh
+    echo "Wait. FireVault if OFF. You need to activate it first."
+    echo
+    bash macos_1firevault.sh
 fi
 
 echo
@@ -80,7 +80,7 @@ echo "Take a look at 'pfctl' if that interest you."
 echo
 echo "Delete and disable the quarantine logs of download..."
 # Disable Quarantine logs of download
-:>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
+: >~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
 sudo chflags schg ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2
 
 echo
@@ -113,7 +113,8 @@ sudo nvram -d 36C28AB5-6566-4C50-9EBD-CBB920F83843:preferred-count
 echo
 echo "Apple collect typestroks. Not on my watch!"
 echo "Let's delete it then block further writting"
-sudo rm -rfv "~/Library/LanguageModeling/*" "~/Library/Spelling/*" "~/Library/Suggestions/*"
+sudo rm -rfv "$HOME/Library/LanguageModeling/*" "$HOME/Library/Spelling/*"
+"$HOME/Library/Suggestions/*"
 sudo chmod -R 000 ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions
 sudo chflags -R uchg ~/Library/LanguageModeling ~/Library/Spelling ~/Library/Suggestions
 
@@ -127,8 +128,8 @@ echo
 echo "And finally, Siri Analytics Database, which we won't use I guess"
 rm -rfv ~/Library/Assistant/SiriAnalytics.db
 # Well you con't chmod a file that doesn't exist...
-#sudo chmod -R 000 ~/Library/Assistant/SiriAnalytics.db
-#sudo chflags -R uchg ~/Library/Assistant/SiriAnalytics.db
+# sudo chmod -R 000 ~/Library/Assistant/SiriAnalytics.db
+# sudo chflags -R uchg ~/Library/Assistant/SiriAnalytics.db
 
 ###############################################################################
 # Other security/privacy related settings                                     #

@@ -4,4 +4,3 @@
 ## See the file COPYING for copying conditions.
 
 scurl --location --remote-name-all --remote-header-name "$@"
-

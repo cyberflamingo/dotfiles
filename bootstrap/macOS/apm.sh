@@ -2,7 +2,7 @@
 
 if test ! "$( which apm )"; then
     echo "Atom and/or apm ain't installed, bro"
-    break
+    exit
 fi
 
 apm update
@@ -16,10 +16,10 @@ echo -e "\\n\\nInstalling Atom packages..."
 echo "=============================="
 
 formulas=(
-    #color-picker
+    # color-picker
     file-icons
     firewatch-hot-syntax
-    #firewatch-syntax
+    # firewatch-syntax
     japanese-wrap
     language-generic-config
     project-manager

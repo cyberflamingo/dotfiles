@@ -34,12 +34,12 @@ echo
 echo "Installing dependencies."
 echo "Auto replace hosts with 0.0.0.0 and extensions fakenews, gambling, porn"
 
-if test ! "$( which python3 )"; then
-  pip3 install --user -r requirements.txt
-  python3 updateHostsFile.py --auto --replace --ip 0.0.0.0 --extensions fakenews gambling porn
+if test ! "$(which python3)"; then
+    pip3 install --user -r requirements.txt
+    python3 updateHostsFile.py --auto --replace --ip 0.0.0.0 --extensions fakenews gambling porn
 else
-  pip2 install --user -r requirements_python2.txt
-  python updateHostsFile.py --auto --replace --ip 0.0.0.0 --extensions fakenews gambling porn
+    pip2 install --user -r requirements_python2.txt
+    python updateHostsFile.py --auto --replace --ip 0.0.0.0 --extensions fakenews gambling porn
 fi
 
 ###############################################################################

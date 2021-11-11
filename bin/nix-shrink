@@ -2,21 +2,24 @@
 
 set -euf -o pipefail
 
-tput setaf 5;echo "##############"
-tput setaf 5;echo "# SHRINK NIX #"
-tput setaf 5;echo "##############"
-
+tput setaf 5
+echo "##############"
+tput setaf 5
+echo "# SHRINK NIX #"
+tput setaf 5
+echo "##############"
 
 ########## Nix
 
-tput setaf 5;echo "[+] Shrinking nix..."
+tput setaf 5
+echo "[+] Shrinking nix..."
 {
-  nix-store --delete
-  nix-store --delete --ignore-liveness
-  nix-store --gc
-  nix-store --optimise
-  nix optimise-store
-  nix-collect-garbage --delete-old
+    nix-store --delete
+    nix-store --delete --ignore-liveness
+    nix-store --gc
+    nix-store --optimise
+    nix optimise-store
+    nix-collect-garbage --delete-old
 }
-tput setaf 2;echo "[+] Done."
-
+tput setaf 2
+echo "[+] Done."

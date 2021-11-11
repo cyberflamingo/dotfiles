@@ -15,21 +15,19 @@
 
 GSETTINGS=gsettings
 
-
 ###############################################################################
 # Backup current settings                                                     #
 ###############################################################################
 
-dconf dump / > dconf.bak
-gsettings list-recursively > gsettings.bak
-
+dconf dump / >dconf.bak
+gsettings list-recursively >gsettings.bak
 
 ###############################################################################
 # Recursively set gsettings                                                   #
 ###############################################################################
 
 while read -r schema key value; do
-  [[ "$schema" =~ ^#.*$ ]] || [ -z "$schema" ] && continue
-  gsettings set "$schema" "$key" "$value";
-  #gsettings get "$schema" "$key";
-done < "$GSETTINGS"
+    [[ "$schema" =~ ^#.*$ ]] || [ -z "$schema" ] && continue
+    gsettings set "$schema" "$key" "$value"
+    # gsettings get "$schema" "$key";
+done <"$GSETTINGS"
