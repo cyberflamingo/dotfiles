@@ -184,6 +184,20 @@ hook global BufSetOption filetype=markdown %{
     set-option buffer formatcmd 'markdownfmt'
 }
 
+# Python
+hook global WinSetOption filetype=python %{
+    map global insert <tab> '<space><space><space><space>'
+    set-option global indentwidth 4
+    set window autowrap_column 79
+
+    set-option window lintcmd "mypy --show-column-numbers"
+    lint
+}
+
+hook global BufSetOption filetype=python %{
+    set-option buffer formatcmd 'black -'
+}
+
 # Ruby
 hook global WinSetOption filetype=ruby %{
     set window autowrap_column 80
