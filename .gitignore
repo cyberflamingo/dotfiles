@@ -15,6 +15,7 @@ Thumbs.db
 # Because $ZDOTDIR seems to be taking precedence over `compinit -d`
 config/zsh/.zcompdump
 
-# Kakoune plugins folder
+# Kakoune folders
 config/kak/plugins
 config/kak/colors
+config/kak/autoload/standard-library
