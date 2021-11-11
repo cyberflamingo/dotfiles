@@ -176,9 +176,7 @@ map global user -docstring '(un)comment selections using block comments' C ':com
 #########################################################################
 # Markdown
 hook global WinSetOption filetype=markdown %{
-#    set-option window lintcmd 'proselint --compact'
-#    set-option window lintcmd 'mdl'
-    set-option window lintcmd 'write-good --parse'
+    set-option window lintcmd "proselint"
     lint
 }
 
