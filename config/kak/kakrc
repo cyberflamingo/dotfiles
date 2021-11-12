@@ -53,15 +53,44 @@ hook global ModuleLoaded x11 %{
     set-option global termcmd "gnome-terminal -e"
 }
 
-# Use the system clipboard (replace with bellow with ver. July 2020)
-# hook global RegisterModified '"' %{ nop %sh{
-hook global NormalKey y|d|c %{ nop %sh{
+#########################################################################
+# Clipboard
+#########################################################################
+# System copy
+declare-option -hidden str system_copy_cmd %sh{
+    if command -v xclip 1>/dev/null 2>&1; then
+        printf %s 'xclip -in -selection clipboard >&- 2>&-'
+    elif command -v pbcopy 1>/dev/null 2>&1; then
+        printf %s 'pbcopy'
+    elif command -v clip.exe 1>/dev/null 2>&1; then
+        printf %s 'clip.exe'
+    else
+        printf false
+    fi
+}
+
+# System paste
+declare-option -hidden str system_paste_cmd %sh{
+    if command -v xclip 1>/dev/null 2>&1; then
+        printf %s 'xclip -out -selection clipboard'
+    elif command -v pbcopy 1>/dev/null 2>&1; then
+        printf %s 'pbpaste'
+    elif command -v clip.exe 1>/dev/null 2>&1; then
+        printf %s "powershell.exe Get-Clipboard | tr -d '\r'"
+    else
+        printf false
+    fi
+}
+
+# Use the system clipboard
+hook global RegisterModified '"' %{ nop %sh{
+    # TODO: Use $kak_opt_system_copy_cmd
     printf %s "$kak_main_reg_dquote" | xclip -in -selection clipboard >&- 2>&-
 }}
 
 # Paste before/after
-map global user -docstring 'paste (before) from clipboard' P '!xclip -out -selection clipboard<ret>'
-map global user -docstring 'paste (after) from clipboard' p '<a-!>xclip -out -selection clipboard<ret>'
+map global user -docstring 'paste (before) from system clipboard' P '!$kak_opt_system_paste_cmd<ret>'
+map global user -docstring 'paste (after) from system clipboard' p '<a-!>$kak_opt_system_paste_cmd<ret>'
 
 # <tab> for completion
 hook global InsertCompletionShow .* %{
