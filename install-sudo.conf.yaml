@@ -63,6 +63,7 @@
     - mozc-utils-gui
     - neovim
     - npm
+    - python3-jedi
     - ruby-full # Install first
     - rbenv
     - shellcheck
