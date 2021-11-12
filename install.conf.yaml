@@ -6,6 +6,8 @@
 - clean: ['~', '~/.config']
 
 - link:
+    # EditorConfig
+    ~/.editorconfig:
     # Bash
     # ~/.profile:
     ~/.bashrc:
