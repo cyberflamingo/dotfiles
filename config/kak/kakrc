@@ -74,9 +74,8 @@ hook global InsertCompletionShow .* %{
         map window insert <tab> <c-n>
         map window insert <s-tab> <c-p>
         hook -once -always window InsertCompletionHide .* %{
-            # Remape to 2 spaces instead of tabs
-            map window insert <tab> '<space><space>'
-            map window insert <s-tab> '<space><space>'
+            unmap window insert <tab> <c-n>
+            unmap window insert <s-tab> <c-p>
         }
     }
 }
@@ -137,7 +136,8 @@ colorscheme the_future2
 # Text, tab and indent related
 #########################################################################
 # Use 2 spaces instead of tabs
-map global insert <tab> '<space><space>'
+map global insert <tab> '<a-;><a-gt>'
+map global insert <s-tab> '<a-;><a-lt>'
 
 # 1 tab == 2 spaces
 set-option global indentwidth 2
@@ -207,7 +207,6 @@ hook global BufSetOption filetype=markdown %{
 
 # Python
 hook global WinSetOption filetype=python %{
-    map global insert <tab> '<space><space><space><space>'
     set-option global indentwidth 4
     set window autowrap_column 79
 
