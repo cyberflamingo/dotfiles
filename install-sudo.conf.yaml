@@ -70,6 +70,7 @@
     - virt-manager # Install first
     - qemu-kvm
     - spice-vdagent
+    - yamllint
     # Other
     - cmus
     - digikam

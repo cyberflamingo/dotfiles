@@ -297,6 +297,10 @@ hook global WinSetOption filetype=sh %{
 }
 
 # YAML
+hook global WinSetOption filetype=yaml %{
+    set-option window lintcmd "yamllint -f parsable"
+}
+
 hook global BufSetOption filetype=yaml %{
-    set-option buffer formatcmd 'prettier --write'
+    set-option buffer formatcmd "npx prettier --stdin-filepath=%val{buffile}"
 }
