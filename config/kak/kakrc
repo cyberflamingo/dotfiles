@@ -175,6 +175,9 @@ map global user -docstring '(un)comment selections using block comments' C ':com
 #########################################################################
 ## Language specific
 #########################################################################
+# EditorConfig
+hook global WinCreate ^[^*]+$ %{editorconfig-load}
+
 # CSS
 hook global WinSetOption filetype=css %{
     set-option window lintcmd "npx stylelint --fix --stdin-filename='%val{buffile}'"
