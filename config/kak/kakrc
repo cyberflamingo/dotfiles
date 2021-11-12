@@ -267,6 +267,7 @@ hook global WinSetOption filetype=python %{
     set-option global indentwidth 4
     set window autowrap_column 79
 
+    jedi-enable-autocomplete
     set-option window lintcmd "mypy --show-column-numbers"
     lint
 }
