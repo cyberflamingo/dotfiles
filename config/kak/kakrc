@@ -151,11 +151,10 @@ hook global WinSetOption filetype=.* %{
 # Wrap lines
 add-highlighter global/ wrap -indent -marker '→'
 
-# Remove whitespace
-hook global BufWritePre ^[^*]+$ %{
-    try %{ execute-keys -draft \%s \h+$<ret>d }
+# Trim trailing whitespace and EOF newlines
+hook global BufWritePre ^[^*]+$ -group editorconfig-hooks %{
+    try %{ execute-keys -draft %{ %s\h+$|\n+\z<ret>d } }
 }
-
 
 #########################################################################
 # Moving around, tabs, windows and buffers
@@ -221,10 +220,6 @@ hook global BufSetOption filetype=python %{
 # Ruby
 hook global WinSetOption filetype=ruby %{
     set window autowrap_column 80
-    # Remove EOF newline
-    hook global BufWritePre ^[^*]+$ %{
-        try %{ execute-keys -draft \%s \s*\z<ret>d }
-    }
 
     set-option window lintcmd 'rubocop -l --format emacs'
     lint
