@@ -135,6 +135,9 @@ colorscheme the_future2
 #########################################################################
 # Text, tab and indent related
 #########################################################################
+# EOL = lf
+set-option global eolformat lf
+
 # Use 2 spaces instead of tabs
 map global insert <tab> '<a-;><a-gt>'
 map global insert <s-tab> '<a-;><a-lt>'
