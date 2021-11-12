@@ -33,6 +33,10 @@ plug "kakoune-editor/kakoune-extra-filetypes" noload %{
     source "%val{config}/plugins/kakoune-extra-filetypes/rc/mutt.kak"
 }
 
+plug "JJK96/kakoune-config" noload %{
+    source "%val{config}/plugins/kakoune-config/autoload/html.kak"
+}
+
 plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
     # WARNING: state-save-reg-load has security implications
     # hook global KakBegin .* %{
