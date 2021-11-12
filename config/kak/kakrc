@@ -36,6 +36,8 @@ plug "kakoune-editor/kakoune-extra-filetypes" noload %{
 
 plug "JJK96/kakoune-config" noload %{
     source "%val{config}/plugins/kakoune-config/autoload/html.kak"
+    source "%val{config}/plugins/kakoune-config/autoload/css.kak"
+    source "%val{config}/plugins/kakoune-config/autoload/wordcount.kak"
 }
 
 plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
@@ -207,6 +209,25 @@ map global user -docstring 'Open in nvim' v ':terminal nvim "+%val{cursor_line}"
 map global user -docstring '(un)comment selected lines using line comments' c ':comment-line<ret>'
 map global user -docstring '(un)comment selections using block comments' C ':comment-block<ret>'
 
+#########################################################################
+# Custom commands
+#########################################################################
+define-command now %{
+    execute-keys '| date --iso-8601=seconds<ret>'
+}
+
+# Highlight the word under the cursor
+# Based on: https://github.com/mawww/config/blob/1f18846ad5aecb4c75e3b5142203a4a68a3bc994/kakrc#L41-L53
+set-face global CurWord default,rgba:3a3d4140
+
+hook global NormalIdle .* %{
+    eval -draft %{ try %{
+        exec <space><a-i>w <a-k>\A\w+\z<ret>
+        add-highlighter -override global/curword regex "\b\Q%val{selection}\E\b" 0:CurWord
+    } catch %{
+        add-highlighter -override global/curword group
+    } }
+}
 
 #########################################################################
 ## Language specific
