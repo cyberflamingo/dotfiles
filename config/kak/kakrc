@@ -15,6 +15,7 @@ plug "dracula/kakoune" theme
 
 plug "lenormf/kakoune-extra" noload %{
     source "%val{config}/plugins/kakoune-extra/widgets/git-branch.kak"
+    source "%val{config}/plugins/kakoune-extra/comnotes.kak"
 } config %{
     # Add git informations
     hook global WinCreate .* %{ evaluate-commands %sh{
