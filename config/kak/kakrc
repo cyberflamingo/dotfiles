@@ -290,6 +290,9 @@ hook global BufSetOption filetype=ruby %{
 
 # Shell
 hook global WinSetOption filetype=sh %{
+    set-option global indentwidth 4
+    set window autowrap_column 80
+
     set-option window lintcmd 'shellcheck -fgcc -Cnever'
     lint
 
