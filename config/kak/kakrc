@@ -259,7 +259,7 @@ hook global WinSetOption filetype=markdown %{
 }
 
 hook global BufSetOption filetype=markdown %{
-    set-option buffer formatcmd 'markdownfmt'
+    set-option buffer formatcmd 'pandoc -f markdown_mmd -t markdown_mmd'
 }
 
 # Python
