@@ -62,7 +62,6 @@
     - kakoune
     - mozc-utils-gui
     - neovim
-    - npm
     - pandoc
     - python3-jedi
     - ruby-full # Install first
