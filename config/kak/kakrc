@@ -55,6 +55,12 @@ plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
     }
 }
 
+plug "occivink/kakoune-snippets" config %{
+    set-option -add global snippets_directories "%opt{plug_install_dir}/kakoune-snippet-collection/snippets"
+    set-option -add global snippets_directories "%val{config}/snippets"
+}
+plug "andreyorst/kakoune-snippet-collection" noload
+
 # Use gnome-terminal
 hook global ModuleLoaded x11 %{
     set-option global termcmd "gnome-terminal -e"
