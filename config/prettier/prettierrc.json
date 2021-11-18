@@ -1,0 +1,15 @@
+{
+  "useTab": false,
+  "tabWidth": 2,
+  "endOfLine": "lf",
+  "printWidth": 75,
+
+  "overrides": [
+    {
+      "files": "{*.css}",
+      "options": {
+        "printWidth": 120
+      }
+    }
+  ]
+}
