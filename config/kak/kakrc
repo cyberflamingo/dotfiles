@@ -241,13 +241,14 @@ hook global NormalIdle .* %{
 # EditorConfig
 hook global WinCreate ^[^*]+$ %{editorconfig-load}
 
+# Multi-language formatter
+hook global BufSetOption filetype=(css|json|yaml) %{
+    set-option buffer formatcmd "npx prettier --stdin-filepath=%val{buffile}"
+}
+
 # CSS
 hook global WinSetOption filetype=css %{
     set-option window lintcmd "npx stylelint --fix --stdin-filename='%val{buffile}'"
-}
-
-hook global BufSetOption filetype=css %{
-    set-option buffer formatcmd "npx prettier --stdin-filepath=%val{buffile}"
 }
 
 # HTML
@@ -313,8 +314,4 @@ hook global WinSetOption filetype=sh %{
 # YAML
 hook global WinSetOption filetype=yaml %{
     set-option window lintcmd "yamllint -f parsable"
-}
-
-hook global BufSetOption filetype=yaml %{
-    set-option buffer formatcmd "npx prettier --stdin-filepath=%val{buffile}"
 }
