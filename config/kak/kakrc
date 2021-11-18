@@ -258,6 +258,11 @@ hook global WinSetOption filetype=html %{
     set-option buffer formatcmd "run(){ tidy -q --tidy-mark no --indent auto --indent-spaces %opt{tabstop}  2>/dev/null || true; } && run"
 }
 
+# JSON
+hook global WinSetOption filetype=json %{
+    set-option window lintcmd %{ run() { cat -- "$1" | jq 2>&1 | awk -v filename="$1" '/ at line [0-9]+, column [0-9]+$/ { line=$(NF - 2); column=$NF; sub(/ at line [0-9]+, column [0-9]+$/, ""); printf "%s:%d:%d: error: %s", filename, line, column, $0; }'; } && run }
+}
+
 # Markdown
 hook global WinSetOption filetype=markdown %{
     set-option window lintcmd "proselint"
