@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-rational-order",
+    "stylelint-8-point-grid"
+  ],
+  "plugins": [
+    "stylelint-high-performance-animation",
+    "stylelint-declaration-block-no-ignored-properties",
+    "stylelint-group-selectors"
+  ],
+  "rules": {
+    "plugin/no-low-performance-animation-properties": true,
+    "plugin/declaration-block-no-ignored-properties": true,
+    "plugin/stylelint-group-selectors": true,
+    "declaration-empty-line-before": null,
+    "plugin/rational-order": [
+      true,
+      {
+        "empty-line-between-groups": true
+      }
+    ],
+    "declaration-block-no-shorthand-property-overrides": true,
+    "comment-word-disallowed-list": ["TODO", "FIXME", "XXX", "NOTE"],
+    "max-nesting-depth": 3,
+    "selector-max-id": 1,
+    "selector-max-type": 3,
+    "selector-max-universal": 0
+  },
+  "defaultSeverity": "warning"
+}
