@@ -248,11 +248,15 @@ hook global BufSetOption filetype=(css|json|yaml) %{
 
 # CSS
 hook global WinSetOption filetype=css %{
+    set window autowrap_column 120
+
     set-option window lintcmd "npx stylelint --fix --stdin-filename='%val{buffile}'"
 }
 
 # HTML
 hook global WinSetOption filetype=html %{
+    set window autowrap_column 68
+
     set-option window lintcmd "tidy -e --gnu-emacs yes --quiet yes 2>&1"
     lint
 
@@ -262,6 +266,8 @@ hook global WinSetOption filetype=html %{
 
 # JSON
 hook global WinSetOption filetype=json %{
+    set window autowrap_column 80
+
     set-option window lintcmd %{ run() { cat -- "$1" | jq 2>&1 | awk -v filename="$1" '/ at line [0-9]+, column [0-9]+$/ { line=$(NF - 2); column=$NF; sub(/ at line [0-9]+, column [0-9]+$/, ""); printf "%s:%d:%d: error: %s", filename, line, column, $0; }'; } && run }
 }
 
@@ -314,5 +320,7 @@ hook global WinSetOption filetype=sh %{
 
 # YAML
 hook global WinSetOption filetype=yaml %{
+    set window autowrap_column 80
+
     set-option window lintcmd "yamllint -f parsable"
 }
