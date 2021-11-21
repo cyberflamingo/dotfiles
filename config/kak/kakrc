@@ -187,9 +187,9 @@ map global insert <s-tab> '<a-;><a-lt>'
 # 1 tab == 2 spaces
 set-option global indentwidth 2
 
-# Linebreak on 75 characters
+# Linebreak on 72 characters
 hook global WinSetOption filetype=.* %{
-    set window autowrap_column 75
+    set window autowrap_column 72
     autowrap-enable
 }
 
