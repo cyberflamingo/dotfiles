@@ -250,7 +250,7 @@ hook global BufSetOption filetype=(css|json|yaml) %{
 hook global WinSetOption filetype=css %{
     set window autowrap_column 120
 
-    set-option window lintcmd "npx stylelint --fix --stdin-filename='%val{buffile}'"
+    set-option window lintcmd "npx stylelint --formatter unix --stdin-filename='%val{buffile}'"
 }
 
 # HTML
