@@ -253,6 +253,16 @@ hook global WinSetOption filetype=css %{
     set-option window lintcmd "npx stylelint --formatter unix --stdin-filename='%val{buffile}'"
 }
 
+# Fish
+hook global WinSetOption filetype=fish %{
+    set-option global indentwidth 4
+    set window autowrap_column 80
+}
+
+hook global BufSetOption filetype=fish %{
+    set-option buffer formatcmd "fish_indent"
+}
+
 # HTML
 hook global WinSetOption filetype=html %{
     set window autowrap_column 68
