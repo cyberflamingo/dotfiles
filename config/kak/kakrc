@@ -251,6 +251,7 @@ hook global WinSetOption filetype=css %{
     set window autowrap_column 120
 
     set-option window lintcmd "npx stylelint --formatter unix --stdin-filename='%val{buffile}'"
+    lint
 }
 
 # Fish
@@ -271,7 +272,6 @@ hook global WinSetOption filetype=html %{
     lint
 
     set-option buffer formatcmd "run(){ tidy -q --tidy-mark no --indent auto --preserve-entities yes --join-classes yes --priority-attributes 'class id name data-* src for type href value title alt role aria-*' --sort-attributes alpha --alt-text 'FIXME' --indent-spaces %opt{tabstop}  2>/dev/null || true; } && run"
-
 }
 
 # JSON
@@ -279,6 +279,7 @@ hook global WinSetOption filetype=json %{
     set window autowrap_column 80
 
     set-option window lintcmd %{ run() { cat -- "$1" | jq 2>&1 | awk -v filename="$1" '/ at line [0-9]+, column [0-9]+$/ { line=$(NF - 2); column=$NF; sub(/ at line [0-9]+, column [0-9]+$/, ""); printf "%s:%d:%d: error: %s", filename, line, column, $0; }'; } && run }
+    lint
 }
 
 # Markdown
@@ -333,4 +334,5 @@ hook global WinSetOption filetype=yaml %{
     set window autowrap_column 80
 
     set-option window lintcmd "yamllint -f parsable"
+    lint
 }
