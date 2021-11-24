@@ -61,6 +61,10 @@ plug "occivink/kakoune-snippets" config %{
 }
 plug "andreyorst/kakoune-snippet-collection" noload
 
+plug "https://gitlab.com/FlyingWombat/case.kak" config %{
+    map global normal '`' ': enter-user-mode case<ret>'
+}
+
 # Use gnome-terminal
 hook global ModuleLoaded x11 %{
     set-option global termcmd "gnome-terminal -e"
