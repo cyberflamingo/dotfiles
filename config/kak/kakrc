@@ -149,7 +149,8 @@ map global normal / ':exec /<ret>(?i)'
 def find -params 1 -shell-script-candidates %{ find . -type f } %{ edit %arg{1} }
 
 # Highlight search results
-# add-highlighter global/search dynregex '%reg{/}' 0:search
+set-face global search +bi
+add-highlighter global/search dynregex '%reg{/}' 0:search
 
 # Show matching brackets when text indicator is over them
 add-highlighter global/ show-matching
@@ -220,6 +221,8 @@ hook global BufWritePre ^[^*]+$ -group editorconfig-hooks %{
 map global user -docstring 'Open in nvim' v ':terminal nvim "+%val{cursor_line}" "%val{buffile}"<ret>'
 map global user -docstring '(un)comment selected lines using line comments' c ':comment-line<ret>'
 map global user -docstring '(un)comment selections using block comments' C ':comment-block<ret>'
+map global user -docstring 'Sort selection' s '|sort<ret>'
+map global user -docstring 'Select non-ASCII characters from buffer' n '%s[^\x00-\x7F]<ret>'
 
 #########################################################################
 # Custom commands
