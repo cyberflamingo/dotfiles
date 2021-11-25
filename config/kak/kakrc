@@ -160,7 +160,7 @@ hook global WinCreate ^[^*]+$ %{ evaluate-commands %sh{
     is_git_tracked=$?
     if [ "${is_git_tracked}" -eq 0 ]; then
         # git diff status in gutter
-        printf 'git show-diff'
+        printf %s 'git show-diff'
     fi
 }}
 
@@ -169,7 +169,7 @@ hook global BufWritePost ^[^*]+$ %{ evaluate-commands %sh{
     is_git_tracked=$?
     if [ "${is_git_tracked}" -eq 0 ]; then
         # Update git diff in gutter
-        printf 'git update-diff'
+        printf %s 'git update-diff'
     fi
 }}
 
