@@ -251,7 +251,7 @@ hook global NormalIdle .* %{
 hook global WinCreate ^[^*]+$ %{editorconfig-load}
 
 # Multi-language formatter
-hook global BufSetOption filetype=(css|json|yaml) %{
+hook global BufSetOption filetype=(css|javascript|json|yaml) %{
     set-option buffer formatcmd "npx prettier --stdin-filepath=%val{buffile}"
 }
 
@@ -281,6 +281,11 @@ hook global WinSetOption filetype=html %{
     lint
 
     set-option buffer formatcmd "run(){ tidy -q --tidy-mark no --indent auto --preserve-entities yes --join-classes yes --priority-attributes 'class id name data-* src for type href value title alt role aria-*' --sort-attributes alpha --alt-text 'FIXME' --indent-spaces %opt{tabstop}  2>/dev/null || true; } && run"
+}
+
+# Javascript
+hook global WinSetOption filetype=javascript %{
+    set-option window lintcmd 'run() { cat "$1" | npx eslint -f unix --stdin --stdin-filename "$kak_buffile";} && run'
 }
 
 # JSON
