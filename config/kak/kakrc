@@ -9,11 +9,11 @@
 
 # Plugins
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
-plug "andreyorst/plug.kak" noload
+plug 'andreyorst/plug.kak' noload
 
-plug "dracula/kakoune" theme
+plug 'dracula/kakoune' theme
 
-plug "lenormf/kakoune-extra" noload %{
+plug 'lenormf/kakoune-extra' noload %{
     source "%val{config}/plugins/kakoune-extra/widgets/git-branch.kak"
     source "%val{config}/plugins/kakoune-extra/comnotes.kak"
 } config %{
@@ -28,19 +28,19 @@ plug "lenormf/kakoune-extra" noload %{
     }}
 }
 
-plug "kakoune-editor/kakoune-extra-filetypes" noload %{
+plug 'kakoune-editor/kakoune-extra-filetypes' noload %{
     source "%val{config}/plugins/kakoune-extra-filetypes/rc/conky.kak"
     source "%val{config}/plugins/kakoune-extra-filetypes/rc/git-commit-overflow.kak"
     source "%val{config}/plugins/kakoune-extra-filetypes/rc/mutt.kak"
 }
 
-plug "JJK96/kakoune-config" noload %{
+plug 'JJK96/kakoune-config' noload %{
     source "%val{config}/plugins/kakoune-config/autoload/html.kak"
     source "%val{config}/plugins/kakoune-config/autoload/css.kak"
     source "%val{config}/plugins/kakoune-config/autoload/wordcount.kak"
 }
 
-plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
+plug 'https://gitlab.com/Screwtapello/kakoune-state-save' config %{
     # WARNING: state-save-reg-load has security implications
     # hook global KakBegin .* %{
     #     state-save-reg-load colon
@@ -55,19 +55,19 @@ plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
     }
 }
 
-plug "occivink/kakoune-snippets" config %{
+plug 'occivink/kakoune-snippets' config %{
     set-option -add global snippets_directories "%opt{plug_install_dir}/kakoune-snippet-collection/snippets"
     set-option -add global snippets_directories "%val{config}/snippets"
 }
-plug "andreyorst/kakoune-snippet-collection" noload
+plug 'andreyorst/kakoune-snippet-collection' noload
 
-plug "https://gitlab.com/FlyingWombat/case.kak" config %{
+plug 'https://gitlab.com/FlyingWombat/case.kak' config %{
     map global normal '`' ': enter-user-mode case<ret>'
 }
 
 # Use gnome-terminal
 hook global ModuleLoaded x11 %{
-    set-option global termcmd "gnome-terminal -e"
+    set-option global termcmd 'gnome-terminal -e'
 }
 
 #########################################################################
@@ -106,8 +106,8 @@ hook global RegisterModified '"' %{ nop %sh{
 }}
 
 # Paste before/after
-map global user -docstring 'paste (before) from system clipboard' P '!$kak_opt_system_paste_cmd<ret>'
-map global user -docstring 'paste (after) from system clipboard' p '<a-!>$kak_opt_system_paste_cmd<ret>'
+map global user P '!$kak_opt_system_paste_cmd<ret>'     -docstring 'paste (before) from system clipboard'
+map global user p '<a-!>$kak_opt_system_paste_cmd<ret>' -docstring 'paste (after) from system clipboard'
 
 # <tab> for completion
 hook global InsertCompletionShow .* %{
@@ -218,11 +218,11 @@ hook global BufWritePre ^[^*]+$ -group editorconfig-hooks %{
 #########################################################################
 # Custom mapping
 #########################################################################
-map global user -docstring 'Open in nvim' v ':terminal nvim "+%val{cursor_line}" "%val{buffile}"<ret>'
-map global user -docstring '(un)comment selected lines using line comments' c ':comment-line<ret>'
-map global user -docstring '(un)comment selections using block comments' C ':comment-block<ret>'
-map global user -docstring 'Sort selection' s '|sort<ret>'
-map global user -docstring 'Select non-ASCII characters from buffer' n '%s[^\x00-\x7F]<ret>'
+map global user v ':terminal nvim "+%val{cursor_line}" "%val{buffile}"<ret>' -docstring 'Open in nvim'
+map global user c ':comment-line<ret>'                                       -docstring '(un)comment selected lines using line comments'
+map global user C ':comment-block<ret>'                                      -docstring '(un)comment selections using block comments'
+map global user s '|sort<ret>'                                               -docstring 'Sort selection'
+map global user n '%s[^\x00-\x7F]<ret>'                                      -docstring 'Select non-ASCII characters from buffer'
 
 #########################################################################
 # Custom commands
@@ -259,7 +259,7 @@ hook global BufSetOption filetype=(css|javascript|json|yaml) %{
 hook global WinSetOption filetype=css %{
     set window autowrap_column 120
 
-    set-option window lintcmd "npx stylelint --formatter unix --stdin-filename='%val{buffile}'"
+    set-option window lintcmd 'npx stylelint --formatter unix --stdin-filename="%val{buffile}"'
     lint
 }
 
@@ -270,14 +270,14 @@ hook global WinSetOption filetype=fish %{
 }
 
 hook global BufSetOption filetype=fish %{
-    set-option buffer formatcmd "fish_indent"
+    set-option buffer formatcmd 'fish_indent'
 }
 
 # HTML
 hook global WinSetOption filetype=html %{
     set window autowrap_column 68
 
-    set-option window lintcmd "tidy -e --gnu-emacs yes --quiet yes 2>&1"
+    set-option window lintcmd 'tidy -e --gnu-emacs yes --quiet yes 2>&1'
     lint
 
     set-option buffer formatcmd "run(){ tidy -q --tidy-mark no --indent auto --preserve-entities yes --join-classes yes --priority-attributes 'class id name data-* src for type href value title alt role aria-*' --sort-attributes alpha --alt-text 'FIXME' --indent-spaces %opt{tabstop}  2>/dev/null || true; } && run"
@@ -298,7 +298,7 @@ hook global WinSetOption filetype=json %{
 
 # Markdown
 hook global WinSetOption filetype=markdown %{
-    set-option window lintcmd "proselint"
+    set-option window lintcmd 'proselint'
     lint
 }
 
@@ -312,7 +312,7 @@ hook global WinSetOption filetype=python %{
     set window autowrap_column 79
 
     jedi-enable-autocomplete
-    set-option window lintcmd "mypy --show-column-numbers"
+    set-option window lintcmd 'mypy --show-column-numbers'
     lint
 }
 
@@ -340,13 +340,13 @@ hook global WinSetOption filetype=sh %{
     set-option window lintcmd 'shellcheck -fgcc -Cnever'
     lint
 
-    set-option buffer formatcmd "shfmt -p -i 4 -bn -ci"
+    set-option buffer formatcmd 'shfmt -p -i 4 -bn -ci'
 }
 
 # YAML
 hook global WinSetOption filetype=yaml %{
     set window autowrap_column 80
 
-    set-option window lintcmd "yamllint -f parsable"
+    set-option window lintcmd 'yamllint -f parsable'
     lint
 }
