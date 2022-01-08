@@ -153,10 +153,6 @@ user_pref("media.peerconnection.enabled", true);
 user_pref("media.peerconnection.ice.default_address_only", false);
 user_pref("media.peerconnection.ice.no_host", false); // [FF51+]
 user_pref("media.peerconnection.ice.proxy_only_if_behind_proxy", false); // [FF70+]
-/* 2003: disable screensharing ***/
-user_pref("media.getusermedia.screensharing.enabled", true);
-user_pref("media.getusermedia.browser.enabled", false);
-user_pref("media.getusermedia.audiocapture.enabled", false);
 /* 2022: disable all DRM content (EME: Encryption Media Extension)
  * [SETUP-WEB] e.g. Netflix, Amazon Prime, Hulu, HBO, Disney+, Showtime, Starz, DirectTV
  * [SETTING] General>DRM Content>Play DRM-controlled content
@@ -213,10 +209,6 @@ user_pref("dom.disable_beforeunload", false);
 user_pref("dom.disable_window_move_resize", false);
 /* 2404: limit events that can cause a popup [SETUP-WEB] ***/
 user_pref("dom.popup_allowed_events", "change click dblclick auxclick mousedown mouseup pointerdown pointerup notificationclick reset submit touchend contextmenu");
-/* 2406: disable clipboard commands (cut/copy) from "non-privileged" content [FF41+]
- * this disables document.execCommand("cut"/"copy") to protect your clipboard
- * [1] https://bugzilla.mozilla.org/1170911 ***/
-user_pref("dom.allow_cut_copy", true);
 
 /*** [SECTION 2500]: FINGERPRINTING ***/
 /* 2503: open links targeting new windows in a new tab instead
