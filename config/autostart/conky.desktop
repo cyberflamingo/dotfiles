@@ -2,6 +2,6 @@
 Type=Application
 Name=Conky
 Comment=Infotainment system monitor for the X Window System
-Exec=sh -c 'nm-online --quiet && sleep 5 && conky'
+Exec=sh -c 'nm-online --quiet && conky --daemonize --pause=5'
 Hidden=false
 Categories=Network;System;
