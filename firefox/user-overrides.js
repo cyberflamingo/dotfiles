@@ -75,13 +75,6 @@ user_pref("browser.cache.disk.enable", true);
 /* 1020: exclude "Undo Closed Tabs" in Session Restore ***/
 user_pref("browser.sessionstore.max_tabs_undo", 4);
 
-/* 1601: ALL: control when images/links send a referer
- * 0=never, 1=send only when links are clicked, 2=for links and images (default) ***/
-user_pref("network.http.sendRefererHeader", 1);
-/* 1602: ALL: control the amount of information to send
- * 0=send full URI (default), 1=scheme+host+port+path, 2=scheme+host+port ***/
-user_pref("network.http.referer.trimmingPolicy", 2);
-
 /* 1825: disable widevine CDM (Content Decryption Module)
  * [NOTE] This is covered by the EME master switch (1830) ***/
 user_pref("media.gmp-widevinecdm.enabled", true);
@@ -91,27 +84,6 @@ user_pref("media.gmp-widevinecdm.enabled", true);
  * [TEST] https://bitmovin.com/demos/drm
  * [1] https://www.eff.org/deeplinks/2017/10/drms-dead-canary-how-we-just-lost-web-what-we-learned-it-and-what-we-need-do-next ***/
 user_pref("media.eme.enabled", true);
-
-/* 2401: disable website control over browser right-click context menu
- * [NOTE] Shift-Right-Click will always bring up the browser right-click context menu ***/
-user_pref("dom.event.contextmenu.enabled", false);
-
-/* 2402: disable website access to clipboard events/content [SETUP-HARDEN]
- * [NOTE] This will break some sites' functionality e.g. Outlook, Twitter, Facebook, Wordpress
- * This applies to onCut/onCopy/onPaste events - i.e. it requires interaction with the website
- * [WARNING] In FF88 or lower, with clipboardevents enabled, if both 'middlemouse.paste' and
- * 'general.autoScroll' are true (at least one is default false) then the clipboard can leak [1]
- * [1] https://bugzilla.mozilla.org/1528289 ***/
-user_pref("dom.event.clipboardevents.enabled", false);
-
-/* 2421: disable Ion and baseline JIT to harden against JS exploits [SETUP-HARDEN]
- * [NOTE] In FF75+, when **both** Ion and JIT are disabled, **and** the new
- * hidden pref is enabled, then Ion can still be used by extensions (1599226)
- * [WARNING] Disabling Ion/JIT can cause some site issues and performance loss
- * [1] https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-0817 ***/
-user_pref("javascript.options.ion", false);
-user_pref("javascript.options.baselinejit", false);
-user_pref("javascript.options.jit_trustedprincipals", true); // [FF75+] [HIDDEN PREF]
 
 /** DOWNLOADS ***/
 /* 2651: enforce user interaction for security by always asking where to download
@@ -129,12 +101,6 @@ user_pref("browser.download.forbid_open_with", true);
 /* 2684: enforce a security delay on some confirmation dialogs such as install, open/save
  * [1] https://www.squarefree.com/2004/07/01/race-conditions-in-security-dialogs/ ***/
 user_pref("security.dialog_enable_delay", 3000);
-
-/* 2703: delete cookies and site data on close
- * 0=keep until they expire (default), 2=keep until you close Firefox
- * [NOTE] The setting below is disabled (but not changed) if you block all cookies (2701 = 2)
- * [SETTING] Privacy & Security>Cookies and Site Data>Delete cookies and site data when Firefox is closed ***/
-user_pref("network.cookie.lifetimePolicy", 2);
 
 /*** [SECTION 2800]: SHUTDOWN
      - Sanitizing on shutdown is all or nothing. It does not use Managed Exceptions under
@@ -154,7 +120,6 @@ user_pref("network.cookie.lifetimePolicy", 2);
  * However, this may not always be the case. The interface combines and syncs these
  * prefs when set from there, and the sanitize code may change at any time
  * [SETTING] Privacy & Security>History>Custom Settings>Clear history when Firefox closes>Settings ***/
-user_pref("privacy.clearOnShutdown.cookies", false);
 user_pref("privacy.clearOnShutdown.history", false); // Browsing & Download History
 user_pref("privacy.clearOnShutdown.sessions", false); // Active Logins
 
@@ -162,22 +127,9 @@ user_pref("privacy.clearOnShutdown.sessions", false); // Active Logins
      Non-project related but useful. If any of these interest you, add them to your overrides
      To save some overrides, we've made a few active as they seem to be universally used ***/
 
-// PREF: Delete Search and Form History
-// CIS Version 1.2.0 October 21st, 2011 2.5.6
-user_pref("browser.formfill.expire_days", 30);
-
 // PREF: Disable snippets/messages from Mozilla
 user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
 user_pref("browser.newtabpage.activity-stream.topSitesRows", 2);
-
-/* [TODO] Reduce TLS Sessions tracking
- * [WARNING] May probably alter your TLS fingerprint.
- * [1] https://www.tomshardware.com/news/browsers-permanent-tracking-tls-sessions,37959.html ***/
-   // user_pref("devtools.remote.tls-handshake-timeout", 60);
-   // user_pref("network.http.spdy.enforce-tls-profile", false);
-   // user_pref("network.proxy.proxy_over_tls, false");
-   // user_pref("security.webauth.u2f, false");
-   // user_pref("security.webauth.webauthn, false");
 
 /* APPEARANCE ***/
 // Smaller tab
@@ -188,11 +140,8 @@ user_pref("devtools.theme", "dark");
 // PREF: Disable Pocket API
 // https://support.mozilla.org/en-US/kb/save-web-pages-later-pocket-firefox
 // https://github.com/pyllyukko/user.js/issues/143
-user_pref("extensions.pocket.api", "");
 /* UX FEATURES: disable and hide the icons and menus ***/
 user_pref("extensions.pocket.enabled", false); // Pocket Account [FF46+]
-user_pref("extensions.pocket.oAuthConsumerKey", "");
-user_pref("extensions.pocket.site", "");
 // Highlight All find results
 user_pref("findbar.highlightAll", true);
 
@@ -201,16 +150,6 @@ user_pref("gecko.handlerService.schemes.mailto.0.name", "");
 user_pref("gecko.handlerService.schemes.mailto.0.uriTemplate", "");
 user_pref("gecko.handlerService.schemes.mailto.1.name", "");
 user_pref("gecko.handlerService.schemes.mailto.1.uriTemplate", "");
-
-// PREF: Don't use OS values to determine locale, force using Firefox locale setting
-// http://kb.mozillazine.org/Intl.locale.matchOS
-user_pref("intl.locale.matchOS", false);
-
-// PREF: Disable WebRTC getUserMedia, screen sharing, audio capture, video capture
-// https://wiki.mozilla.org/Media/getUserMedia
-// https://blog.mozilla.org/futurereleases/2013/01/12/capture-local-camera-and-microphone-streams-with-getusermedia-now-enabled-in-firefox/
-// https://developer.mozilla.org/en-US/docs/Web/API/Navigator
-user_pref("media.navigator.video.enabled", false);
 
 /* [TODO] Enable only whitelisted URL protocol handlers
  * NOTICE: Disabling nonessential protocols breaks all interaction wit
