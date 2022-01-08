@@ -218,11 +218,11 @@ hook global BufWritePre ^[^*]+$ -group editorconfig-hooks %{
 #########################################################################
 # Custom mapping
 #########################################################################
-map global user v ':terminal nvim "+%val{cursor_line}" "%val{buffile}"<ret>' -docstring 'Open in nvim'
-map global user c ':comment-line<ret>'                                       -docstring '(un)comment selected lines using line comments'
-map global user C ':comment-block<ret>'                                      -docstring '(un)comment selections using block comments'
-map global user s '|sort<ret>'                                               -docstring 'Sort selection'
-map global user n '%s[^\x00-\x7F]<ret>'                                      -docstring 'Select non-ASCII characters from buffer'
+map global user v ':terminal vi "+%val{cursor_line}" "%val{buffile}"<ret>' -docstring 'Open in (n)vi(m)'
+map global user c ':comment-line<ret>'                                     -docstring '(un)comment selected lines using line comments'
+map global user C ':comment-block<ret>'                                    -docstring '(un)comment selections using block comments'
+map global user s '|sort<ret>'                                             -docstring 'Sort selection'
+map global user n '%s[^\x00-\x7F]<ret>'                                    -docstring 'Select non-ASCII characters from buffer'
 
 #########################################################################
 # Custom commands
