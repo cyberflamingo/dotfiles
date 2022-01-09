@@ -1,5 +1,6 @@
 - cargo:
     - cargo-update
+    - delta
     - doh-proxy
     - du-dust
     - exa
