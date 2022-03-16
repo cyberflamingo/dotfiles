@@ -204,7 +204,7 @@ hook global WinSetOption filetype=.* %{
 }
 
 # Wrap lines
-add-highlighter global/ wrap -indent -marker '→'
+add-highlighter global/ wrap -word -indent -marker '→'
 
 # Trim trailing whitespace and EOF newlines
 hook global BufWritePre ^[^*]+$ -group editorconfig-hooks %{
