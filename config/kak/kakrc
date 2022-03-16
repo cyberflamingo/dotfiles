@@ -148,6 +148,9 @@ map global normal / ':exec /<ret>(?i)'
 # Define simple fuzzy file picker
 def find -params 1 -shell-script-candidates %{ find . -type f } %{ edit %arg{1} }
 
+# Highlight trailing whitespace
+add-highlighter global/ regex \h+$ 0:Error
+
 # Highlight search results
 set-face global search +bi
 add-highlighter global/search dynregex '%reg{/}' 0:search
