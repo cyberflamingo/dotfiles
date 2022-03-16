@@ -3,4 +3,5 @@
     - com.synology.SynologyDrive
     - com.vscodium.codium
     - org.keepassxc.KeePassXC
+    - org.signal.Signal
     - us.zoom.Zoom

@@ -19,3 +19,4 @@ config/zsh/.zcompdump
 config/kak/plugins
 config/kak/colors
 config/kak/autoload/standard-library
+config/newsboat/urls
