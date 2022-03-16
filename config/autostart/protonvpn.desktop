@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=ProtonVPN
-Exec=/usr/bin/protonvpn
+Name=ProtonVPN CLI
+Exec=/usr/bin/protonvpn-cli connect --fastest
 Hidden=false
 Terminal=false
 Type=Application
 Icon=protonvpn-logo
 StartupWMClass=Protonvpn
-Comment=ProtonVPN GUI client
+Comment=ProtonVPN CLI client
 Categories=Network;
 Keywords=vpn;
