@@ -394,6 +394,11 @@ hook global WinSetOption filetype=sh %{
     set-option buffer formatcmd 'shfmt -p -i 4 -bn -ci'
 }
 
+# SQL
+hook global BufSetOption filetype=sql %{
+    set-option buffer formatcmd 'npx sql-formatter --output "${kak_buffile}"'
+}
+
 # YAML
 hook global WinSetOption filetype=yaml %{
     set window autowrap_column 80
