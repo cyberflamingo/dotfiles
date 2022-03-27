@@ -70,6 +70,25 @@ hook global ModuleLoaded x11 %{
     set-option global termcmd 'gnome-terminal -e'
 }
 
+
+#########################################################################
+# Ctags
+#########################################################################
+hook global KakBegin .* %{
+    evaluate-commands %sh{
+        path="$PWD"
+        while [ "$path" != "$HOME" ] && [ "$path" != "/" ]; do
+            if [ -e "./tags" ]; then
+                printf "%s\n" "set-option -add current ctagsfiles %{$path/tags}"
+                break
+            else
+                cd ..
+                path="$PWD"
+            fi
+        done
+    }
+}
+
 #########################################################################
 # Clipboard
 #########################################################################
@@ -227,12 +246,20 @@ map global user C ':comment-block<ret>'                                    -docs
 map global user s '|sort<ret>'                                             -docstring 'Sort selection'
 map global user n '%s[^\x00-\x7F]<ret>'                                    -docstring 'Select non-ASCII characters from buffer'
 map global user w ': add-highlighter buffer/ show-whitespaces<ret>'         -docstring 'Show whitespaces in buffer'
+map global user / ': ctags-search-word<ret>'                                -docstring 'Show whitespaces in buffer'
 
 #########################################################################
 # Custom commands
 #########################################################################
 define-command now %{
     execute-keys '| date --iso-8601=seconds<ret>'
+}
+
+define-command ctags-search-word -hidden %{
+    try %{
+        execute-keys <a-i>w
+    }
+    execute-keys ": ctags-search "
 }
 
 # Highlight the word under the cursor
