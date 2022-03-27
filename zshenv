@@ -74,6 +74,7 @@ export PATH="$PATH:$GEM_HOME/bin"
 export GEM_SPEC_CACHE=$XDG_CACHE_HOME/gem
 # rbenv
 export RBENV_ROOT=$XDG_DATA_HOME/rbenv
+export PATH="$PATH:$RBENV_ROOT/bin"
 # Bundler
 export BUNDLE_USER_CONFIG=$XDG_CONFIG_HOME/bundle
 export BUNDLE_USER_CACHE=$XDG_CACHE_HOME/bundle
