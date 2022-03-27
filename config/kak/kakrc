@@ -331,6 +331,12 @@ hook global WinSetOption filetype=json %{
 hook global WinSetOption filetype=markdown %{
     set-option window lintcmd 'proselint'
     lint
+
+    # Add dictionary words to the set of available completions
+    evaluate-commands set-option window static_words %sh{
+        sed -e "s/'/''/; s/.*/'&'/" /usr/share/dict/words |
+        tr '\n' ' '
+    }
 }
 
 hook global BufSetOption filetype=markdown %{
