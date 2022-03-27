@@ -226,6 +226,7 @@ map global user c ':comment-line<ret>'                                     -docs
 map global user C ':comment-block<ret>'                                    -docstring '(un)comment selections using block comments'
 map global user s '|sort<ret>'                                             -docstring 'Sort selection'
 map global user n '%s[^\x00-\x7F]<ret>'                                    -docstring 'Select non-ASCII characters from buffer'
+map global user w ': add-highlighter buffer/ show-whitespaces<ret>'         -docstring 'Show whitespaces in buffer'
 
 #########################################################################
 # Custom commands
