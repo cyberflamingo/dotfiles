@@ -79,6 +79,12 @@ export LESSHISTFILE=-
 # npm
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 
+# PostgreSQL
+export PSQLRC=$XDG_CONFIG_HOME/pg/psqlrc
+export PSQL_HISTORY=$XDG_STATE_HOME/psql_history
+export PGPASSFILE=$XDG_CONFIG_HOME/pg/pgpass
+export PGSERVICEFILE=$XDG_CONFIG_HOME/pg/pg_service.conf
+
 # Ruby
 export GEM_HOME=$XDG_DATA_HOME/gem
 export PATH="$PATH:$GEM_HOME/bin"
