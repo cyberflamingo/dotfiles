@@ -174,10 +174,10 @@ define-command iminactive %{
 add-highlighter global/ number-lines -hlcursor
 
 # Set 7 lines to the cursor - when moving vertivally using j/k
-set global scrolloff 7,0
+set-option global scrolloff 7,0
 
 # Ignore case where searching
-map global normal / ':exec /<ret>(?i)'
+map global normal / ':execute-keys /<ret>(?i)'
 # Define simple fuzzy file picker
 def find -params 1 -shell-script-candidates %{ find . -type f } %{ edit %arg{1} }
 
@@ -232,7 +232,7 @@ set-option global indentwidth 2
 
 # Linebreak on 72 characters
 hook global WinSetOption filetype=.* %{
-    set window autowrap_column 72
+    set-option window autowrap_column 72
     autowrap-enable
 }
 
@@ -281,8 +281,8 @@ define-command ctags-search-word -hidden %{
 set-face global CurWord default,rgba:3a3d4140
 
 hook global NormalIdle .* %{
-    eval -draft %{ try %{
-        exec <space><a-i>w <a-k>\A\w+\z<ret>
+    evaluate-commands -draft %{ try %{
+        execute-keys <space><a-i>w <a-k>\A\w+\z<ret>
         add-highlighter -override global/curword regex "\b\Q%val{selection}\E\b" 0:CurWord
     } catch %{
         add-highlighter -override global/curword group
@@ -302,7 +302,7 @@ hook global BufSetOption filetype=(css|javascript|json|yaml) %{
 
 # CSS
 hook global WinSetOption filetype=css %{
-    set window autowrap_column 120
+    set-option window autowrap_column 120
 
     set-option window lintcmd 'npx stylelint --formatter unix --stdin-filename="%val{buffile}"'
     lint
@@ -310,8 +310,8 @@ hook global WinSetOption filetype=css %{
 
 # Fish
 hook global WinSetOption filetype=fish %{
-    set-option global indentwidth 4
-    set window autowrap_column 80
+    set-option window indentwidth 4
+    set-option window autowrap_column 80
 }
 
 hook global BufSetOption filetype=fish %{
@@ -320,11 +320,13 @@ hook global BufSetOption filetype=fish %{
 
 # HTML
 hook global WinSetOption filetype=html %{
-    set window autowrap_column 68
+    set-option window autowrap_column 68
 
     set-option window lintcmd 'tidy -e --gnu-emacs yes --quiet yes 2>&1'
     lint
+}
 
+hook global BufSetOption filetype=html %{
     set-option buffer formatcmd "run(){ tidy -q --tidy-mark no --indent auto --preserve-entities yes --join-classes yes --priority-attributes 'class id name data-* src for type href value title alt role aria-*' --sort-attributes alpha --alt-text 'FIXME' --indent-spaces %opt{tabstop}  2>/dev/null || true; } && run"
 }
 
@@ -335,7 +337,7 @@ hook global WinSetOption filetype=javascript %{
 
 # JSON
 hook global WinSetOption filetype=json %{
-    set window autowrap_column 80
+    set-option window autowrap_column 80
 
     set-option window lintcmd %{ run() { cat -- "$1" | jq 2>&1 | awk -v filename="$1" '/ at line [0-9]+, column [0-9]+$/ { line=$(NF - 2); column=$NF; sub(/ at line [0-9]+, column [0-9]+$/, ""); printf "%s:%d:%d: error: %s", filename, line, column, $0; }'; } && run }
     lint
@@ -359,8 +361,8 @@ hook global BufSetOption filetype=markdown %{
 
 # Python
 hook global WinSetOption filetype=python %{
-    set-option global indentwidth 4
-    set window autowrap_column 79
+    set-option window indentwidth 4
+    set-option window autowrap_column 79
 
     jedi-enable-autocomplete
     set-option window lintcmd 'mypy --show-column-numbers'
@@ -373,7 +375,7 @@ hook global BufSetOption filetype=python %{
 
 # Ruby
 hook global WinSetOption filetype=ruby %{
-    set window autowrap_column 80
+    set-option window autowrap_column 80
 
     set-option window lintcmd 'rubocop -l --format emacs'
     lint
@@ -385,12 +387,14 @@ hook global BufSetOption filetype=ruby %{
 
 # Shell
 hook global WinSetOption filetype=sh %{
-    set-option global indentwidth 4
-    set window autowrap_column 80
+    set-option window indentwidth 4
+    set-option window autowrap_column 80
 
     set-option window lintcmd 'shellcheck -fgcc -Cnever'
     lint
+}
 
+hook global BufSetOption filetype=sh %{
     set-option buffer formatcmd 'shfmt -p -i 4 -bn -ci'
 }
 
@@ -401,7 +405,7 @@ hook global BufSetOption filetype=sql %{
 
 # YAML
 hook global WinSetOption filetype=yaml %{
-    set window autowrap_column 80
+    set-option window autowrap_column 80
 
     set-option window lintcmd 'yamllint -f parsable'
     lint
