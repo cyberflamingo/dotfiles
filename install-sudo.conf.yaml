@@ -55,6 +55,7 @@
     - dnscrypt-proxy
     - privoxy
     # Programming
+    - alacritty
     - cargo
     - git
     - git-cola
