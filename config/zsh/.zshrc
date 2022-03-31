@@ -170,6 +170,9 @@ source "$ZDOTDIR"/powerlevel10k/powerlevel10k.zsh-theme
 # shellcheck source=/dev/null
 [[ ! -f "$ZDOTDIR"/p10k.zsh ]] || source "$ZDOTDIR"/p10k.zsh
 
+# Alacritty
+fpath+=${ZDOTDIR:-~}/.zsh_functions
+
 # Nix
 # shellcheck source=/dev/null
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

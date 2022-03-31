@@ -136,6 +136,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 ## Custom configuration
 
+# Alacritty
+source ~/.bash_completion/alacritty
+
 # Nix
 # shellcheck source=/dev/null
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
