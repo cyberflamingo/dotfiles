@@ -188,3 +188,9 @@ if command -v pipx 1>/dev/null 2>&1; then
     bashcompinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
     eval "$(register-python-argcomplete pipx)"
 fi
+
+# load .zshrc.grml
+[[ -r ${ZDOTDIR:-${HOME}}/.zshrc.grml ]] && source ${ZDOTDIR:-${HOME}}/.zshrc.grml
+
+# load .zshrc.local (grml user file)
+zrclocal
