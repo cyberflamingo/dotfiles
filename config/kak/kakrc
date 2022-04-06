@@ -261,6 +261,7 @@ map global user s '|sort<ret>'                                             -docs
 map global user n '%s[^\x00-\x7F]<ret>'                                    -docstring 'Select non-ASCII characters from buffer'
 map global user w ': add-highlighter buffer/ show-whitespaces<ret>'         -docstring 'Show whitespaces in buffer'
 map global user / ': ctags-search-word<ret>'                                -docstring 'Show whitespaces in buffer'
+map global user f ': set-option buffer filetype '                          -docstring 'Set buffer filetype to...'
 
 #########################################################################
 # Custom commands
