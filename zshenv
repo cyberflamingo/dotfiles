@@ -22,6 +22,11 @@ export XDG_STATE_HOME=$HOME/.local/state
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 
+# Tmux
+if [ -n "${TMUX+1}" ]; then
+    TERM=tmux
+fi
+
 # Editor
 if command -v kak 1>/dev/null 2>&1; then
     KAK="$(which kak)"
