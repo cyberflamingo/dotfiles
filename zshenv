@@ -1,4 +1,8 @@
-umask 022
+if ((EUID == 0)); then
+    umask 002
+else
+    umask 022
+fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
