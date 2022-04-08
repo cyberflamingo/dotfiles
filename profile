@@ -6,7 +6,11 @@
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
-umask 022
+if [[ $EUID -eq 0 ]]; then
+    umask 002
+else
+    umask 022
+fi
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
