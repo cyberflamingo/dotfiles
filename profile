@@ -39,11 +39,6 @@ export XDG_STATE_HOME=$HOME/.local/state
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 
-# Tmux
-if [ -z ${TMUX+x} ]; then
-    TERM=tmux
-fi
-
 # Editor
 if command -v kak 1>/dev/null 2>&1; then
     KAK="$(which kak)"
@@ -54,9 +49,6 @@ else
     export VISUAL=$VI
     export EDITOR=$VI
 fi
-
-# Bash
-export HISTFILE=$XDG_STATE_HOME/bash/history
 
 # Aspell
 export ASPELL_CONF="per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; \
