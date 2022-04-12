@@ -4,6 +4,22 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# Grml-Zsh aliases
+alias ...='cd ../../'
+
+# general
+#a2# Execute \kbd{du -sch}
+alias da='du -sch'
+
+# listing stuff
+#a2# Execute \kbd{ls -lSrah}
+alias dir="command ls -lSrah"
+
+# some useful aliases
+#a2# Remove current empty directory. Execute \kbd{cd ..; rmdir \$OLDCWD}
+alias rmcdir='cd ..; rmdir $OLDPWD || cd $OLDPWD'
+
+# Other
 # Use `-m` instead of `pip` for more consistency
 alias pip='python3 -m pip'
 
