@@ -19,8 +19,6 @@ A lot.
 
 ### Software configs to add
 
-* [tmux](https://leanpub.com/the-tao-of-tmux/read)
-* Alacritty
 * cmus
 * fzf
 
