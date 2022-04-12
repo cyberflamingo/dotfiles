@@ -5,6 +5,32 @@
 # License:       This file is licensed under the GPL v2.
 ################################################################################
 
+function grml-zsh-fg () {
+  if (( ${#jobstates} )); then
+    zle .push-input
+    [[ -o hist_ignore_space ]] && BUFFER=' ' || BUFFER=''
+    BUFFER="${BUFFER}fg"
+    zle .accept-line
+  else
+    zle -M 'No background jobs. Doing nothing.'
+  fi
+}
+zle -N grml-zsh-fg
+
+### jump behind the first word on the cmdline.
+### useful to add options.
+function jump_after_first_word () {
+    local words
+    words=(${(z)BUFFER})
+
+    if (( ${#words} <= 1 )) ; then
+        CURSOR=${#BUFFER}
+    else
+        CURSOR=${#${words[1]}}
+    fi
+}
+zle -N jump_after_first_word
+
 # useful functions
 
 #f5# Backup \kbd{file_or_folder {\rm to} file_or_folder\_timestamp}
