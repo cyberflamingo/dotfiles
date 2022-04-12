@@ -89,6 +89,11 @@ z4h bindkey z4h-cd-forward Alt+Right  # cd into the next directory
 z4h bindkey z4h-cd-up      Alt+Up     # cd into the parent directory
 z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 
+#k# jump to after first word (for adding options)
+z4h bindkey jump_after_first_word Ctrl+F
+#k# A smart shortcut for \kbd{fg<enter>}
+z4h bindkey grml-zsh-fg           Ctrl+Z
+
 # Autoload functions.
 autoload -Uz zmv
 
@@ -112,6 +117,13 @@ z4h source "$ZDOTDIR"/.aliases.grml # Grml-Zsh aliases
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
+
+setopt append_history    # append history list to the history file (default)
+setopt longlistjobs      # display PID when suspending processes as well
+setopt completeinword    # not just at the end
+setopt pushd_ignore_dups # don't push the same dir twice
+setopt noglobdots        # * shouldn't match dotfiles. ever.
+setopt noshwordsplit     # use zsh style word splitting
 
 # Prompt (p10k)
 # Make transient prompt work consistently when closing an SSH connection

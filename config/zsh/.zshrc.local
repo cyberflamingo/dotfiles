@@ -1,10 +1,6 @@
 # Set up the prompt
 
-# autoload -Uz promptinit
-# promptinit
-# prompt adam1
-
-setopt histignorealldups sharehistory
+setopt histignorealldups
 
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
@@ -115,7 +111,6 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 setopt notify          # report the status of background jobs immediately
 setopt numericglobsort # sort filenames numerically when it makes sense
-setopt promptsubst     # enable command substitution in prompt
 
 # Other keybindings
 bindkey "^[[1;5C" vi-forward-word
@@ -126,10 +121,7 @@ bindkey "^[[1;3D" backward-word
 bindkey ' ' magic-space # do history expansion on space
 
 # History configurations
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_ignore_dups       # ignore duplicated commands history list
 setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_verify            # show command with history expansion to user before running it
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
