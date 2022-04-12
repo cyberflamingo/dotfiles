@@ -25,7 +25,12 @@ zstyle ':z4h:' term-shell-integration 'yes'
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 
 # Recursively traverse directories when TAB-completing files.
-zstyle ':z4h:fzf-complete' recurse-dirs 'no'
+zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
+
+# Improve ssh completions
+zstyle ':completion:*:ssh:argument-1:'       tag-order  hosts users
+zstyle ':completion:*:scp:argument-rest:'    tag-order  hosts files users
+zstyle ':completion:*:(ssh|scp|rdp):*:hosts' hosts
 
 # Enable direnv to automatically source .envrc files.
 zstyle ':z4h:direnv'         enable 'no'
@@ -49,6 +54,7 @@ zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
 # up-to-date. Cloned files can be used after `z4h init`. This is just an
 # example. If you don't plan to use Oh My Zsh, delete this line.
 z4h install ohmyzsh/ohmyzsh || return
+z4h install skywind3000/z.lua || return
 
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
 # initialize Zsh. After this point console I/O is unavailable until Zsh
@@ -72,6 +78,7 @@ z4h source "$ZDOTDIR"/.zshrc.local
 # z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
 z4h source ohmyzsh/ohmyzsh/lib/clipboard.zsh
 z4h source ohmyzsh/ohmyzsh/lib/functions.zsh
+z4h source skywind3000/z.lua/z.lua.plugin.zsh
 
 z4h load   ohmyzsh/ohmyzsh/plugins/copypath
 z4h load   ohmyzsh/ohmyzsh/plugins/sudo
