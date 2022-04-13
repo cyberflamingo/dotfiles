@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euf -o pipefail
+
+if command protonvpn-cli status \
+    | grep 'No active ProtonVPN connection' 1>/dev/null 2>&1; then
+    protonvpn-cli connect --fastest
+else
+    protonvpn-cli disconnect
+    protonvpn-cli connect --fastest
+fi
