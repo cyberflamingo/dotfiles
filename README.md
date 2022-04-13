@@ -19,7 +19,6 @@ A lot.
 
 ### Software configs to add
 
-* cmus
 * fzf
 
 ### Script to... script
