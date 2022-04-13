@@ -35,7 +35,7 @@ Host *
     BatchMode no
     CheckHostIP yes
     AddressFamily any
-#   ConnectTimeout 0
+    ConnectTimeout 10
     StrictHostKeyChecking ask
     IdentitiesOnly yes
     IdentityFile ~/.ssh/id_ed25519
@@ -47,7 +47,7 @@ Host *
     MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com
     HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-ed25519
     PubkeyAuthentication yes
-#   EscapeChar ~
+    EscapeChar `
     Tunnel no
 #   TunnelDevice any:any
     PermitLocalCommand no
@@ -59,3 +59,5 @@ Host *
     ControlMaster auto
     ControlPath ~/.ssh/master-%r@%h:%p
     ControlPersist 10
+    ServerAliveInterval 60
+    AddKeysToAgent yes
