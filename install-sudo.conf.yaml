@@ -36,12 +36,14 @@
     # Tooling, Settings
     - conky-all
     - curl
+    - fish
     - fonts-ibm-plex
     - fonts-noto-cjk
     - fonts-noto-cjk-extra
     - fonts-noto-color-emoji
     - ibus-mozc
     - jq
+    - mpv
     - snapd
     - unattended-upgrades
     - webext-ublock-origin-firefox
@@ -53,14 +55,17 @@
     - clamav-daemon
     - debsums
     - dnscrypt-proxy
+    - nmap
     - privoxy
     # Programming
     - alacritty
     - cargo
     - git
     - git-cola
+    - github-desktop
     - golang-go
     - kakoune
+    - lua5.3
     - mozc-utils-gui
     - neovim
     - pandoc
@@ -71,19 +76,19 @@
     - virt-manager # Install first
     - qemu-kvm
     - spice-vdagent
+    - tmux
     - yamllint
     # Other
     - cmus
     - digikam
     - gimp
-    - gnome-shell-pomodoro
+    # - gnome-shell-pomodoro
     - hugo
     - newsboat
-    - picard
-    # Needs to add Signal repository first
-    # - signal-desktop
     - slack-desktop
     - steam
   - snap:
     - brave
+    - discord
+    - node
     - standard-notes

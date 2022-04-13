@@ -3,5 +3,6 @@
     - com.synology.SynologyDrive
     - com.vscodium.codium
     - org.keepassxc.KeePassXC
+    - org.musicbrainz.Picard
     - org.signal.Signal
     - us.zoom.Zoom
