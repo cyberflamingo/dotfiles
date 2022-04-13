@@ -24,7 +24,7 @@
         path: config/*
     ~/.local/bin/:
         glob: true
-        path: bin/*
+        path: local/bin/*
     # OpenWrt
     /etc/config/nut_monitor:
         if: '[ `uname -n` = turrismox ]'
