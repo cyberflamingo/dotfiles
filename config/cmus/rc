@@ -1,0 +1,39 @@
+# Settings
+
+set auto_expand_albums_follow=true
+
+#set output_plugin=pulse
+
+set format_current=
+set altformat_current=
+
+set format_playlist=  %-18a %-18l  %t%=  %04y
+set format_playlist_va= %-18a %-18l  %t%=  %04y
+
+set format_trackwin=  ● %t%=  %d
+set format_trackwin_va=  ● %t%=  %d
+set altformat_trackwin= %f%= %d
+
+set format_trackwin_album= %l %= %04y
+
+set format_treewin=  ∟ %l
+set format_treewin_artist=%a
+
+set format_statusline= %{status} %t%= %{?show_current_bitrate & bitrate>=0? — %{bitrate} kbps } %{?bpm>0?(%{bpm} BPM) } %1{continue}%1{shuffle}%1{repeat}%1{follow} %1{?repeat_current?repeat current?%{?play_library?%{playlist_mode}}} | %{?show_playback_position?%{position} %{?duration?/ %{duration} }?%{?duration?%{duration} }}
+
+set format_title=%a - %l - %t (%y) - cmus
+set altformat_title=%f
+
+set show_hidden=false
+
+#set lib_sort=artist album discnumber tracknumber title filename
+set lib_sort=albumartist date album discnumber tracknumber title filename play_count
+
+set play_sorted=false
+set repeat=false
+set follow=false
+
+
+# Colorsheme
+
+colorscheme the_future2
