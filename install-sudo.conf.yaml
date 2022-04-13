@@ -2,36 +2,36 @@
   - link:
       # /etc/caddy/Caddyfile:
       #     # if: # is a server
-      #     path: Caddyfile
+      #     path: etc/caddy/Caddyfile
       # Does not work with a symlink. Needs to be copied
       # /etc/dnscrypt-proxy/blocklists.txt:
-      #     path: dnscrypt-proxy/blocklists.txt
+      #     path: etc/dnscrypt-proxy/blocklists.txt
       # /etc/dnscrypt-proxy/dnscrypt-proxy.toml:
-      #     path: dnscrypt-proxy/dnscrypt-proxy.toml
+      #     path: etc/dnscrypt-proxy/dnscrypt-proxy.toml
       /etc/privoxy/default.action:
-          path: privoxy/default.action
+          path: etc/privoxy/default.action
       /etc/privoxy/config:
-          path: privoxy/config
+          path: etc/privoxy/config
       /etc/privoxy/user.action:
-          path: privoxy/user.action
+          path: etc/privoxy/user.action
       /etc/ssh/ssh_config:
-          path: ssh/ssh_config
+          path: etc/ssh/ssh_config
       /etc/ssh/sshd_config:
           # if: # is a server
-          path: ssh/sshd_config
+          path: etc/ssh/sshd_config
       # macOS
       /usr/local/etc/dnscrypt-proxy.toml:
           if: '[ `uname` = Darwin ]'
-          path: dnscrypt-proxy/dnscrypt-proxy.toml.macos
+          path: etc/dnscrypt-proxy/dnscrypt-proxy.toml.macos
       /usr/local/etc/privoxy/config:
           if: '[ `uname` = Darwin ]'
-          path: privoxy/config.macos
+          path: etc/privoxy/config.macos
       /usr/local/etc/privoxy/user.action:
           if: '[ `uname` = Darwin ]'
-          path: privoxy/user.action.macos
+          path: etc/privoxy/user.action.macos
       /usr/local/etc/dnsmasq.conf:
           if: '[ `uname` = Darwin ]'
-          path: dnsmasq/dnsmasq.conf.macos
+          path: etc/dnsmasq/dnsmasq.conf.macos
   - apt:
     # Tooling, Settings
     - conky-all
