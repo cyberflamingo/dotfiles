@@ -81,7 +81,10 @@ z4h source ohmyzsh/ohmyzsh/lib/functions.zsh
 z4h source skywind3000/z.lua/z.lua.plugin.zsh
 
 z4h load   ohmyzsh/ohmyzsh/plugins/copypath
+z4h load   ohmyzsh/ohmyzsh/plugins/npm
+z4h load   ohmyzsh/ohmyzsh/plugins/pip
 z4h load   ohmyzsh/ohmyzsh/plugins/sudo
+z4h load   ohmyzsh/ohmyzsh/plugins/systemadmin
 z4h load   ohmyzsh/ohmyzsh/plugins/web-search
 
 # Define key bindings.
