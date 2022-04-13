@@ -1,7 +1,7 @@
 - go:
-  - github.com/miguelmota/cointop
+  - github.com/jacobbednarz/go-csp-collector
   - github.com/karan/fleets
-  - github.com/shurcooL/markdownfmt
-  - github.com/schachmat/wego
+  - github.com/miguelmota/cointop
   - github.com/Narasimha1997/fake-sms
+  - github.com/schachmat/wego
   - mvdan.cc/sh/v3/cmd/shfmt@latest
