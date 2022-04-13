@@ -28,12 +28,12 @@
     # OpenWrt
     /etc/config/nut_monitor:
         if: '[ `uname -n` = turrismox ]'
-        path: nut_monitor.openwrt
+        path: etc/config/nut_monitor.openwrt
     # Windows (Git Bash)
     /c/ProgramData/bin/:
         if: '[ `uname -o` = Msys ]'
         glob: true
-        path: Windows/bin/*
+        path: C/ProgramData/bin/*
 
 - create:
     - ~/Development
