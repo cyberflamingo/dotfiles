@@ -24,3 +24,11 @@ config/newsboat/urls
 
 # tmux
 config/tmux/plugins
+
+# cmus folders
+config/cmus/autosave
+config/cmus/cache
+config/cmus/command-history
+config/cmus/lib.pl
+config/cmus/playlists/
+config/cmus/search-history
