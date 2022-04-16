@@ -15,6 +15,7 @@ Thumbs.db
 # Because $ZDOTDIR seems to be taking precedence over `compinit -d`
 config/zsh/.zcompdump
 config/zsh/.p10k*.zsh.zwc
+config/zsh/.zsh_history
 
 # Kakoune folders
 config/kak/plugins
