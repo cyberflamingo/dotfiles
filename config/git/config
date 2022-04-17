@@ -60,3 +60,5 @@
 	navigate = true
 	line-numbers = true
 	side-by-side = true
+[alias]
+	resotre = restore
