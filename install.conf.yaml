@@ -44,3 +44,4 @@
 - shell:
   - [git submodule sync --recursive, Syncing submodules]
   - [git submodule update --init --recursive, Installing submodules]
+  - [git submodule update --remote --merge, Updating submodules]
