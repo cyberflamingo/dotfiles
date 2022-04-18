@@ -1,37 +1,37 @@
 [submodule "dotbot"]
-	path = dotbot
+	path = bootstrap/dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-apt"]
-	path = dotbot-plugins/dotbot-apt
+	path = bootstrap/dotbot-plugins/dotbot-apt
 	url = https://github.com/bryant1410/dotbot-apt
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-golang"]
-	path = dotbot-plugins/dotbot-golang
+	path = bootstrap/dotbot-plugins/dotbot-golang
 	url = https://github.com/delicb/dotbot-golang
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-pip"]
-	path = dotbot-plugins/dotbot-pip
+	path = bootstrap/dotbot-plugins/dotbot-pip
 	url = https://github.com/sobolevn/dotbot-pip.git
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-rust"]
-	path = dotbot-plugins/dotbot-rust
+	path = bootstrap/dotbot-plugins/dotbot-rust
 	url = https://github.com/alexcormier/dotbot-rust
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-sudo"]
-	path = dotbot-plugins/dotbot-sudo
+	path = bootstrap/dotbot-plugins/dotbot-sudo
 	url = https://github.com/DrDynamic/dotbot-sudo.git
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-git"]
-	path = dotbot-plugins/dotbot-git
+	path = bootstrap/dotbot-plugins/dotbot-git
 	url = https://github.com/DrDynamic/dotbot-git.git
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-flatpak"]
-	path = dotbot-plugins/dotbot-flatpak
+	path = bootstrap/dotbot-plugins/dotbot-flatpak
 	url = https://github.com/DrDynamic/dotbot-flatpak.git
 	ignore = dirty
 [submodule "dotbot-plugins/dotbot-snap"]
-	path = dotbot-plugins/dotbot-snap
+	path = bootstrap/dotbot-plugins/dotbot-snap
 	url = https://github.com/DrDynamic/dotbot-snap.git
 	ignore = dirty
 [submodule "config/kak/plugins/plug.kak"]
