@@ -64,7 +64,6 @@
     - git-cola
     - github-desktop
     - golang-go
-    - kakoune
     - lua5.3
     - mozc-utils-gui
     - neovim
