@@ -1,7 +1,0 @@
-- go:
-  - github.com/jacobbednarz/go-csp-collector
-  - github.com/karan/fleets
-  - github.com/miguelmota/cointop
-  - github.com/Narasimha1997/fake-sms
-  - github.com/schachmat/wego
-  - mvdan.cc/sh/v3/cmd/shfmt@latest

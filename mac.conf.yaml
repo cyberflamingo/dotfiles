@@ -1,0 +1,16 @@
+---
+# TODO install brew plugin
+# - brew:
+#       - dnscrypt-proxy
+#       - dnsmasq
+#       - privoxy
+- sudo:
+    - link:
+        /usr/local/etc/dnscrypt-proxy.toml:
+          path: etc/dnscrypt-proxy/dnscrypt-proxy.toml.macos
+        /usr/local/etc/privoxy/config:
+          path: etc/privoxy/config.macos
+        /usr/local/etc/privoxy/user.action:
+          path: etc/privoxy/user.action.macos
+        /usr/local/etc/dnsmasq.conf:
+          path: etc/dnsmasq/dnsmasq.conf.macos
