@@ -1,8 +1,0 @@
-- cargo:
-    - cargo-update
-    - doh-proxy
-    - du-dust
-    - fd-find
-    - git-delta
-    - navi
-    - ripgrep

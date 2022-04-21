@@ -1,9 +1,21 @@
+---
 - defaults:
     link:
       create: true
       relink: true
 
-- clean: ['~', '~/.local/bin']
+- shell:
+    - [git submodule sync --recursive, Syncing submodules]
+    - [git submodule update --init --recursive, Installing submodules]
+    - [git submodule update --remote --merge, Updating submodules]
+
+- create:
+    - ~/.local/share
+    - ~/.local/state
+    - ~/.config
+    - ~/.cache
+
+- clean: ["~", "~/.local/bin"]
 - clean:
     ~/.config:
       recursive: true
@@ -14,34 +26,66 @@
     # Bash
     ~/.profile:
     ~/.bashrc:
-    ~/.bash_completion/:
-        glob: true
-        path: bash_completion/*
+    ~/.bash_completion:
     ~/.bash_logout:
     # Z shell
     ~/.zshenv:
     # User
     ~/.aliases:
     ~/.config/:
-        glob: true
-        path: config/*
+      glob: true
+      path: config/*
     ~/.local/bin/:
-        glob: true
-        path: local/bin/*
-    # OpenWrt
-    /etc/config/nut_monitor:
-        if: '[ `uname -n` = turrismox ]'
-        path: etc/config/nut_monitor.openwrt
-    # Windows (Git Bash)
-    /c/ProgramData/bin/:
-        if: '[ `uname -o` = Msys ]'
-        glob: true
-        path: C/ProgramData/bin/*
+      glob: true
+      path: local/bin/*
+
+- sudo:
+    - apt:
+        # Security
+        - apt-show-versions
+        - apt-transport-https
+        - debsums
+        - unattended-upgrades
+        # Tooling, Settings
+        - curl
+        - fish
+        - jq
+        - zsh
+        # Programming
+        - cargo
+        - git
+        - git-lfs
+        - golang-go
+        - lua5.3
+        - neovim
+        - pandoc
+        - python3-jedi
+        - ruby-full  # Install first
+        - rbenv
+        - shellcheck
+        - tmux
+        - yamllint
+        # Other
+        - newsboat
+
+# TODO add a check for presence before install. Plugin uses `--force` which make
+# the execution unnecessary long
+# - cargo:
+#     - cargo-update
+#     - du-dust
+#     - fd-find
+#     - git-delta
+#     - navi
+#     - ripgrep
+
+- go:
+    # - github.com/jacobbednarz/go-csp-collector
+    - mvdan.cc/sh/v3/cmd/shfmt@latest
 
 - create:
-    - ~/Development
+    - ~/Development/src/github.com/mawww/kakoune
 
-- shell:
-  - [git submodule sync --recursive, Syncing submodules]
-  - [git submodule update --init --recursive, Installing submodules]
-  - [git submodule update --remote --merge, Updating submodules]
+- git:
+    "~/Development/src/github.com/mawww/kakoune":
+      url: https://github.com/mawww/kakoune.git
+      description: "kakoune - mawww's experiment for a better code editor"

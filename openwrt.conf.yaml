@@ -1,0 +1,4 @@
+---
+- link:
+    /etc/config/nut_monitor:
+      path: etc/config/nut_monitor.openwrt

@@ -1,0 +1,87 @@
+---
+- sudo:
+    - apt:
+        # Tooling, Settings
+        - conky-all
+        - fonts-ibm-plex
+        - fonts-noto-cjk
+        - fonts-noto-cjk-extra
+        - fonts-noto-color-emoji
+        - ibus-mozc
+        - mpv
+        - snapd
+        - webext-ublock-origin-firefox
+        # Security/Privacy
+        - bleachbit
+        - clamav
+        - clamav-daemon
+        - dnscrypt-proxy
+        - nmap
+        - privoxy
+        # Programming
+        - alacritty
+        - github-desktop
+        - mozc-utils-gui
+        - virt-manager  # Install first
+        - qemu-kvm
+        - spice-vdagent
+        # Other
+        - cmus
+        - digikam
+        - gimp
+        # - gnome-shell-pomodoro
+        # - slack-desktop
+        - steam
+    - snap:
+        - brave
+        - discord
+        - hugo --channel=extended
+        - node
+        - standard-notes
+    - link:
+        /etc/privoxy/default.action:
+          path: etc/privoxy/default.action
+        /etc/privoxy/config:
+          path: etc/privoxy/config
+        /etc/privoxy/user.action:
+          path: etc/privoxy/user.action
+        /etc/ssh/ssh_config:
+          path: etc/ssh/ssh_config
+    - shell:
+        - [
+            cp etc/dnscrypt-proxy/blocklists.txt /etc/dnscrypt-proxy/blocklists.txt,
+            Copying DNScrypt-proxy blocklists,
+          ]
+        - [
+            cp etc/dnscrypt-proxy/dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml,
+            Copying DNScrypt-proxy config file,
+          ]
+
+- flatpak:
+    # - com.calibre_ebook.calibre
+    - com.synology.SynologyDrive
+    - com.vscodium.codium
+    - org.keepassxc.KeePassXC
+    - org.musicbrainz.Picard
+    - org.signal.Signal
+    - us.zoom.Zoom
+
+# - cargo:
+#     - doh-proxy
+
+- go:
+    - github.com/karan/fleets
+    - github.com/miguelmota/cointop
+    - github.com/Narasimha1997/fake-sms
+    - github.com/schachmat/wego
+
+- pipx:
+    file: requirements-pipx.txt
+
+- create:
+    - ~/Development/src/github.com/StevenBlack/hosts
+
+- git:
+    "~/Development/src/github.com/StevenBlack/hosts":
+      url: https://github.com/StevenBlack/hosts.git
+      description: "hosts - Consolidating and extending hosts files from several well-curated sources."

@@ -1,0 +1,7 @@
+---
+- sudo:
+    - link:
+      /etc/caddy/Caddyfile:
+        path: etc/caddy/Caddyfile
+      /etc/ssh/sshd_config:
+        path: etc/ssh/sshd_config

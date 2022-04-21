@@ -1,0 +1,5 @@
+---
+- link:
+    /c/ProgramData/bin/:
+      glob: true
+      path: C/ProgramData/bin/*
