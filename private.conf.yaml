@@ -45,9 +45,11 @@
           path: etc/privoxy/config
         /etc/privoxy/user.action:
           path: etc/privoxy/user.action
-        /etc/ssh/ssh_config:
-          path: etc/ssh/ssh_config
     - shell:
+        - [
+            cp etc/ssh/ssh_config.d/default.conf /etc/ssh/ssh_config.d/default.conf,
+            Copying privoxy config file,
+          ]
         - [
             cp etc/dnscrypt-proxy/blocklists.txt /etc/dnscrypt-proxy/blocklists.txt,
             Copying DNScrypt-proxy blocklists,
