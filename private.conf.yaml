@@ -41,14 +41,19 @@
         - hugo --channel=extended
         - node
         - standard-notes
-    - link:
-        /etc/privoxy/default.action:
-          path: etc/privoxy/default.action
-        /etc/privoxy/config:
-          path: etc/privoxy/config
-        /etc/privoxy/user.action:
-          path: etc/privoxy/user.action
     - shell:
+        - [
+            cp etc/privoxy/default.action /etc/privoxy/default.action,
+            Copying privoxy config file,
+          ]
+        - [
+            cp etc/privoxy/config /etc/privoxy/config,
+            Copying privoxy config file,
+          ]
+        - [
+            cp etc/privoxy/user.action /etc/privoxy/user.action,
+            Copying privoxy config file,
+          ]
         - [
             cp etc/ssh/ssh_config.d/default.conf /etc/ssh/ssh_config.d/default.conf,
             Copying privoxy config file,
