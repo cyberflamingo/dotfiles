@@ -39,7 +39,7 @@
         - brave
         - discord
         - hugo --channel=extended
-        - node
+        - node --classic
         - standard-notes
     - shell:
         - [
