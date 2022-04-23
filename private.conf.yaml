@@ -1,4 +1,7 @@
 ---
+- shell:
+    - [sleep 8, Sleeping to release apt...]
+
 - sudo:
     - apt:
         # Tooling, Settings
