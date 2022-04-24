@@ -61,6 +61,7 @@
         - neovim
         - pandoc
         - python3-jedi
+        - python3-pip
         - ruby-full  # Install first
         - rbenv
         - shellcheck
@@ -82,6 +83,13 @@
 - go:
     # - github.com/jacobbednarz/go-csp-collector
     - mvdan.cc/sh/v3/cmd/shfmt@latest
+
+- pip:
+    file: requirements.txt
+    user: true # Like --user
+
+- shell:
+    - [python3 -m pipx ensurepath, Ensure pipx path]
 
 - create:
     - ~/Development/src/github.com/mawww/kakoune
