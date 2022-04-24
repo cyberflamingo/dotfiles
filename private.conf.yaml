@@ -43,27 +43,27 @@
         - standard-notes
     - shell:
         - [
-            cp etc/privoxy/default.action /etc/privoxy/default.action,
+            cp --remove-destination etc/privoxy/default.action /etc/privoxy/default.action,
             Copying privoxy config file,
           ]
         - [
-            cp etc/privoxy/config /etc/privoxy/config,
+            cp --remove-destination etc/privoxy/config /etc/privoxy/config,
             Copying privoxy config file,
           ]
         - [
-            cp etc/privoxy/user.action /etc/privoxy/user.action,
+            cp --remove-destination etc/privoxy/user.action /etc/privoxy/user.action,
             Copying privoxy config file,
           ]
         - [
-            cp etc/ssh/ssh_config.d/default.conf /etc/ssh/ssh_config.d/default.conf,
+            cp --remove-destination etc/ssh/ssh_config.d/default.conf /etc/ssh/ssh_config.d/default.conf,
             Copying privoxy config file,
           ]
         - [
-            cp etc/dnscrypt-proxy/blocklists.txt /etc/dnscrypt-proxy/blocklists.txt,
+            cp --remove-destination etc/dnscrypt-proxy/blocklists.txt /etc/dnscrypt-proxy/blocklists.txt,
             Copying DNScrypt-proxy blocklists,
           ]
         - [
-            cp etc/dnscrypt-proxy/dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml,
+            cp --remove-destination etc/dnscrypt-proxy/dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml,
             Copying DNScrypt-proxy config file,
           ]
 
