@@ -6,6 +6,7 @@
 
 DEFAULT_CONFIG_PREFIX="default"
 CONFIG_SUFFIX=".conf.yaml"
+CONFIG_DIR="meta/configs"
 DOTBOT_DIR="bootstrap/dotbot"
 DOTBOT_PLUGINS_DIR="bootstrap/dotbot-plugins/*"
 
@@ -19,5 +20,5 @@ for conf in ${DEFAULT_CONFIG_PREFIX} "${@}"; do
     "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" \
         --plugin-dir "$DOTBOT_PLUGINS_DIR" \
         --base-directory "${BASEDIR}" \
-        --config-file "${conf}${CONFIG_SUFFIX}"
+        --config-file "${CONFIG_DIR}/${conf}${CONFIG_SUFFIX}"
 done
