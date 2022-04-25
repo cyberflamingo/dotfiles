@@ -81,7 +81,7 @@
 
 - go:
     - github.com/karan/fleets@latest
-    - github.com/miguelmota/cointop@latest
+    - github.com/cointop-sh/cointop@latest
     - github.com/Narasimha1997/fake-sms@latest
     - github.com/schachmat/wego@latest
 
