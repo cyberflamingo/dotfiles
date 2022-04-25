@@ -1,37 +1,37 @@
-[submodule "dotbot"]
-	path = bootstrap/dotbot
-	url = https://github.com/anishathalye/dotbot
+[submodule "meta/dotbot"]
+	path = meta/dotbot
+	url = https://github.com/anishathalye/dotbot.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-apt"]
-	path = bootstrap/dotbot-plugins/dotbot-apt
-	url = https://github.com/bryant1410/dotbot-apt
+[submodule "meta/plugins/dotbot-apt"]
+	path = meta/plugins/dotbot-apt
+	url = https://github.com/bryant1410/dotbot-apt.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-golang"]
-	path = bootstrap/dotbot-plugins/dotbot-golang
-	url = https://github.com/delicb/dotbot-golang
+[submodule "meta/plugins/dotbot-golang"]
+	path = meta/plugins/dotbot-golang
+	url = https://github.com/delicb/dotbot-golang.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-pip"]
-	path = bootstrap/dotbot-plugins/dotbot-pip
+[submodule "meta/plugins/dotbot-pip"]
+	path = meta/plugins/dotbot-pip
 	url = https://github.com/sobolevn/dotbot-pip.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-rust"]
-	path = bootstrap/dotbot-plugins/dotbot-rust
-	url = https://github.com/alexcormier/dotbot-rust
+[submodule "meta/plugins/dotbot-rust"]
+	path = meta/plugins/dotbot-rust
+	url = https://github.com/alexcormier/dotbot-rust.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-sudo"]
-	path = bootstrap/dotbot-plugins/dotbot-sudo
+[submodule "meta/plugins/dotbot-sudo"]
+	path = meta/plugins/dotbot-sudo
 	url = https://github.com/DrDynamic/dotbot-sudo.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-git"]
-	path = bootstrap/dotbot-plugins/dotbot-git
+[submodule "meta/plugins/dotbot-git"]
+	path = meta/plugins/dotbot-git
 	url = https://github.com/DrDynamic/dotbot-git.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-flatpak"]
-	path = bootstrap/dotbot-plugins/dotbot-flatpak
+[submodule "meta/plugins/dotbot-flatpak"]
+	path = meta/plugins/dotbot-flatpak
 	url = https://github.com/DrDynamic/dotbot-flatpak.git
 	ignore = dirty
-[submodule "dotbot-plugins/dotbot-snap"]
-	path = bootstrap/dotbot-plugins/dotbot-snap
+[submodule "meta/plugins/dotbot-snap"]
+	path = meta/plugins/dotbot-snap
 	url = https://github.com/DrDynamic/dotbot-snap.git
 	ignore = dirty
 [submodule "config/kak/plugins/plug.kak"]
