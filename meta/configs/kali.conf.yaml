@@ -1,5 +1,10 @@
 ---
+- shell:
+    - [rm ~/.zshenv, Removing zshenv to use Kali zsh config]
+
 - sudo:
     - apt:
         - docker.io
         - spice-vdagent
+    - shell:
+        - [systemctl enable docker --now, Enabling docker]
