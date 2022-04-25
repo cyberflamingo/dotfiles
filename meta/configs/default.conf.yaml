@@ -37,6 +37,9 @@
       glob: true
       path: local/bin/*
 
+- shell:
+    - [source ~/.profile, Sourcing .profile]
+
 - sudo:
     - apt:
         # Security
