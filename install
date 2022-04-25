@@ -7,8 +7,8 @@
 DEFAULT_CONFIG_PREFIX="default"
 CONFIG_SUFFIX=".conf.yaml"
 CONFIG_DIR="meta/configs"
-DOTBOT_DIR="bootstrap/dotbot"
-DOTBOT_PLUGINS_DIR="bootstrap/dotbot-plugins/*"
+DOTBOT_DIR="meta/dotbot"
+DOTBOT_PLUGINS_DIR="meta/plugins/*"
 
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
