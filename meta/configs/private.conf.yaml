@@ -80,10 +80,10 @@
 #     - doh-proxy
 
 - go:
-    - github.com/karan/fleets
-    - github.com/miguelmota/cointop
-    - github.com/Narasimha1997/fake-sms
-    - github.com/schachmat/wego
+    - github.com/karan/fleets@latest
+    - github.com/miguelmota/cointop@latest
+    - github.com/Narasimha1997/fake-sms@latest
+    - github.com/schachmat/wego@latest
 
 - pipx:
     file: requirements-pipx.txt

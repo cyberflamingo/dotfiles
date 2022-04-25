@@ -81,7 +81,7 @@
 #     - ripgrep
 
 - go:
-    # - github.com/jacobbednarz/go-csp-collector
+    # - github.com/jacobbednarz/go-csp-collector@latest
     - mvdan.cc/sh/v3/cmd/shfmt@latest
 
 - pip:
