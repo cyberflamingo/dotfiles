@@ -48,6 +48,9 @@ if status is-login
     set -x CARGO_HOME $XDG_DATA_HOME/cargo
     fish_add_path --append "$CARGO_HOME/bin"
 
+    # Docker
+    set -x DOCKER_CONFIG "$XDG_CONFIG_HOME"/docker
+
     # GnuPG
     # set -x GNUPGHOME $XDG_DATA_HOME/gnupg
 
