@@ -59,6 +59,9 @@ export ASPELL_CONF="per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; \
 export CARGO_HOME=$XDG_DATA_HOME/cargo
 export PATH="$PATH:$CARGO_HOME/bin"
 
+# Docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+
 # GnuPG
 # export GNUPGHOME=$XDG_DATA_HOME/gnupg
 
