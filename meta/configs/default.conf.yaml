@@ -8,12 +8,13 @@
     - [rm ~/.profile ~/.bashrc ~/.bash_logout, Removing default bash files]
 
 - create:
+    - ~/.gnupg
     - ~/.local/share
     - ~/.local/state
     - ~/.config
     - ~/.cache
 
-- clean: ["~", "~/.local/bin"]
+- clean: ["~", "~/.gnupg", "~/.local/bin"]
 - clean:
     ~/.config:
       recursive: true
@@ -33,6 +34,9 @@
     ~/.config/:
       glob: true
       path: config/*
+    ~/.gnupg/:
+      glob: true
+      path: gnupg/*
     ~/.local/bin/:
       glob: true
       path: local/bin/*
