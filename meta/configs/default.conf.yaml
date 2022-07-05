@@ -57,7 +57,7 @@
         - git
         - git-lfs
         - golang-go
-        - lua5.3
+        - lua5.4
         - neovim
         - pandoc
         - python3-jedi
