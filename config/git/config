@@ -1,6 +1,7 @@
 [user]
 	name = Alexandre Mercier
-	email = alex@cyberflamingo.net
+	email = 19971275+cyberflamingo@users.noreply.github.com
+	signingkey = E3962A056264D244
 [core]
 	editor = kak
 	autocrlf = input
@@ -15,6 +16,7 @@
 	ui = auto
 [commit]
 	template = ~/.config/git/gitmessage.txt
+	gpgsign = true
 [help]
 	autocorrect = 30
 [receive]
@@ -62,3 +64,5 @@
 	side-by-side = true
 [alias]
 	resotre = restore
+[tag]
+	gpgSign = true
