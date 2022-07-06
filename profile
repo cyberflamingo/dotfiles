@@ -64,6 +64,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 # GnuPG
 # export GNUPGHOME=$XDG_DATA_HOME/gnupg
+export GPG_TTY=$TTY
 
 # GO
 export GOPATH=$XDG_DATA_HOME/go
