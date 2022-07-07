@@ -102,6 +102,7 @@ export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 
 # nvm
 export NVM_DIR="$XDG_DATA_HOME"/nvm
+# shellcheck source=/dev/null
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # PostgreSQL
