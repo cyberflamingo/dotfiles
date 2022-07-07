@@ -112,6 +112,9 @@ if status is-login
     # Wego
     set -x WEGORC $XDG_CONFIG_HOME/wego/wegorc
 
+    # z.lua
+    set -x _ZL_DATA $XDG_DATA_HOME/zlua
+
     # Zoom
     set -x SSB_HOME $XDG_DATA_HOME/zoom
 end
