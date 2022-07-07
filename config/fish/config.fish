@@ -74,6 +74,9 @@ if status is-login
     # LESS
     set -x LESSHISTFILE -
 
+    # minikube
+    set -x MINIKUBE_HOME "$XDG_DATA_HOME"/minikube
+
     # npm
     set -x NPM_CONFIG_USERCONFIG $XDG_CONFIG_HOME/npm/npmrc
 
