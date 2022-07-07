@@ -127,5 +127,8 @@ export WEGORC=$XDG_CONFIG_HOME/wego/wegorc
 # Wine
 export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
 
+# z.lua
+export _ZL_DATA=$XDG_DATA_HOME/zlua
+
 # Zoom
 export SSB_HOME=$XDG_DATA_HOME/zoom
