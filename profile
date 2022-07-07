@@ -85,6 +85,9 @@ export PATH="$PATH:$JAVA_HOME/bin"
 # LESS
 export LESSHISTFILE=-
 
+# minikube
+export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
+
 # npm
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 
