@@ -68,7 +68,12 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
 # GnuPG
 # export GNUPGHOME=$XDG_DATA_HOME/gnupg
-export GPG_TTY=$TTY
+if [ -n "$ZSH_VERSION" ]; then
+    export GPG_TTY=$TTY
+else
+    tty=$(tty)
+    export GPG_TTY=$tty
+fi
 
 # GO
 export GOPATH=$XDG_DATA_HOME/go
