@@ -26,17 +26,17 @@ if status is-login
 
     # Editor
     if command -v kak 1>/dev/null 2>&1
-        set -u KAK "(which kak)"
+        set -u KAK (which kak)
         set -x VISUAL $KAK
         set -x EDITOR $KAK
     else
-        set -u VI "(which vi)"
+        set -u VI (which vi)
         set -x VISUAL $VI
         set -x EDITOR $VI
     end
 
     # Pager
-    set -u LESS "(which less)"
+    set -u LESS (which less)
     set -x PAGER $LESS
 
     # Aspell
