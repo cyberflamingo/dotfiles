@@ -84,6 +84,10 @@ export LESSHISTFILE=-
 # npm
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 
+# nvm
+export NVM_DIR="$XDG_DATA_HOME"/nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 # PostgreSQL
 export PSQLRC=$XDG_CONFIG_HOME/pg/psqlrc
 export PSQL_HISTORY=$XDG_STATE_HOME/psql_history
