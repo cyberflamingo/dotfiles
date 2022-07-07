@@ -27,6 +27,7 @@ alias mpip='python3 -m pip'
 alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
 alias stonky='stonky --config "$XDG_CONFIG_HOME"/stonky/stonky.cfg'
 alias fleets='ENV_FILE_PATH="$XDG_CONFIG_HOME"/fleets/prod.env fleets'
+alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
 
