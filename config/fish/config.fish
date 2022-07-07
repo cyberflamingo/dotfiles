@@ -44,6 +44,10 @@ if status is-login
                         personal $XDG_CONFIG_HOME/aspell/en.pws;      \
                         repl $XDG_CONFIG_HOME/aspell/en.prepl"
 
+    # AWS
+    set -x AWS_SHARED_CREDENTIALS_FILE "$XDG_CONFIG_HOME"/aws/credentials
+    set -x AWS_CONFIG_FILE "$XDG_CONFIG_HOME"/aws/config
+
     # Cargo
     set -x CARGO_HOME $XDG_DATA_HOME/cargo
     fish_add_path --append "$CARGO_HOME/bin"
