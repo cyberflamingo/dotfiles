@@ -128,8 +128,11 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 ## Custom configuration
 
+# Bash Completion
+export BASH_COMPLETION_USER_FILE="${XDG_CONFIG_HOME:-$HOME/.config}"/bash-completion/bash_completion
+
 # Alacritty
-source ~/.bash_completion/alacritty
+source "$BASH_COMPLETION_USER_FILE"/alacritty
 
 # Nix
 # shellcheck source=/dev/null

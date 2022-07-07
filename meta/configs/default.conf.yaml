@@ -25,7 +25,6 @@
     # Bash
     ~/.profile:
     ~/.bashrc:
-    ~/.bash_completion:
     ~/.bash_logout:
     # Z shell
     ~/.zshenv:
