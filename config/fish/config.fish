@@ -73,6 +73,9 @@ if status is-login
     # npm
     set -x NPM_CONFIG_USERCONFIG $XDG_CONFIG_HOME/npm/npmrc
 
+    # nvm
+    # Handled by jorgebucaran/nvm.fish plugin
+
     # PostgreSQL
     set -x PSQLRC $XDG_CONFIG_HOME/pg/psqlrc
     set -x PSQL_HISTORY $XDG_STATE_HOME/psql_history
