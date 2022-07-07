@@ -57,7 +57,8 @@ if status is-login
 
     # GnuPG
     # set -x GNUPGHOME $XDG_DATA_HOME/gnupg
-    set -x GPG_TTY $TTY
+    set -u tty (tty)
+    set -x GPG_TTY $tty
 
     # GO
     set -x GOPATH $XDG_DATA_HOME/go
