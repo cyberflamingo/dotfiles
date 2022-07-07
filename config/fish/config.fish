@@ -26,18 +26,18 @@ if status is-login
 
     # Editor
     if command -v kak 1>/dev/null 2>&1
-        set -u KAK (which kak)
-        set -x VISUAL $KAK
-        set -x EDITOR $KAK
+        set -u kak (which kak)
+        set -x VISUAL $kak
+        set -x EDITOR $kak
     else
-        set -u VI (which vi)
-        set -x VISUAL $VI
-        set -x EDITOR $VI
+        set -u vi (which vi)
+        set -x VISUAL $vi
+        set -x EDITOR $vi
     end
 
     # Pager
-    set -u LESS (which less)
-    set -x PAGER $LESS
+    set -u less (which less)
+    set -x PAGER $less
 
     # Aspell
     set -x ASPELL_CONF "per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; \

@@ -41,13 +41,13 @@ export XDG_CACHE_HOME=$HOME/.cache
 
 # Editor
 if command -v kak 1>/dev/null 2>&1; then
-    KAK="$(which kak)"
-    export VISUAL=$KAK
-    export EDITOR=$KAK
+    kak="$(which kak)"
+    export VISUAL=$kak
+    export EDITOR=$kak
 else
-    VI="$(which vi)"
-    export VISUAL=$VI
-    export EDITOR=$VI
+    vi="$(which vi)"
+    export VISUAL=$vi
+    export EDITOR=$vi
 fi
 
 # Aspell
