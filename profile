@@ -88,6 +88,10 @@ export LESSHISTFILE=-
 # minikube
 export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
 
+# ncurses
+export TERMINFO="$XDG_DATA_HOME"/terminfo
+export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+
 # npm
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 

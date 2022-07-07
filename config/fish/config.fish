@@ -77,6 +77,10 @@ if status is-login
     # minikube
     set -x MINIKUBE_HOME "$XDG_DATA_HOME"/minikube
 
+    # ncurses
+    set -x TERMINFO "$XDG_DATA_HOME"/terminfo
+    set -x TERMINFO_DIRS "$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
+
     # npm
     set -x NPM_CONFIG_USERCONFIG $XDG_CONFIG_HOME/npm/npmrc
 
