@@ -19,6 +19,9 @@ config/zsh/.zsh_history
 
 # Fish
 config/fish/completions
+config/fish/conf.d
+config/fish/fish_variables
+config/fish/functions
 
 # Kakoune folders
 config/kak/plugins
