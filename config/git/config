@@ -1,7 +1,7 @@
 [user]
 	name = Alexandre Mercier
 	email = 19971275+cyberflamingo@users.noreply.github.com
-	signingkey = E3962A056264D244
+	signingkey = 04B3E87D1E4E0D83
 [core]
 	editor = kak
 	autocrlf = input
