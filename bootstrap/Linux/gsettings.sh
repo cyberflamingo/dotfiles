@@ -29,5 +29,5 @@ gsettings list-recursively >gsettings.bak
 while read -r schema key value; do
     [[ "$schema" =~ ^#.*$ ]] || [ -z "$schema" ] && continue
     gsettings set "$schema" "$key" "$value"
-    # gsettings get "$schema" "$key";
+    # echo "$schema" "$key" "$(gsettings get "$schema" "$key")"
 done <"$GSETTINGS"
