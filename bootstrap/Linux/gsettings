@@ -6,12 +6,13 @@ org.gnome.desktop.background picture-uri 'file:///'"$HOME"'/Pictures/Wallpaper/J
 org.gnome.desktop.interface clock-format '24h'
 org.gnome.desktop.interface clock-show-weekday true
 org.gnome.desktop.interface gtk-theme 'Pop-dark'
+# org.gnome.desktop.interface monospace-font-name 'Fira Mono 11'
 org.gnome.desktop.interface monospace-font-name 'MesloLGS NF 11'
 org.gnome.desktop.interface show-battery-percentage true
 org.gnome.desktop.interface text-scaling-factor 1.25
 org.gnome.desktop.screensaver picture-uri 'file:///'"$HOME"'/Pictures/Wallpaper/JosanGonzalez/jo-san-cover22.jpg'
 org.gnome.settings-daemon.plugins.color night-light-enabled true
-org.gnome.shell favorite-apps ['firefox.desktop', 'brave_brave.desktop', 'org.gnome.Nautilus.desktop', 'com.visualstudio.code.oss.desktop', 'org.gnome.Terminal.desktop', 'standard-notes_standard-notes.desktop']
+org.gnome.shell favorite-apps ['pop-cosmic-launcher.desktop', 'pop-cosmic-workspaces.desktop', 'pop-cosmic-applications.desktop', 'firefox.desktop', 'brave-browser.desktop', 'org.gnome.Nautilus.desktop', 'com.alacritty.Alacritty.desktop', 'org.standardnotes.standardnotes.desktop']
 org.gtk.Settings.FileChooser clock-format '24h'
 
 
@@ -19,12 +20,13 @@ org.gtk.Settings.FileChooser clock-format '24h'
 # Input Settings                                                              #
 ###############################################################################
 
-org.gnome.desktop.input-sources mru-sources [('xkb', 'us'), ('ibus', 'anthy'), ('xkb', 'fr+azerty')]
-org.gnome.desktop.input-sources sources [('xkb', 'us'), ('ibus', 'anthy'), ('xkb', 'fr+azerty')]
-org.gnome.desktop.interface gtk-im-module 'ibus'
-org.gnome.desktop.peripherals.touchpad disable-while-typing false
+org.gnome.desktop.input-sources mru-sources [('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'fr+azerty')]
+org.gnome.desktop.input-sources sources [('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'fr+azerty')]
+org.gnome.desktop.interface gtk-im-module ''
+org.gnome.desktop.peripherals.touchpad disable-while-typing true
 org.gnome.desktop.peripherals.touchpad natural-scroll true
 org.gnome.desktop.peripherals.touchpad speed 0.75
+org.gnome.desktop.peripherals.mouse speed 0.75
 
 
 ###############################################################################
@@ -35,8 +37,8 @@ org.gnome.desktop.privacy old-files-age uint32 7
 org.gnome.desktop.privacy recent-files-max-age 7
 org.gnome.desktop.privacy remove-old-temp-files true
 org.gnome.desktop.privacy remove-old-trash-files true
-#org.gnome.desktop.notifications show-in-lock-screen false
-org.gnome.desktop.search-providers disabled ['org.gnome.seahorse.Application.desktop', 'io.elementary.appcenter.desktop', 'org.gnome.Terminal.desktop']
+org.gnome.desktop.notifications show-in-lock-screen false
+org.gnome.desktop.search-providers disabled ['org.gnome.Contacts.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Calculator.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.Terminal.desktop']
 
 
 ###############################################################################
@@ -50,33 +52,23 @@ org.gnome.gedit.preferences.editor highlight-current-line true
 org.gnome.gedit.preferences.editor insert-spaces true
 org.gnome.gedit.preferences.editor scheme 'pop-dark'
 org.gnome.GWeather temperature-unit 'centigrade'
-org.gnome.nautilus.list-view default-column-order ['name', 'size', 'type', 'owner', 'group', 'permissions', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency', 'starred', 'detailed_type']
+org.gnome.GWeather4 temperature-unit 'centigrade'
 org.gnome.nautilus.preferences default-folder-viewer 'list-view'
-org.gnome.pomodoro.plugins.gnome hide-system-notifications true
-org.gnome.pomodoro.preferences enabled-plugins ['sounds', 'dark-theme']
 
 
 ###############################################################################
 # Power Settings                                                              #
 ###############################################################################
 
-org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 3600
+org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 1800
 org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'suspend'
 org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 900
 org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend'
 
 
 ###############################################################################
-# Extensions                                                                  #
-###############################################################################
-
-org.gnome.shell enabled-extensions ['pop-shop-details@system76.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com', 'system76-power@system76.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'batteryiconfix@kylecorry31.github.io', 'alt-tab-raise-first-window@system76.com', 'ubuntu-appindicators@ubuntu.com', 'pop-shell@system76.com', 'always-show-workspaces@system76.com']
-
-
-###############################################################################
 # Proxy                                                                       #
 ###############################################################################
-
 org.gnome.system.proxy.http host '127.0.0.1'
 org.gnome.system.proxy.http port 8118
 org.gnome.system.proxy.https host '127.0.0.1'
