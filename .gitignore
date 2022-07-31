@@ -29,6 +29,8 @@ config/kak/colors
 config/kak/autoload/standard-library
 config/newsboat/urls
 
+# Mozc
+config/mozc
 # tmux
 config/tmux/plugins
 
