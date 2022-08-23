@@ -57,10 +57,11 @@
         # - intel-microcode
         # Tooling, Settings
         - curl
-        - fish
         - jq
+        - xclip
         - zsh
         # Programming
+        - libssl-dev # Needed by cargo-update
         - cargo
         - git
         - git-lfs
@@ -68,10 +69,8 @@
         - lua5.4
         - neovim
         - pandoc
-        - python3-jedi
         - python3-pip
-        - ruby-full  # Install first
-        - rbenv
+        - python3.10-venv # Needed by pipx
         - shellcheck
         - tmux
         - yamllint
@@ -82,14 +81,11 @@
 # the execution unnecessary long
 # - cargo:
 #     - cargo-update
-#     - du-dust
 #     - fd-find
 #     - git-delta
-#     - navi
 #     - ripgrep
 
 - go:
-    # - github.com/jacobbednarz/go-csp-collector@latest
     - mvdan.cc/sh/v3/cmd/shfmt@latest
 
 - pip:
