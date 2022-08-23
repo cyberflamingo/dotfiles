@@ -49,7 +49,12 @@
         - apt-show-versions
         - apt-transport-https
         - debsums
+        - macchanger
         - unattended-upgrades
+        - usbguard
+        # Uncomment appropriately
+        # - amd64-microcode
+        # - intel-microcode
         # Tooling, Settings
         - curl
         - fish
