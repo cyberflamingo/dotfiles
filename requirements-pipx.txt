@@ -1,9 +1,8 @@
 ansito
 black
-fawkes
-ialauncher
+# fawkes
+# ialauncher
+jedi
 mypy
 proselint
-ranger-fm
-stonky
-youtube-dl
+# youtube-dl
