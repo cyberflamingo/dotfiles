@@ -7,9 +7,9 @@
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
 if [[ $EUID -eq 0 ]]; then
-    umask 002
+    umask 027
 else
-    umask 022
+    umask 027
 fi
 
 # if running bash
