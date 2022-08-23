@@ -241,7 +241,7 @@ add-highlighter global/ wrap -word -indent -marker '→'
 
 # Trim trailing whitespace and EOF newlines
 hook global BufWritePre ^[^*]+$ -group editorconfig-hooks %{
-    try %{ execute-keys -draft %{ %s\h+$|\n+\z<ret>d } }
+    try %{ execute-keys -draft %{ \%s\h+$<ret>d } }
 }
 
 #########################################################################
