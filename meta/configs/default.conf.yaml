@@ -63,6 +63,7 @@
         # Programming
         - libssl-dev # Needed by cargo-update
         - cargo
+        - editorconfig
         - git
         - git-lfs
         - golang-go
