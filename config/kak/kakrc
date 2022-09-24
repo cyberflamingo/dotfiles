@@ -404,6 +404,16 @@ hook global BufSetOption filetype=sql %{
     set-option buffer formatcmd 'npx sql-formatter --output "${kak_buffile}"'
 }
 
+# TOML
+hook global WinSetOption filetype=toml %{
+    set-option window lintcmd 'taplo lint -'
+    lint
+}
+
+hook global BufSetOption filetype=toml %{
+    set-option buffer formatcmd 'taplo format -'
+}
+
 # YAML
 hook global WinSetOption filetype=yaml %{
     set-option window autowrap_column 80
