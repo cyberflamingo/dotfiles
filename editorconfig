@@ -14,7 +14,7 @@ trim_trailing_whitespace = true
 max_line_length = 72
 
 # Matches multiple files with brace expansion notation
-[*.{json,rb,yaml}]
+[*.{json,rb,toml,yaml}]
 max_line_length = 80
 
 [*.css]
