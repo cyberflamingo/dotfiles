@@ -237,7 +237,7 @@ colors:
      foreground: '#000000'
      background: '#FFE667'
 
-    bar:
+    footer_bar:
      background: '#FFE667'
      foreground: '#000000'
 
