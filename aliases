@@ -4,6 +4,21 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# safer commands
+alias copy="cp -i"
+alias move="vm -i"
+# safe remove
+move_to_trash() {
+    if ! [ -x "$(command -v gioo)" ]; then
+        echo "Command 'gio' not found, exiting."
+        return 127
+    fi
+
+    echo "Moving files or directories to the trash..."
+    gio trash "$@"
+}
+alias rmv="move_to_trash"
+
 # Grml-Zsh aliases
 alias ...='cd ../../'
 
