@@ -135,6 +135,7 @@ setopt completeinword    # not just at the end
 setopt pushd_ignore_dups # don't push the same dir twice
 setopt noglobdots        # * shouldn't match dotfiles. ever.
 setopt noshwordsplit     # use zsh style word splitting
+setopt noclobber         # prevent from overwriting an existing file
 
 # Prompt (p10k)
 # Make transient prompt work consistently when closing an SSH connection
