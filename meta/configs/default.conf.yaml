@@ -73,10 +73,7 @@
         - python3-pip
         - python3.10-venv # Needed by pipx
         - shellcheck
-        - tmux
         - yamllint
-        # Other
-        - newsboat
 
 # TODO add a check for presence before install. Plugin uses `--force` which make
 # the execution unnecessary long
@@ -95,6 +92,10 @@
 
 - shell:
     - [python3 -m pipx ensurepath, Ensure pipx path]
+    - [
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash,
+        Install nvm,
+      ]
 
 - create:
     - ~/Development/src/github.com/mawww/kakoune

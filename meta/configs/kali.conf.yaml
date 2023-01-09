@@ -1,10 +1,58 @@
 ---
 - shell:
+    - [sleep 8, Sleeping to release apt...]
     - [rm ~/.zshenv, Removing zshenv to use Kali zsh config]
 
 - sudo:
     - apt:
+        # Tooling, Settings
         - docker.io
         - spice-vdagent
+        - webext-ublock-origin-firefox
+        # Security/Privacy tools
+        - feroxbuster
+        - naabu
+        - nuclei
+        - seclists
+        # Programming
+        - golang-go
     - shell:
         - [systemctl enable docker --now, Enabling docker]
+
+# TODO: Make sure $GOBIN is set
+- go:
+    - github.com/rverton/webanalyze/cmd/webanalyze@latest
+    - github.com/jaeles-project/jaeles@latest
+
+- shell:
+    - [jaeles config init, Inittialize Signature and Web UI]
+    - [echo "Install remaining tools manually", Disclaimer]
+
+# TODO: Tools to install manually
+# [RustScan](https://github.com/RustScan/RustScan)
+
+# TODO: A better folder structure exists (probably)
+- create:
+    - ~/Development/src/github.com/danielmiessler/RobotsDisallowed
+    - ~/Development/src/github.com/six2dez/OneListForAll
+
+- git:
+    "~/Development/src/github.com/danielmiessler/RobotsDisallowed":
+      url: https://github.com/danielmiessler/RobotsDisallowed.git
+      description: "A curated list of the most common and most interesting robots.txt disallowed directories."
+    "~/Development/src/github.com/six2dez/OneListForAll":
+      url: https://github.com/six2dez/OneListForAll.git
+      description: "Rockyou for web fuzzing"
+#
+# TODO: Automate all this as well
+# [Source2URL](https://github.com/danielmiessler/Source2URL)
+#
+# [getallurls](https://github.com/lc/gau)
+# And [wordlistgen](https://github.com/ameenmaali/wordlistgen)
+# And [TrashCompactor](https://github.com/michael1026/trashcompactor)
+#
+# Or [waymore](https://github.com/xnl-h4ck3r/waymore)
+#
+# [APKLeaks](https://github.com/dwisiswant0/apkleaks)
+#
+# [ChangeDetection.io](https://github.com/dgtlmoon/changedetection.io)
