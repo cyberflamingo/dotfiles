@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+## archive-cd Script whipped up for LinuxJournal.com Blog
+## Post on Archiving CD's to ISO Images.  Written by Jayson
+## Broughton.  Script updates may be found at the following
+## website: www.jaysonbroughton.com
+## URL: https://www.linuxjournal.com/content/archiving-cds-iso-commandline
+##
+## blocksize and blockcount variables taken from Steve Litt's
+## script on Troubleshooters.com article 'Coasterless CD
+## burning.
+## URL: http://www.troubleshooters.com/linux/coasterless.htm
+##
+## Last Updated: Sun Feb  5 09:38:49 PM JST 2023
+
+## Check that a CDrom is present
+udev_name="/dev/"$(udevadm info --query=name --name=/dev/cdrom)
+
+if test "$udev_name" = ""; then
+    echo catdevice FATAL ERROR: Blank udev name >&2
+    exit
+fi
+
+## Save `isoinfo` command output
+iso_info=$(isoinfo -d -i "$udev_name")
+
+## Get Block size of CD
+blocksize=$(echo "$iso_info" | grep "^Logical block size is:" | cut --delimiter=" " --fields=5)
+
+if test "$blocksize" = ""; then
+    echo catdevice FATAL ERROR: Blank blocksize >&2
+    exit
+fi
+
+## Get Block count of CD
+blockcount=$(echo "$iso_info" | grep "^Volume size is:" | cut --delimiter=" " --fields=4)
+
+if test "$blockcount" = ""; then
+    echo catdevice FATAL ERROR: Blank blockcount >&2
+    exit
+fi
+
+usage() {
+    cat <<EOF
+
+usage: $0 options
+-h      Show this message
+-d      Report the Location of your Device
+-m      Check your SHA256Hash of CD against Image (Run AFTER making Image)
+-l      Location and name of ISO Image (/path/to/image.iso)
+-r      Rip CD to ISO image
+
+I'm Lazy, I didn't build much error checking into this script So alas, here's how to run it. Anything else might break the script.
+
+Example 1: Report location of drive
+archive-cd -d
+
+Example 2: Rip a CD to ISO
+archive-cd -l /path/to/isoimage.iso -r
+
+Example 3: Check MD5Hash (Run AFTER ripping CD to ISO)
+archive-cd -l /path/to/isoimage.iso -m
+
+
+EOF
+}
+
+while getopts "hdml:r" OPTION; do
+    case $OPTION in
+        h)
+            usage
+            exit 1
+            ;;
+        d)
+            echo "Your CDrom is located on: $udev_name" >&2
+            ;;
+        m)
+            echo "Checking SHA256Sum of CD and New ISO Image"
+            sha256cd=$(dd if="$udev_name" bs="$blocksize" count="$blockcount" | sha256sum) >&2
+            sha256iso=$(sha256sum "$LFLAG") >&2
+            echo "CD  sha256 is:" "$sha256cd"
+            echo "ISO sha256 is:" "$sha256iso"
+            # TODO: Add a better way to compare hashses
+            # if test "$sha256cd" = "$sha256iso"; then
+            #     echo "It's a match!"
+            #     exit
+            # fi
+            # echo "Hashes don't match!"
+
+            ;;
+        l)
+            LFLAG="$OPTARG"
+            ;;
+        r)
+            dd if="$udev_name" bs="$blocksize" count="$blockcount" of="$LFLAG"
+            echo "Archiving Complete.  ISO Image located at:""$LFLAG"
+            ;;
+        *)
+            echo Invalid flag >&2
+            exit
+            ;;
+
+    esac
+done
