@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euf -o pipefail
+
+card_name=$(pactl list short cards | awk '{print $2}')
+current_profile=$(pactl list cards | grep "Active Profile:" | awk '{print $3}')
+
+speakers_audio_internal_mic="output:analog-stereo+input:analog-stereo"
+displayport_audio_internal_mic="output:hdmi-stereo+input:analog-stereo"
+
+# Use computer speakers + internal mic
+use_speakers_audio_internal_mic() {
+    pactl set-card-profile "$card_name" "$speakers_audio_internal_mic"
+    echo "Use computer speakers"
+}
+
+# Use external speakers + internal mic
+use_displayport_audio_internal_mic() {
+    pactl set-card-profile "$card_name" "$displayport_audio_internal_mic"
+    echo "Use external speakers"
+}
+
+if [ "$current_profile" == "$speakers_audio_internal_mic" ]; then
+    # When computer speakers
+    use_displayport_audio_internal_mic
+else
+    # When external speakers, default to that
+    use_speakers_audio_internal_mic
+fi
