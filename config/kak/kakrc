@@ -277,6 +277,17 @@ define-command ctags-search-word -hidden %{
     execute-keys ": ctags-search "
 }
 
+define-command mdtable %{
+    try %{
+        execute-keys '<a-i>p'
+    }
+    execute-keys 's\|<ret>&'
+    try %{
+        execute-keys 'xs-<ret>'
+    }
+    execute-keys 'xs <ret>r-,'
+}
+
 # Highlight the word under the cursor
 # Based on: https://github.com/mawww/config/blob/1f18846ad5aecb4c75e3b5142203a4a68a3bc994/kakrc#L41-L53
 set-face global CurWord default,rgba:3a3d4140
