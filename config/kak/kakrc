@@ -79,6 +79,16 @@ plug "andreyorst/kaktree" defer kaktree %{
     kaktree-enable
 }
 
+plug 'delapouite/kakoune-cd' %{
+    # Suggested mapping
+    map global user d ': enter-user-mode cd<ret>' -docstring 'cd'
+    # Suggested aliases
+    alias global cdb change-directory-current-buffer
+    alias global cdr change-directory-project-root
+    alias global ecd edit-current-buffer-directory
+    alias global pwd print-working-directory
+}
+
 # Use gnome-terminal
 hook global ModuleLoaded x11 %{
     set-option global termcmd 'gnome-terminal -e'
