@@ -9,38 +9,3 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
-
-
-# Z shell
-# Because $ZDOTDIR seems to be taking precedence over `compinit -d`
-config/zsh/.zcompdump
-config/zsh/.p10k*.zsh.zwc
-config/zsh/.zsh_history
-
-# Fish
-config/fish/completions
-config/fish/conf.d
-config/fish/fish_variables
-config/fish/functions
-
-# Kakoune folders
-config/kak/plugins
-config/kak/colors
-config/kak/autoload/standard-library
-config/newsboat/urls
-
-# Machine-local git overrides (work identity)
-config/git/config.work
-
-# Mozc
-config/mozc
-# tmux
-config/tmux/plugins
-
-# cmus folders
-config/cmus/autosave
-config/cmus/cache
-config/cmus/command-history
-config/cmus/lib.pl
-config/cmus/playlists/
-config/cmus/search-history
