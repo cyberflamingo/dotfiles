@@ -1,4 +1,4 @@
-{{- $work := promptBoolOnce . "work" "Is this a work machine" -}}
+{{- $work := promptBoolOnce . "work" "Is this a work machine" false -}}
 {{- $wsl := false -}}
 {{- if eq .chezmoi.os "linux" -}}
 {{-   $wsl = .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
