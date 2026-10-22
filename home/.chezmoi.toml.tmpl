@@ -1,0 +1,15 @@
+{{- $work := promptBoolOnce . "work" "Is this a work machine" -}}
+{{- $wsl := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   $wsl = .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
+{{- end -}}
+sourceDir = {{ .chezmoi.workingTree | quote }}
+
+[data]
+    work = {{ $work }}
+    wsl = {{ $wsl }}
+{{ if $wsl }}
+# 1Password lives on the Windows side
+[onepassword]
+    command = "op.exe"
+{{ end }}
