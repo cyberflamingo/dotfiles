@@ -1,0 +1,5 @@
+[".config/kak/plugins/plug.kak"]
+    type = "archive"
+    url = "https://github.com/robertmeta/plug.kak/archive/cf02b00f3764cbd03ce9ab6eec2f4eed035c0737.tar.gz"
+    stripComponents = 1
+    checksum.sha256 = "29b45fe9627a38c13fdc4fed7b5cfbabaae2b448c162d6e86004cbac60aa4a7a"
