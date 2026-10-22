@@ -94,9 +94,6 @@ if status is-login
     # npm
     set -x NPM_CONFIG_USERCONFIG $XDG_CONFIG_HOME/npm/npmrc
 
-    # nvm
-    # Handled by jorgebucaran/nvm.fish plugin
-
     # PostgreSQL
     set -x PSQLRC $XDG_CONFIG_HOME/pg/psqlrc
     set -x PSQL_HISTORY $XDG_STATE_HOME/psql_history
@@ -129,11 +126,11 @@ if status is-login
     set -x BUN_INSTALL "$HOME/.bun"
     fish_add_path --append "$BUN_INSTALL/bin"
 
-    # z.lua
-    set -x _ZL_DATA $XDG_DATA_HOME/zlua
-
     # Zoom
     set -x SSB_HOME $XDG_DATA_HOME/zoom
+
+    # mise (shims for non-interactive use; interactive shells run `mise activate`)
+    fish_add_path --prepend "$XDG_DATA_HOME/mise/shims"
 end
 
 # Commands to run in interactive sessions can go here
@@ -186,27 +183,11 @@ if status is-interactive
         end
     end
 
-    # asdf
-    if command -v asdf 1>/dev/null 2>&1
-        set -gx --prepend ASDF_DATA_DIR "$XDG_CONFIG_HOME/asdf"
-        # ASDF configuration code
-        if test -z $ASDF_DATA_DIR
-            set _asdf_shims "$HOME/.asdf/shims"
-        else
-            set _asdf_shims "$ASDF_DATA_DIR/shims"
-        end
-
-        # Do not use fish_add_path (added in Fish 3.2) because it
-        # potentially changes the order of items in PATH
-        if not contains $_asdf_shims $PATH
-            set -gx --prepend PATH $_asdf_shims
-        end
-        set --erase _asdf_shims
-
-        # Go
-        if test -f "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
-            source "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
-        end
+    # mise, then the tools it installs
+    if test -x "$HOME/.local/bin/mise"
+        "$HOME/.local/bin/mise" activate fish | source
+        command -q fzf; and fzf --fish | source
+        command -q zoxide; and zoxide init fish | source
     end
 
     # Keybindings vi or default (emac?)
