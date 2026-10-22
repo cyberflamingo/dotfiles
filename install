@@ -2,7 +2,7 @@
 
 set -eu -o pipefail
 
-# Use with `./install mac work`
+# Use with `./install private`
 
 DEFAULT_CONFIG_PREFIX="default"
 CONFIG_SUFFIX=".conf.yaml"
