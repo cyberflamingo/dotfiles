@@ -648,6 +648,18 @@ git worktree remove /home/alex/src/dotfiles-chezmoi
 
 Expected: an empty or trivial `chezmoi diff`. Edits from now on happen in `/home/alex/src/dotfiles/home/...` followed by `chezmoi apply`.
 
+### Cutover record (2026-10-22)
+
+Done in one sitting with `/tmp/cutover.sh`: remove the 38 symlinks and the real `~/.zshenv`, copy the 26 ignored runtime files from the old tree, `chezmoi init`, `chezmoi apply`, with an automatic rollback to the snapshot on any error. The rollback path was written but never exercised.
+
+What the run showed and what changed in the plan as a result:
+
+- `~/.zshenv` was not a symlink. Bun's installer had replaced it with a regular file and appended two completion lines. The user chose to move them into `.zshrc.local` (their comment kept); the real file is backed up as `zshenv-real-backup`.
+- Result: 74 files created, 4 changed. The 4 are directories whose permissions chezmoi tightened (`.config` 777 to 750, `.gnupg` 777 to 700, `.local` and `.local/bin` 755 to 750).
+- Verification: `chezmoi verify` clean, 0 leftover symlinks, the same 133 environment variable names, identical effective git identity hashes, `PASS zsh` and `PASS fish` on the real home. The notes check (Step 1b) had printed `match` for both work files beforehand, so `chezmoi apply` rewrote them with identical bytes.
+- chezmoi's source directory is currently the worktree. If the worktree is removed before Step 7, chezmoi commands fail until `chezmoi init --source <dir>` is run again.
+- `~/.cache/dotfiles-cutover/` holds a copy of `work.env`. Delete it once the tokens are rotated and the cutover has proven itself.
+
 ---
 
 ## Self-review against the spec
