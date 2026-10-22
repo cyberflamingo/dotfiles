@@ -1,5 +1,5 @@
 [user]
-	name = Alexandre Mercier
+	name = CyberFlamingo
 	email = 19971275+cyberflamingo@users.noreply.github.com
 	signingkey = 04B3E87D1E4E0D83
 [core]
@@ -64,5 +64,8 @@
 	side-by-side = true
 [alias]
 	resotre = restore
+	mergemain = !git fetch origin main && git merge origin/main
 [tag]
 	gpgSign = true
+[include]
+	path = config.work

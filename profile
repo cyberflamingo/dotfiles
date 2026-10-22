@@ -138,3 +138,24 @@ export _ZL_DATA=$XDG_DATA_HOME/zlua
 
 # Zoom
 export SSB_HOME=$XDG_DATA_HOME/zoom
+
+# asdf
+export ASDF_DATA_DIR="$XDG_CONFIG_HOME/asdf"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+[ -r "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+
+# Bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# WSL needs DISPLAY for X apps
+if grep -qi microsoft /proc/version 2>/dev/null; then
+    export DISPLAY=:0
+fi
+
+# Machine-local values (work tokens, endpoints, WSL helpers). Not tracked in git.
+if [ -r "$XDG_CONFIG_HOME/shell/work.env" ]; then
+    # shellcheck source=/dev/null
+    . "$XDG_CONFIG_HOME/shell/work.env"
+fi
