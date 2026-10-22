@@ -1,8 +1,8 @@
 if status is-login
     if test "$EUID" = 0
-        umask 002
+        umask 027
     else
-        umask 022
+        umask 027
     end
 
     # set fish_add_path --prepend so it includes user's private bin if it exists
@@ -38,6 +38,15 @@ if status is-login
     # Pager
     set -u less (which less)
     set -x PAGER $less
+
+    # Colors for man pages (through less)
+    set -x LESS_TERMCAP_mb (printf '\033[1;31m') # begin blink
+    set -x LESS_TERMCAP_md (printf '\033[1;36m') # begin bold
+    set -x LESS_TERMCAP_me (printf '\033[0m') # reset bold/blink
+    set -x LESS_TERMCAP_so (printf '\033[01;33m') # begin reverse video
+    set -x LESS_TERMCAP_se (printf '\033[0m') # reset reverse video
+    set -x LESS_TERMCAP_us (printf '\033[1;32m') # begin underline
+    set -x LESS_TERMCAP_ue (printf '\033[0m') # reset underline
 
     # Aspell
     set -x ASPELL_CONF "per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; \
@@ -113,6 +122,13 @@ if status is-login
     # Wego
     set -x WEGORC $XDG_CONFIG_HOME/wego/wegorc
 
+    # Wine
+    set -x WINEPREFIX "$XDG_DATA_HOME"/wineprefixes/default
+
+    # Bun
+    set -x BUN_INSTALL "$HOME/.bun"
+    fish_add_path --append "$BUN_INSTALL/bin"
+
     # z.lua
     set -x _ZL_DATA $XDG_DATA_HOME/zlua
 
@@ -128,21 +144,10 @@ if status is-interactive
     test -x /usr/bin/lesspipe && eval (SHELL=/bin/sh lesspipe)
 
     # enable color support of ls and also add handy aliases
+    # (the aliases themselves now live in ~/.aliases)
     if test -x /usr/bin/dircolors
         test -r ~/.dircolors && eval (dircolors -c ~/.dircolors) || eval (dircolors -c)
-        alias ls='ls --color=auto'
-        alias dir='dir --color=auto'
-        alias vdir='vdir --color=auto'
-
-        alias grep='grep --color=auto'
-        alias fgrep='fgrep --color=auto'
-        alias egrep='egrep --color=auto'
     end
-
-    # some more ls aliases
-    alias ll='ls -alF'
-    alias la='ls -A'
-    alias l='ls -CF'
 
     # Alias definitions.
     # You may want to put all your additions into a separate file like
@@ -151,6 +156,12 @@ if status is-interactive
 
     if test -f ~/.aliases
         . ~/.aliases
+    end
+
+    # fish has no $OLDPWD, so rmcdir overrides the shared alias
+    function rmcdir --description 'Remove the current (empty) directory and go up'
+        set -l dir $PWD
+        cd ..; and rmdir $dir; or cd $dir
     end
 
     # colored GCC warnings and errors
@@ -164,8 +175,8 @@ if status is-interactive
     # fisher install lilyball/nix-env.fish
 
     # Ruby
-    if command -v rbenv 1>/dev/null 2>&1
-        rbenv init - fish | source
+    if test -x "$RBENV_ROOT/bin/rbenv" # not `command -v`: it walks the slow /mnt/c PATH entries on WSL
+        "$RBENV_ROOT/bin/rbenv" init - fish | source
     end
 
     # Python
@@ -175,11 +186,36 @@ if status is-interactive
         end
     end
 
+    # asdf
+    if command -v asdf 1>/dev/null 2>&1
+        set -gx --prepend ASDF_DATA_DIR "$XDG_CONFIG_HOME/asdf"
+        # ASDF configuration code
+        if test -z $ASDF_DATA_DIR
+            set _asdf_shims "$HOME/.asdf/shims"
+        else
+            set _asdf_shims "$ASDF_DATA_DIR/shims"
+        end
+
+        # Do not use fish_add_path (added in Fish 3.2) because it
+        # potentially changes the order of items in PATH
+        if not contains $_asdf_shims $PATH
+            set -gx --prepend PATH $_asdf_shims
+        end
+        set --erase _asdf_shims
+
+        # Go
+        if test -f "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
+            source "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
+        end
+    end
+
     # Keybindings vi or default (emac?)
     # fish_vi_key_bindings
     # fish_default_key_bindings
 
-    starship init fish | source
+    if command -v starship 1>/dev/null 2>&1
+        starship init fish | source
+    end
 end
 
 # Executed when login shell exits.

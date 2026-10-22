@@ -1,23 +1,21 @@
 # Imported from bashrc and zshrc
+# Only plain `alias name=value` lines here: bash, zsh and fish all source this file.
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# color support, moved here from bashrc and the fish config
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias diff='diff --color=auto'
+alias ip='ip --color=auto'
+
 # safer commands
 alias copy="cp -i"
-alias move="vm -i"
+alias move="mv -i"
 # safe remove
-move_to_trash() {
-    if ! [ -x "$(command -v gioo)" ]; then
-        echo "Command 'gio' not found, exiting."
-        return 127
-    fi
-
-    echo "Moving files or directories to the trash..."
-    gio trash "$@"
-}
-alias rmv="move_to_trash"
+alias rmv="gio trash"
 
 # Grml-Zsh aliases
 alias ...='cd ../../'
@@ -42,7 +40,7 @@ alias mpip='python3 -m pip'
 alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
 alias stonky='stonky --config "$XDG_CONFIG_HOME"/stonky/stonky.cfg'
 alias fleets='ENV_FILE_PATH="$XDG_CONFIG_HOME"/fleets/prod.env fleets'
-alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
+# alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
 alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
 

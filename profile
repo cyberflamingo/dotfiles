@@ -89,6 +89,19 @@ export PATH="$PATH:$JAVA_HOME/bin"
 
 # LESS
 export LESSHISTFILE=-
+# printf instead of $'...', which is not POSIX
+LESS_TERMCAP_mb=$(printf '\033[1;31m')  # begin blink
+LESS_TERMCAP_md=$(printf '\033[1;36m')  # begin bold
+LESS_TERMCAP_me=$(printf '\033[0m')     # reset bold/blink
+LESS_TERMCAP_so=$(printf '\033[01;33m') # begin reverse video
+LESS_TERMCAP_se=$(printf '\033[0m')     # reset reverse video
+LESS_TERMCAP_us=$(printf '\033[1;32m')  # begin underline
+LESS_TERMCAP_ue=$(printf '\033[0m')     # reset underline
+export LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue
+
+# Pager
+PAGER=$(command -v less)
+export PAGER
 
 # minikube
 export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
@@ -99,11 +112,6 @@ export TERMINFO_DIRS="$XDG_DATA_HOME"/terminfo:/usr/share/terminfo
 
 # npm
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
-
-# nvm
-export NVM_DIR="$XDG_DATA_HOME"/nvm
-# shellcheck source=/dev/null
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # PostgreSQL
 export PSQLRC=$XDG_CONFIG_HOME/pg/psqlrc
@@ -138,3 +146,24 @@ export _ZL_DATA=$XDG_DATA_HOME/zlua
 
 # Zoom
 export SSB_HOME=$XDG_DATA_HOME/zoom
+
+# asdf
+export ASDF_DATA_DIR="$XDG_CONFIG_HOME/asdf"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+[ -r "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+
+# Bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# WSL needs DISPLAY for X apps
+if grep -qi microsoft /proc/version 2>/dev/null; then
+    export DISPLAY=:0
+fi
+
+# Machine-local values (work tokens, endpoints, WSL helpers). Not tracked in git.
+if [ -r "$XDG_CONFIG_HOME/shell/work.env" ]; then
+    # shellcheck source=/dev/null
+    . "$XDG_CONFIG_HOME/shell/work.env"
+fi
