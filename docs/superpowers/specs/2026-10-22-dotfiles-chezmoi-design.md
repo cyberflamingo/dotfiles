@@ -47,9 +47,9 @@ The repo is public. No work hostnames, work email, internal tool names or tokens
 
 Personal (non-work) secrets come from Proton Pass CLI (`pass-cli`) through chezmoi's generic secret functions (`secret.command = "pass-cli"`, `secretJSON "item" "view" ... "--output=json"`). Work secrets keep using the native 1Password functions. Only one generic secret command can be configured, which is fine because 1Password does not use it.
 
-- Inventory first: only add a personal secret to a template if a file actually needs it.
-- `pass-cli` is installed from a pinned release with a checksum (`.chezmoiexternal.toml`), not `curl | bash`.
-- Not yet verified: headless login and credential storage on WSL and no-GUI machines. Test this before relying on it. Requires a paid Proton Pass plan.
+- No personal secret is stored in a file today. This is groundwork only: no template reads from Proton Pass yet.
+- Groundwork: `secret.command = "pass-cli"` in the personal profile of `.chezmoi.toml.tmpl`, `pass-cli` installed from a pinned release with a checksum (`.chezmoiexternal.toml`, not `curl | bash`), and a short README note with the template pattern to use when the first secret appears.
+- Verify as part of the groundwork: `pass-cli login`, then reading one test item, on the personal Linux desktop and on WSL. Headless login and credential storage on no-GUI machines are not yet confirmed. Requires a paid Proton Pass plan.
 
 ## Toolchains
 
@@ -123,5 +123,4 @@ Quick install vs full install, done last: package lists live in `.chezmoidata/` 
 
 ## Open items
 
-- Which personal secrets actually need to be in files (drives how much Proton Pass integration is needed).
 - Headless login and credential storage for `pass-cli` on WSL and no-GUI machines.
