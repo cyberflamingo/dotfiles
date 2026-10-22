@@ -480,10 +480,9 @@ Expected: `lint ok`. Fix any shellcheck or shfmt finding in the script before co
 tests/shell-parity.sh
 ```
 
-Expected: `FAIL zsh` and/or `FAIL fish` with a unified diff. From reading the files, fish should show:
-- `alias:copy`, `alias:move`, `alias:rmv`, `alias:da`, `alias:dir`, `alias:mpip`, `alias:rmcdir`, `alias:isodate` missing (fish cannot parse the `move_to_trash() {` function in `~/.aliases`, so none of the file loads),
-- `var:WINEPREFIX=` and `var:BUN_INSTALL=` empty,
-- `var:PAGER=` and the `LESS_TERMCAP_*` values different or empty.
+Expected (observed when this plan was executed): `FAIL zsh` with a single differing line (`var:PAGER=` in bash, `var:PAGER=less` in zsh, because z4h exports it), and `FAIL fish` with every `alias:`, `path:` and `var:` line missing or empty. fish loads nothing because `config/fish/config.fish` has a syntax error (the asdf Go line, around line 196: `source (echo $ASDF_DATA_DIR | if test -z $it; ...)`), and fish skips a file it cannot parse. Task 4 fixes that first.
+
+An earlier version of the script without `env -i` showed `PASS zsh` and a half-empty fish diff, because every shell inherited the caller's environment. If the output ever looks too good, check that `env -i` is still in `dump`.
 
 If a shell prints `no output`, rerun with `PARITY_DEBUG=1 tests/shell-parity.sh zsh` and read the raw output. If the pty wrapper itself misbehaves (for example `script` exits before the shell prints), replace the `script -qec ...` call in `dump` with a direct `"$shell" -ilc "$snippet"` call and keep going; the comparison logic is unchanged.
 
@@ -541,6 +540,34 @@ Expected: a `zprof` table (name, calls, time) listing the most expensive functio
 **Files:**
 - Rewrite: `aliases`
 - Modify: `config/fish/config.fish`
+
+- [ ] **Step 0: Fix the fish syntax error so that `config.fish` loads at all**
+
+```bash
+fish -n config/fish/config.fish
+```
+
+Expected before the fix: an error at the asdf Go line (`Expected end of the statement, but found a string`, around line 196). Edit `config/fish/config.fish`, replace:
+
+```fish
+        source (echo $ASDF_DATA_DIR | if test -z $it; echo $HOME/.asdf; else echo $it; end)/plugins/golang/set-env.fish
+```
+
+with:
+
+```fish
+        if test -f "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
+            source "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
+        end
+```
+
+Check again:
+
+```bash
+fish -n config/fish/config.fish && echo "fish config parses"
+```
+
+Expected: `fish config parses`. Add `fish -n config/fish/config.fish` to every later fish edit step as the first check.
 
 - [ ] **Step 1: Replace `aliases`**
 
