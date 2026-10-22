@@ -1074,7 +1074,7 @@ with:
     unset _pipx_comp
 ```
 
-Left as they are on purpose: the `zsh-autosuggestions` block (its `if [ -f /usr/share/zsh-autosuggestions/... ]` never runs here, so the user's `fg=#999` suggestion color has never applied under z4h; moving the export out of the `if` would change what the user sees, so ask first), the asdf block with its second `compinit` (goes with asdf in plan 2), and `bindkey -e`.
+One behaviour change, approved by the user: in the `zsh-autosuggestions` block, the `ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'` export moves out of the `if [ -f /usr/share/zsh-autosuggestions/... ]` (that file does not exist here, so the color never applied under z4h). Left as they are on purpose: the asdf block with its second `compinit` (goes with asdf in plan 2), and `bindkey -e`.
 
 - [ ] **Step 3: Smoke test**
 

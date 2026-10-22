@@ -76,9 +76,9 @@ setopt hist_ignore_space      # ignore commands that start with space
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     # shellcheck source=/dev/null
     . /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    # change suggestion color
-    export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
 fi
+# change suggestion color (outside the `if`: z4h ships its own plugin, the system file above doesn't exist here)
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
 
 # enable command-not-found if installed
 if [ -f /etc/zsh_command_not_found ]; then
