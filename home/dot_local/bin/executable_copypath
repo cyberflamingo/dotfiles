@@ -1,0 +1,10 @@
+#!/bin/sh
+# Copy the absolute path of a file or directory (default: the current directory) to the clipboard.
+target=${1:-.}
+if [ -d "$target" ]; then
+    path=$(cd -- "$target" && pwd -P)
+else
+    dir=$(cd -- "$(dirname -- "$target")" && pwd -P) || exit 1
+    path=$dir/$(basename -- "$target")
+fi
+printf '%s' "$path" | clipcopy && printf 'copied: %s\n' "$path" >&2

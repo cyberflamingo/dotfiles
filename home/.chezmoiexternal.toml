@@ -3,3 +3,27 @@
     url = "https://github.com/robertmeta/plug.kak/archive/cf02b00f3764cbd03ce9ab6eec2f4eed035c0737.tar.gz"
     stripComponents = 1
     checksum.sha256 = "29b45fe9627a38c13fdc4fed7b5cfbabaae2b448c162d6e86004cbac60aa4a7a"
+
+[".local/share/zsh/plugins/zsh-autosuggestions"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/e52ee8ca55bcc56a17c828767a3f98f22a68d4eb.tar.gz"
+    stripComponents = 1
+    checksum.sha256 = "166fad9326c99904fd3b16b5d770efb4f5df39a674599e72bba8fc41636ab065"
+
+[".local/share/zsh/plugins/zsh-syntax-highlighting"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/db085e4661f6aafd24e5acb5b2e17e4dd5dddf3e.tar.gz"
+    stripComponents = 1
+    checksum.sha256 = "874999413d147b7ad6776077e1b756d31d68284f9ef2ef240b33a4c842f0e1d8"
+
+[".local/share/zsh/plugins/zsh-completions"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-completions/archive/28c5bdcaf81bb89e56d0df8267d822c3b8aed9e0.tar.gz"
+    stripComponents = 1
+    checksum.sha256 = "84d692bfaaff3c27eb08da5f917c68f45727003253795a6a40dfbc8e314f607b"
+
+[".local/share/zsh/plugins/fzf-tab"]
+    type = "archive"
+    url = "https://github.com/Aloxaf/fzf-tab/archive/d7e0234614dbe5369fdd760907d12c0e05a4dccc.tar.gz"
+    stripComponents = 1
+    checksum.sha256 = "3f0f56c168ab59ad87363a15931f27847eac5dfc34e10a033a04ae84372c56ac"

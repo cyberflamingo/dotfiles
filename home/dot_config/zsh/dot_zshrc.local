@@ -72,12 +72,7 @@ bindkey ' ' magic-space # do history expansion on space
 # History configurations
 setopt hist_ignore_space      # ignore commands that start with space
 
-# enable auto-suggestions based on the history
-if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    # shellcheck source=/dev/null
-    . /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-# change suggestion color (outside the `if`: z4h ships its own plugin, the system file above doesn't exist here)
+# change suggestion color (the plugin itself is loaded by .zshrc from ~/.local/share/zsh/plugins)
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
 
 # enable command-not-found if installed
@@ -104,17 +99,6 @@ if command -v pipx 1>/dev/null 2>&1; then
     [ -s "$_pipx_comp" ] || register-python-argcomplete pipx >"$_pipx_comp"
     source "$_pipx_comp"
     unset _pipx_comp
-fi
-
-# asdf
-if command -v asdf 1>/dev/null 2>&1; then
-    # append completions to fpath
-    fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
-    # initialise completions with ZSH's compinit
-    autoload -Uz compinit && compinit
-
-    # Go
-    . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
 fi
 
 # bun completions
