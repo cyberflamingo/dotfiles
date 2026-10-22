@@ -96,7 +96,7 @@ zoxide = "X.Y.Z"
 fzf = "X.Y.Z"
 ```
 
-Check that no placeholder is left: `grep -c 'X.Y.Z' home/dot_config/mise/config.toml` must print `0`.
+Check that no placeholder is left: `grep -c 'X.Y.Z' home/dot_config/mise/config.toml` must print `0`. (Executed on 2026-10-22 with uv 0.13.4, starship 1.27.0, zoxide 0.10.0, fzf 0.74.5.)
 
 - [ ] **Step 4: Apply into a scratch home and install the tools there**
 
@@ -449,16 +449,16 @@ setopt always_to_end auto_cd auto_param_slash auto_pushd c_bases auto_menu \
 # zsh does not read ~/.profile by itself
 [[ -r ~/.profile ]] && source ~/.profile
 
-# Extend PATH.   # (yours)
+# Extend PATH.
 path=(~/bin $path)
 
-# Export environment variables.   # (yours)
+# Export environment variables.
 export GPG_TTY=$TTY
 
 # Tools managed by mise (node, go, uv, starship, zoxide, fzf)
-[[ -x ~/.local/bin/mise ]] && eval "$(~/.local/bin/mise activate zsh)"
+[[ -x $HOME/.local/bin/mise ]] && eval "$("$HOME"/.local/bin/mise activate zsh)"
 
-## Completion: plugin completions and the Alacritty ones on fpath, then compinit.
+## Completion: plugin completions and the Alacritty ones on fpath, then compinit
 zsh_plugins=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins
 fpath=("$zsh_plugins"/zsh-completions/src "$ZDOTDIR"/.zsh_functions $fpath)
 autoload -Uz compinit
@@ -472,17 +472,22 @@ else
 fi
 unset _zcompdump
 
-# Source additional local files if they exist.   # (yours)
+# Improve ssh completions
+zstyle ':completion:*:ssh:argument-1:'       tag-order  hosts users
+zstyle ':completion:*:scp:argument-rest:'    tag-order  hosts files users
+zstyle ':completion:*:(ssh|scp|rdp):*:hosts' hosts
+
+# Source additional local files if they exist.
 source "$ZDOTDIR"/.zshrc.local
 
-# Autoload functions.   # (yours)
+# Autoload functions.
 autoload -Uz zmv
 
-# Define functions and completions.   # (yours)
+# Define functions and completions.
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 compdef _directories md
 
-source "$ZDOTDIR"/.zshrc.grml # Grml-Zsh functions   # (yours)
+source "$ZDOTDIR"/.zshrc.grml # Grml-Zsh functions
 
 # Define named directories: ~w <=> Windows home directory on WSL.
 # Found on PATH (entries under /mnt/c/Users/<name>/AppData), so no Windows process is started.
@@ -496,12 +501,15 @@ if [[ -n $WSL_DISTRO_NAME ]]; then
     unset _p
 fi
 
-# Add flags to existing aliases.   # (yours)
+# Define aliases.
+# alias tree='tree -a .git'
+
+# Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} -A"
 
-source "$ZDOTDIR"/.aliases.grml # Grml-Zsh aliases   # (yours)
+source "$ZDOTDIR"/.aliases.grml # Grml-Zsh aliases
 
-# Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.   # (yours)
+# Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 setopt append_history    # append history list to the history file (default)
@@ -511,7 +519,6 @@ setopt pushd_ignore_dups # don't push the same dir twice
 setopt noglobdots        # * shouldn't match dotfiles. ever.
 setopt noshwordsplit     # use zsh style word splitting
 setopt noclobber         # prevent from overwriting an existing file
-setopt ignore_eof        # Ctrl+D does not close the shell   # (yours, was under "Prompt (p10k)")
 
 ## Key bindings. Widgets are defined before the plugins load, so that they can wrap them.
 bindkey -e
@@ -523,21 +530,21 @@ bindkey '^[[3~' delete-char                                            # Delete
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey '^[[A' up-line-or-beginning-search;  bindkey '^[OA' up-line-or-beginning-search;  bindkey '^P' up-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search;   bindkey '^[OA' up-line-or-beginning-search;   bindkey '^P' up-line-or-beginning-search
 bindkey '^[[B' down-line-or-beginning-search; bindkey '^[OB' down-line-or-beginning-search; bindkey '^N' down-line-or-beginning-search
 
-# Ctrl+Backspace kills a short word, Ctrl+Alt+Backspace a whole shell word   # (yours: z4h-backward-kill-word, -zword)
+# Ctrl+Backspace kills a short word, Ctrl+Alt+Backspace a whole shell word
 backward-kill-subword() { local WORDCHARS=; zle backward-kill-word }
 zle -N backward-kill-subword
 bindkey '^H' backward-kill-subword
 bindkey '^[^?' backward-kill-word;  bindkey '^[^H' backward-kill-word
 
-bindkey '^_' undo;  bindkey '^[[Z' undo   # undo the last command line change   # (yours)
-bindkey '^[/' redo                        # redo the last undone command line change   # (yours)
+bindkey '^_' undo;  bindkey '^[[Z' undo  # undo the last command line change
+bindkey '^[/' redo                       # redo the last undone command line change
 
-#k# jump to after first word (for adding options)   # (yours)
+#k# jump to after first word (for adding options)
 bindkey '^F' jump_after_first_word
-#k# A smart shortcut for \kbd{fg<enter>}   # (yours)
+#k# A smart shortcut for \kbd{fg<enter>}
 bindkey '^Z' grml-zsh-fg
 
 # Esc Esc: put sudo in front of the command line (or of the last command)
@@ -552,7 +559,7 @@ sudo-command-line() {
 zle -N sudo-command-line
 bindkey '\e\e' sudo-command-line
 
-# Alt+Left/Right/Up/Down: cd back, forward, to the parent, into a child directory   # (yours)
+# Alt+Left/Right/Up/Down: cd into the previous, next, parent or a child directory
 typeset -ga _dir_back _dir_fwd
 typeset -g _dir_skip=
 _dir_track() {
@@ -605,7 +612,8 @@ source "$zsh_plugins"/zsh-autosuggestions/zsh-autosuggestions.zsh
 source "$zsh_plugins"/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
 
-What was dropped on purpose: every `zstyle ':z4h:...'` line, `z4h install/init/source/load/bindkey`, the oh-my-zsh libs and the `npm`, `pip`, `systemadmin` and `web-search` plugins (the user dropped them), `z.lua`, the `POSTEDIT` hack and the "Prompt (p10k)" comment (both belonged to the p10k two-line prompt), and z4h's SSH teleport and direnv settings (both were off).
+
+The `# (yours)` markers in the first draft of this plan are gone from the file: the user's own lines are simply kept as they were. What was dropped on purpose: `setopt ignore_eof` and the `z4h-eof` binding (together they made Ctrl+D close the shell cleanly under the p10k prompt; without the binding `ignore_eof` would make Ctrl+D do nothing, and plain zsh already exits on Ctrl+D), every `zstyle ':z4h:...'` line, `z4h install/init/source/load/bindkey`, the oh-my-zsh libs and the `npm`, `pip`, `systemadmin` and `web-search` plugins (the user dropped them), `z.lua`, the `POSTEDIT` hack and the "Prompt (p10k)" comment (both belonged to the p10k two-line prompt), and z4h's SSH teleport and direnv settings (both were off).
 
 - [ ] **Step 5: `.zshrc.local`**
 
@@ -624,7 +632,7 @@ if command -v asdf 1>/dev/null 2>&1; then
 fi
 ```
 
-The comment above the autosuggestions variable says `z4h ships its own plugin`: edit it to say `the plugin is loaded from ~/.local/share/zsh/plugins`, keeping the export itself. Keep everything else: the user's history settings, zstyles, the `dircolors` and `lesspipe` lines, key bindings for Ctrl+arrows, the pipx completion and the Bun completion.
+Also delete the block that sources `/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh` if it exists (the pinned plugin is loaded by `.zshrc`; on a machine with the apt package the plugin would load twice), and change the comment above the `ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE` export to `# change suggestion color (the plugin itself is loaded by .zshrc from ~/.local/share/zsh/plugins)`, keeping the export. Keep everything else: the user's history settings, zstyles, the `dircolors` and `lesspipe` lines, key bindings for Ctrl+arrows, the pipx completion and the Bun completion.
 
 - [ ] **Step 6: Remove p10k**
 
@@ -660,41 +668,31 @@ EOF
 **Files:**
 - Modify: `tests/clean-room.sh`
 
-- [ ] **Step 1: Install zsh and mise in the container, install the three prompt tools, run all three shells**
+- [ ] **Step 1: A zsh smoke test that asserts things**
 
-Edit `tests/clean-room.sh`:
-- add `zsh` to the `apt-get install` package list;
-- after the chezmoi install, add a mise install with the same pinned URL and checksum as Task 1 (variables `mise_version=2026.10.17` and `mise_sha256=17565e268c5542d8ce944321e17af81e0b741b65af4aa7e8e010ee77376a4aa3`, passed into the container like the chezmoi ones);
-- in the `su - tester` block, after `chezmoi init ... --apply`, add `mise install starship zoxide fzf` (only these three, to keep the run short);
-- change the header comment (zsh is no longer skipped) and the last command to `~/dotfiles/tests/shell-parity.sh bash zsh fish`;
-- add a zsh smoke test after the parity run, in a pty:
+Write `tests/zsh-smoke.zsh`: it is sourced inside an interactive zsh, checks `bindkey` for 14 keys against the expected widget (Tab `fzf-tab-complete`, Up/Down `up-line-or-beginning-search` and `down-line-or-beginning-search`, Esc Esc `sudo-command-line`, Alt+arrows `cd-back`, `cd-forward`, `cd-up`, `cd-down`, `^_` `undo`, `^[/` `redo`, Ctrl+F `jump_after_first_word`, Ctrl+Z `grml-zsh-fg`, Ctrl+H `backward-kill-subword`, Ctrl+R `fzf-history-widget`), checks that `z`, `mise`, `starship` and `fzf` resolve, that the syntax-highlighting and autosuggestion functions are loaded, that `$PROMPT` mentions starship and that `auto_cd`, `share_history` and `no_beep` are set, and prints `SMOKE-OK` (exit 0) or `SMOKE-FAIL` (exit 1) with one `FAIL ...` line per problem. Run it as:
 
 ```bash
-script -qec 'env -i HOME="$HOME" USER="$USER" TERM=xterm-256color PATH=/usr/bin:/bin zsh -ilc '"'"'
-    print "tab:  $(bindkey "^I" | cut -d" " -f2)"
-    print "up:   $(bindkey "^[[A" | cut -d" " -f2)"
-    print "esc:  $(bindkey "\e\e" | cut -d" " -f2)"
-    print "altL: $(bindkey "^[[1;3D" | cut -d" " -f2)"
-    print "z:    $(whence -w z)"
-    print "hl:   ${+functions[_zsh_highlight]}"
-'"'"'' /dev/null </dev/null | tr -d '\r' | tail -6
+script -qec 'env -i HOME="$HOME" USER="$USER" TERM=xterm-256color LANG=C.UTF-8 PATH=/usr/bin:/bin zsh -ilc "source tests/zsh-smoke.zsh"' /dev/null </dev/null | tr -d '\r' | tail -5
 ```
 
-Expected output: `tab:  fzf-tab-complete`, `up:   up-line-or-beginning-search`, `esc:  sudo-command-line`, `altL: cd-back`, `z:    z: function`, `hl:   1`.
+It passed on the real config and printed `FAIL bindkey ^I: want fzf-tab-complete, got expand-or-complete` and `SMOKE-FAIL` when Tab was rebound by hand. Edit `.pre-commit-config.yaml`: add `exclude: \.zsh$` to the `shellcheck` and `shfmt` hooks (neither understands zsh).
 
-- [ ] **Step 2: Run it**
+- [ ] **Step 2: Rewrite the clean room**
+
+`tests/clean-room.sh` now installs `zsh` (apt, 5.9) next to `fish`, installs mise from the same pinned release and checksum as Task 1 into the test user's `~/.local/bin` (create `/home/tester/.local` and `/home/tester/.local/bin` both owned by the user, otherwise chezmoi cannot chmod `.local`), runs `chezmoi init --promptDefaults --apply`, then `mise install starship zoxide fzf`, then `tests/shell-parity.sh` for all three shells and the smoke test above. The in-container steps live in a generated `run.sh` run with `su - tester`, to avoid nested quoting. Run it:
 
 ```bash
 shellcheck tests/clean-room.sh && shfmt -i 4 -bn -ci -d tests/clean-room.sh && echo "lint ok"
-timeout 900 tests/clean-room.sh 2>&1 | tail -30
+timeout 900 tests/clean-room.sh 2>&1 | tail -25
 ```
 
-Expected: `PASS zsh`, `PASS fish`, and the six smoke-test lines above. Differences in the parity diff are real drift: fix the side that is wrong, with the smallest edit, and rerun. If the container cannot reach `github.com` (mise downloads), report it.
+Expected: `chezmoi.tar.gz: OK`, `mise.tar.gz: OK`, a count of applied files (774 on 2026-10-22), `installed 3 tools`, `PASS zsh`, `PASS fish`, `SMOKE-OK`. The first full run on 2026-10-22 found two things worth knowing: the `.local` ownership problem above, and a real bug in `profile` (it used `which` for the editor, and zsh's builtin `which` prints "vi not found" on stdout, which ended up in `EDITOR` on a machine without vi). Fix: use `command -v` in `home/dot_profile` for both `kak` and `vi`.
 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add tests/clean-room.sh
+git add tests/clean-room.sh tests/zsh-smoke.zsh .pre-commit-config.yaml home/dot_profile
 git commit -F - <<'EOF'
 Clean room: install mise and zsh, test all three shells
 
@@ -761,7 +759,7 @@ diff ~/.cache/shell-tooling-cutover/env-names-before.txt /tmp/env-names-after.tx
 hyperfine -i --warmup 3 --runs 20 -N 'bash -ilc exit' 'zsh -ilc exit' 'fish -ilc exit'
 ```
 
-Expected: `PASS zsh`, `PASS fish`; the only differences in env names are `_ZL_DATA` and `ASDF_DATA_DIR` gone and `MISE_*` added; `same git identity`; zsh startup lower than before (record the numbers). Then the user opens a new terminal and checks by hand, since key bindings and the Tab menu cannot be tested without a person: Tab opens the fzf menu; Up/Down search by prefix; Esc Esc toggles `sudo`; Alt+Left/Right/Up/Down change directory; Ctrl+R opens fzf history; `z <name>` and `zi` work; `..` and `...` work; `~w` completes on WSL; the prompt is starship. If Tab shows zsh's own menu instead of fzf, add `zstyle ':completion:*' menu no` at the end of `.zshrc.local`.
+Also run the smoke test on the real home: `script -qec 'zsh -ilc "source tests/zsh-smoke.zsh"' /dev/null </dev/null | tr -d '\r' | tail -5` (expect `SMOKE-OK`). Expected: `PASS zsh`, `PASS fish`; the only differences in env names are `_ZL_DATA` and `ASDF_DATA_DIR` gone and `MISE_*` added; `same git identity`; zsh startup lower than before (record the numbers). Then the user opens a new terminal and checks by hand, since key bindings and the Tab menu cannot be tested without a person: Tab opens the fzf menu; Up/Down search by prefix; Esc Esc toggles `sudo`; Alt+Left/Right/Up/Down change directory; Ctrl+R opens fzf history; `z <name>` and `zi` work; `..` and `...` work; `~w` completes on WSL; the prompt is starship. If Tab shows zsh's own menu instead of fzf, add `zstyle ':completion:*' menu no` at the end of `.zshrc.local`.
 
 - [ ] **Step 6: Confirm no Windows process is started**
 
