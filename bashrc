@@ -150,3 +150,13 @@ fi
 if command -v pipx 1>/dev/null 2>&1; then
     eval "$(register-python-argcomplete pipx)"
 fi
+
+# asdf
+if command -v asdf 1>/dev/null 2>&1; then
+    . <(asdf completion bash)
+
+    # Go
+    . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.bash
+fi
+
+. "$HOME/.local/share/../bin/env"

@@ -118,7 +118,7 @@ z4h source "$ZDOTDIR"/.zshrc.grml # Grml-Zsh functions
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
 
 # Define aliases.
-alias tree='tree -a -I .git'
+# alias tree='tree -a .git'
 
 # Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} -A"
