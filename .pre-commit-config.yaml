@@ -28,12 +28,14 @@ repos:
     hooks:
       - id: shellcheck
         files: ^tests/
+        exclude: \.zsh$
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: 479be5958357ba5ab65ce47172117348516860e9  # frozen: v3.14.1-1
     hooks:
       - id: shfmt
         args: ["-i", "4", "-bn", "-ci"]
         files: ^tests/
+        exclude: \.zsh$
   # GitHub Actions
   - repo: https://github.com/rhysd/actionlint
     rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
