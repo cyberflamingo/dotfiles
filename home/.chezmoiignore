@@ -1,0 +1,6 @@
+{{ if .wsl }}
+.config/autostart
+.config/conky
+.config/glava
+.config/mozc
+{{ end }}

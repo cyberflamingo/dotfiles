@@ -17,9 +17,9 @@ repos:
         exclude: \.tmpl$
       # The Windows files and old bootstrap scripts have inconsistent file modes, so only scripts we own
       - id: check-executables-have-shebangs
-        files: ^(tests|local/bin)/
+        files: ^(tests|home/dot_local/bin)/
       - id: check-shebang-scripts-are-executable
-        files: ^(tests|local/bin)/
+        files: ^(tests|home/dot_local/bin)/
       - id: no-commit-to-branch
         stages: ["pre-commit"]
   # Shell scripts (the dotfiles themselves are checked by hand until cleaned up)
