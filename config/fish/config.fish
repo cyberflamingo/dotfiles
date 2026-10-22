@@ -128,21 +128,10 @@ if status is-interactive
     test -x /usr/bin/lesspipe && eval (SHELL=/bin/sh lesspipe)
 
     # enable color support of ls and also add handy aliases
+    # (the aliases themselves now live in ~/.aliases)
     if test -x /usr/bin/dircolors
         test -r ~/.dircolors && eval (dircolors -c ~/.dircolors) || eval (dircolors -c)
-        alias ls='ls --color=auto'
-        alias dir='dir --color=auto'
-        alias vdir='vdir --color=auto'
-
-        alias grep='grep --color=auto'
-        alias fgrep='fgrep --color=auto'
-        alias egrep='egrep --color=auto'
     end
-
-    # some more ls aliases
-    alias ll='ls -alF'
-    alias la='ls -A'
-    alias l='ls -CF'
 
     # Alias definitions.
     # You may want to put all your additions into a separate file like
@@ -151,6 +140,12 @@ if status is-interactive
 
     if test -f ~/.aliases
         . ~/.aliases
+    end
+
+    # fish has no $OLDPWD, so rmcdir overrides the shared alias
+    function rmcdir --description 'Remove the current (empty) directory and go up'
+        set -l dir $PWD
+        cd ..; and rmdir $dir; or cd $dir
     end
 
     # colored GCC warnings and errors
@@ -193,7 +188,9 @@ if status is-interactive
         set --erase _asdf_shims
 
         # Go
-        source (echo $ASDF_DATA_DIR | if test -z $it; echo $HOME/.asdf; else echo $it; end)/plugins/golang/set-env.fish
+        if test -f "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
+            source "$ASDF_DATA_DIR/plugins/golang/set-env.fish"
+        end
     end
 
     # Keybindings vi or default (emac?)
