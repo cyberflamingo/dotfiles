@@ -64,5 +64,8 @@
 	side-by-side = true
 [alias]
 	resotre = restore
+	mergemain = !git fetch origin main && git merge origin/main
 [tag]
 	gpgSign = true
+[include]
+	path = config.work

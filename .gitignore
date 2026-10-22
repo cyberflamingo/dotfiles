@@ -29,6 +29,9 @@ config/kak/colors
 config/kak/autoload/standard-library
 config/newsboat/urls
 
+# Machine-local git overrides (work identity)
+config/git/config.work
+
 # Mozc
 config/mozc
 # tmux
