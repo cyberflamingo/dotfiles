@@ -952,7 +952,7 @@ EOF
 - Rewrite: `config/zsh/.zshrc.local`
 - Modify: `config/zsh/.zshrc`
 
-- [ ] **Step 1: Trim the leftovers in `.zshrc`**
+- [ ] **Step 1: Targeted edits in `.zshrc`**
 
 Edit `config/zsh/.zshrc`, replace:
 
@@ -960,7 +960,7 @@ Edit `config/zsh/.zshrc`, replace:
 zstyle ':z4h:' auto-update      'yes'
 ```
 
-with:
+with (z4h no longer downloads updates at shell start; run `z4h update` by hand until plan 2 removes z4h):
 
 ```zsh
 zstyle ':z4h:' auto-update      'no'
@@ -969,155 +969,112 @@ zstyle ':z4h:' auto-update      'no'
 Edit `config/zsh/.zshrc`, replace:
 
 ```zsh
-# Enable ('yes') or disable ('no') automatic teleportation of z4h over
-# SSH when connecting to these hosts.
-zstyle ':z4h:ssh:example-hostname1'   enable 'yes'
-zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
-# The default value if none of the overrides above match the hostname.
-zstyle ':z4h:ssh:*'                   enable 'no'
-
-# Send these files over to the remote host when connecting over SSH to the
-# enabled hosts.
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
-```
-
-with:
-
-```zsh
-# z4h ssh teleportation is off everywhere.
-zstyle ':z4h:ssh:*' enable 'no'
-```
-
-Edit `config/zsh/.zshrc`, replace:
-
-```zsh
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
 ```
 
 with:
 
 ```zsh
-# Completion functions must be on fpath before `z4h init` runs compinit.
-fpath+=("$ZDOTDIR"/.zsh_functions)
+# Alacritty (must be on fpath before `z4h init`, which runs compinit)
+fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 # Install or update core components (fzf, zsh-autosuggestions, etc.) and
 ```
 
-Edit `config/zsh/.zshrc`, delete these two lines (they cancel each other, the later `noglobdots` wins):
+Edit `config/zsh/.zshrc`, delete this line (the later `setopt noglobdots` cancels it):
 
 ```zsh
 setopt glob_dots     # no special treatment for file names with a leading dot
 ```
 
-Edit `config/zsh/.zshrc`, delete this commented-out line:
+- [ ] **Step 2: Targeted deletions in `.zshrc.local`**
+
+Do not rewrite the file: the user's comments stay. Each edit below removes duplicated or dead code together with the comment that describes only that code.
+
+Edit `config/zsh/.zshrc.local`, replace (bigger history, and drop the second `compinit` that `z4h init` makes redundant):
 
 ```zsh
-# alias tree='tree -a .git'
+# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=1000
+export SAVEHIST=1000
+HISTFILE="$XDG_STATE_HOME"/zsh/history
+
+# Use modern completion system
+autoload -Uz compinit
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+
+zstyle ':completion:*' cache-path
 ```
 
-Note on `auto-update`: z4h no longer fetches updates at startup; run `z4h update` by hand until plan 2 removes z4h.
-
-- [ ] **Step 2: Rewrite `.zshrc.local`**
-
-Read the file first, then write the whole file:
+with:
 
 ```zsh
-# Local zsh additions, sourced from .zshrc after `z4h init`.
-# Environment lives in ~/.profile and aliases in ~/.aliases, both shared with
-# bash and fish.
-
-# History (compinit has already run in `z4h init`)
-HISTFILE="$XDG_STATE_HOME"/zsh/history
-[[ -d ${HISTFILE:h} ]] || mkdir -p -- "${HISTFILE:h}"
+# Keep 50000 lines of history within the shell and save it to $HISTFILE:
 HISTSIZE=50000
-SAVEHIST=50000
-setopt histignorealldups hist_ignore_space
+export SAVEHIST=50000
+HISTFILE="$XDG_STATE_HOME"/zsh/history
 
-# Completion styles
-zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command "ps -u $USER -o pid,%cpu,tty,cputime,cmd"
+zstyle ':completion:*' cache-path
+```
 
-# LS_COLORS (the color aliases live in ~/.aliases, LESS_TERMCAP_* in ~/.profile)
-if [[ -x /usr/bin/dircolors ]]; then
-    if [[ -r ~/.dircolors ]]; then
-        eval "$(dircolors -b ~/.dircolors)"
-    else
-        eval "$(dircolors -b)"
-    fi
-fi
+Edit `config/zsh/.zshrc.local`, replace (the same `list-colors` style is set again, after `dircolors`, further down):
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+```zsh
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt
+```
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+with:
 
-if [[ -f ~/.aliases ]]; then
-    # shellcheck source=/dev/null
-    . ~/.aliases
-fi
+```zsh
+zstyle ':completion:*' list-prompt
+```
 
-## Custom configuration
+Edit `config/zsh/.zshrc.local`, delete the whole Debian prompt paste, from the comment `# set variable identifying the chroot you work in (used in the prompt below)` through the closing `fi` of the `if [ -n "$force_color_prompt" ]` block, so that `# enable color support` follows directly after the `## Imported from bashrc` area. It only sets bash prompt variables.
 
-setopt notify          # report the status of background jobs immediately
-setopt numericglobsort # sort filenames numerically when it makes sense
+Edit `config/zsh/.zshrc.local`, inside the `dircolors` block delete the `alias ls=...` through `alias ip=...` lines (now in `~/.aliases`) and the seven `export LESS_TERMCAP_*` lines (now in `~/.profile`). The `# Take advantage of $LS_COLORS for completion as well` comment and its `zstyle` stay.
 
-# Other keybindings
-bindkey "^[[1;5C" vi-forward-word
-bindkey "^[[1;3C" forward-word
-bindkey "^[[1;5D" vi-backward-word
-bindkey "^[[1;3D" backward-word
+Edit `config/zsh/.zshrc.local`, delete the Alacritty block (moved to `.zshrc` in Step 1):
 
-bindkey ' ' magic-space # do history expansion on space
+```zsh
+# Alacritty
+fpath+=${ZDOTDIR:-~}/.zsh_functions
 
-# enable command-not-found if installed
-if [[ -f /etc/zsh_command_not_found ]]; then
-    # shellcheck source=/etc/zsh_command_not_found
-    . /etc/zsh_command_not_found
-fi
+```
 
-# Nix
-# shellcheck source=/dev/null
-if [[ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+Edit `config/zsh/.zshrc.local`, replace (a file test avoids the `$PATH` walk that makes `command -v` slow on WSL):
 
-# Ruby
-if (( $+commands[rbenv] )); then
-    eval "$(rbenv init - zsh)"
-fi
+```zsh
+if command -v rbenv 1>/dev/null 2>&1; then
+    eval "$(rbenv init -)"
+```
 
-# pipx completions (cached, register-python-argcomplete starts Python)
-if (( $+commands[pipx] )); then
+with:
+
+```zsh
+if [ -x "$RBENV_ROOT/bin/rbenv" ]; then # not `command -v`: it walks the slow /mnt/c PATH entries on WSL
+    eval "$("$RBENV_ROOT"/bin/rbenv init - zsh)"
+```
+
+Edit `config/zsh/.zshrc.local`, replace:
+
+```zsh
+    eval "$(register-python-argcomplete pipx)"
+```
+
+with:
+
+```zsh
+    # cached, register-python-argcomplete starts Python on every shell
     _pipx_comp="$XDG_CACHE_HOME"/zsh/pipx-completion
-    [[ -s $_pipx_comp ]] || register-python-argcomplete pipx >"$_pipx_comp"
-    autoload -U bashcompinit && bashcompinit
+    [ -s "$_pipx_comp" ] || register-python-argcomplete pipx >"$_pipx_comp"
     source "$_pipx_comp"
     unset _pipx_comp
-fi
-
-# asdf (replaced by mise in plan 2). Its fpath change needs a second compinit.
-if (( $+commands[asdf] )); then
-    fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
-    autoload -Uz compinit && compinit
-
-    # Go
-    . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
-fi
 ```
 
-What changed from the old file: removed the duplicate `compinit` before the zstyles, the Debian `debian_chroot`/`color_prompt`/`force_color_prompt` block (bash prompt code, no effect in zsh), `bindkey -e`, the duplicate `list-colors` styles, the `GCC_COLORS` export (now in `profile`), the dead `zsh-autosuggestions` block (`/usr/share/zsh-autosuggestions` does not exist; z4h ships its own), the `Alacritty` `fpath+=` line (moved before `z4h init` in Step 1), and `HISTSIZE=1000`.
+Left as they are on purpose: the `zsh-autosuggestions` block (its `if [ -f /usr/share/zsh-autosuggestions/... ]` never runs here, so the user's `fg=#999` suggestion color has never applied under z4h; moving the export out of the `if` would change what the user sees, so ask first), the asdf block with its second `compinit` (goes with asdf in plan 2), and `bindkey -e`.
 
 - [ ] **Step 3: Smoke test**
 
@@ -1126,7 +1083,7 @@ zsh -n config/zsh/.zshrc.local && echo "parses"
 script -qec 'zsh -ilc "print ok; print -r -- \$HISTSIZE; whence -w ll; whence -w _alacritty"' /dev/null | tr -d '\r' | tail -5
 ```
 
-Expected: `parses`, `ok`, `50000`, `ll: alias`, and `_alacritty: function` (completion function registered, proving the fpath move works). If `_alacritty` is not found, check that `config/zsh/.zsh_functions/_alacritty` exists and that `$ZDOTDIR` is set when `.zshrc` runs.
+Expected: `parses`, `ok`, `50000`, `ll: alias`, and `_alacritty: none`. The alacritty completion was never registered on this machine (alacritty is not installed and the committed version prints the same), so `none` is the baseline, not a failure. `print -l $fpath` should list `.../zsh/.zsh_functions`.
 
 - [ ] **Step 4: Run the parity test**
 
@@ -1143,9 +1100,10 @@ git add config/zsh/.zshrc config/zsh/.zshrc.local
 git commit -F - <<'EOF'
 Clean up zsh config
 
-Drop the duplicate compinit, Debian prompt paste and dead autosuggest
-block. Cache pipx completions, bigger history, z4h auto-update off,
-alacritty completions on fpath before compinit.
+Drop the duplicate compinit, the Debian prompt paste and the color
+settings now in profile and aliases. Cache pipx completions, check rbenv
+by file, bigger history, z4h auto-update off, alacritty fpath before
+z4h init.
 
 Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
 EOF
