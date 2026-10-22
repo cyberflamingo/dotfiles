@@ -791,6 +791,16 @@ Related changes in the same commit: `.bashrc` is sourced at the end of `~/.profi
 
 Also learned while applying: the first verification used `bash -lc 'env'`, which inherits the caller's environment, so it hid differences (removed NVM and token variables looked like losses). Compare environment names with `env -i`, as the parity test does.
 
+## Regression found after the cutover (2026-10-23)
+
+asdf's Node held global npm packages (`@googleworkspace/cli` 0.22.5, `@devcontainers/cli` 0.86.0, `opencode-ai` 1.14.19, `snyk` 1.1297.3) and asdf's shims also covered a Go tool (`gofumpt`). Once asdf left `PATH`, `gws`, `devcontainer`, `opencode`, `snyk` and `gofumpt` were missing in every new shell; the shell the work ran in still had the asdf shims on its inherited `PATH`, which hid it. The npm `prefix=${XDG_DATA_HOME}/npm` line had put globals in a directory that was never on `PATH`, so it only worked through asdf's reshim.
+
+Fix: `gws` and `devcontainer` are declared in `home/dot_config/mise/config.toml` (`npm:` backend, same versions); the user no longer uses `snyk` and `opencode`, and nothing references `gofumpt` (no config, no shell history, no VS Code settings on the WSL side), so those three were installed once and then removed again. The `prefix` line is gone from the npmrc, and the dead rbenv lines are removed (no Ruby, rbenv or gem is installed; mise can manage Ruby if that changes).
+
+Two things about the `npm:` backend: it does not run package install scripts, so `@googleworkspace/cli` needs its post-install step run by hand after every install of a new version (`mise exec -- node install.js` in `~/.local/share/mise/installs/npm-googleworkspace-cli/<version>/node_modules/.mise/@googleworkspace+cli@<version>/node_modules/@googleworkspace/cli`; it downloads the release archive and verifies its published sha256). Check what a machine should have with `PARITY_EXTRA_COMMANDS='gws devcontainer' tests/shell-parity.sh`.
+
+Also: the old `plug.kak` clone was at a 2022 commit while the pin is current upstream. kakoune loads the same with both (one existing error from the `kakoune-snippets` plugin appears with either version).
+
 ## Self-review against the spec
 
 | Spec item | Task |
