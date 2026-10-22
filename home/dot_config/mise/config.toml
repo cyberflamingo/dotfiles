@@ -1,0 +1,9 @@
+# Tools managed by mise. Exact versions on purpose: change them here, then
+# `chezmoi apply` and `mise install`. `mise upgrade --bump` shows newer ones.
+[tools]
+node = "22.17.0"
+go = "1.27.1"
+uv = "0.13.4"
+starship = "1.27.0"
+zoxide = "0.10.0"
+fzf = "0.74.5"
