@@ -89,6 +89,19 @@ export PATH="$PATH:$JAVA_HOME/bin"
 
 # LESS
 export LESSHISTFILE=-
+# printf instead of $'...', which is not POSIX
+LESS_TERMCAP_mb=$(printf '\033[1;31m')  # begin blink
+LESS_TERMCAP_md=$(printf '\033[1;36m')  # begin bold
+LESS_TERMCAP_me=$(printf '\033[0m')     # reset bold/blink
+LESS_TERMCAP_so=$(printf '\033[01;33m') # begin reverse video
+LESS_TERMCAP_se=$(printf '\033[0m')     # reset reverse video
+LESS_TERMCAP_us=$(printf '\033[1;32m')  # begin underline
+LESS_TERMCAP_ue=$(printf '\033[0m')     # reset underline
+export LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue
+
+# Pager
+PAGER=$(command -v less)
+export PAGER
 
 # minikube
 export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
