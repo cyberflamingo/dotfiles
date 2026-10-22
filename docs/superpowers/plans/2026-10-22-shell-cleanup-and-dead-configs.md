@@ -1121,127 +1121,64 @@ EOF
 Edit `bashrc`, replace:
 
 ```bash
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=1000
 HISTFILE="$XDG_STATE_HOME"/bash/history
 ```
 
-with:
+with (the user's comment above these lines stays):
 
 ```bash
-# History. ~/.profile sources this file before it defines the XDG variables,
-# so fall back to the default state directory. The directory must exist or
-# bash silently saves nothing.
 HISTSIZE=50000
 HISTFILESIZE=50000
+# ~/.profile sources this file before it defines the XDG variables, hence the fallback.
+# The directory has to exist, otherwise bash silently saves nothing.
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}"/bash/history
 mkdir -p "${HISTFILE%/*}"
 ```
 
-(Today `~/.local/state/bash` does not exist, so bash history has never been saved.)
+(Before this, `~/.local/state/bash` did not exist and, in login shells, `$XDG_STATE_HOME` was still empty when this file ran, so bash history was never saved.)
 
-- [ ] **Step 2: Remove the colour blocks that now live elsewhere**
+- [ ] **Step 2: Remove the aliases and less colors that now live elsewhere**
 
-Edit `bashrc`, replace:
+Edit `bashrc`, inside the `dircolors` block delete the `alias ls=...` through `alias ip=...` lines (now in `~/.aliases`) and the seven `export LESS_TERMCAP_*` lines (now in `~/.profile`), and the blank line they leave before `fi`. The `# enable color support of ls, less and man, and also add handy aliases` comment and the `eval "$(dircolors ...)"` lines stay. `GCC_COLORS` stays too.
 
-```bash
-# enable color support of ls, less and man, and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    if [ -r ~/.dircolors ]; then
-        eval "$(dircolors -b ~/.dircolors)"
-    else
-        eval "$(dircolors -b)"
-    fi
-
-    alias ls='ls --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias diff='diff --color=auto'
-    alias ip='ip --color=auto'
-
-    export LESS_TERMCAP_mb=$'\E[1;31m'  # begin blink
-    export LESS_TERMCAP_md=$'\E[1;36m'  # begin bold
-    export LESS_TERMCAP_me=$'\E[0m'     # reset bold/blink
-    export LESS_TERMCAP_so=$'\E[01;33m' # begin reverse video
-    export LESS_TERMCAP_se=$'\E[0m'     # reset reverse video
-    export LESS_TERMCAP_us=$'\E[1;32m'  # begin underline
-    export LESS_TERMCAP_ue=$'\E[0m'     # reset underline
-fi
-```
-
-with:
-
-```bash
-# LS_COLORS (the color aliases live in ~/.aliases, LESS_TERMCAP_* in ~/.profile)
-if [ -x /usr/bin/dircolors ]; then
-    if [ -r ~/.dircolors ]; then
-        eval "$(dircolors -b ~/.dircolors)"
-    else
-        eval "$(dircolors -b)"
-    fi
-fi
-```
+- [ ] **Step 3: Cache pipx completions, check rbenv by file, guard the uv env script**
 
 Edit `bashrc`, replace:
 
 ```bash
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-## Custom configuration
-```
-
-with:
-
-```bash
-## Custom configuration
-```
-
-- [ ] **Step 3: Cache the pipx completions and guard the uv env script**
-
-Edit `bashrc`, replace:
-
-```bash
-if command -v pipx 1>/dev/null 2>&1; then
-    eval "$(register-python-argcomplete pipx)"
-fi
-```
-
-with:
-
-```bash
-if command -v pipx 1>/dev/null 2>&1; then
-    _pipx_comp="${XDG_CACHE_HOME:-$HOME/.cache}"/pipx-completion.bash
-    [ -s "$_pipx_comp" ] || register-python-argcomplete pipx >"$_pipx_comp"
-    # shellcheck source=/dev/null
-    . "$_pipx_comp"
-    unset _pipx_comp
-fi
-```
-
-Edit `bashrc`, replace (on WSL `command -v` for an absent command walks all of `$PATH`, including the `/mnt/c` entries, and cost about 70 ms here; test the file instead):
-
-```bash
-# Ruby
 if command -v rbenv 1>/dev/null 2>&1; then
     eval "$(rbenv init -)"
 fi
 ```
 
-with:
+with (`command -v` for an absent command walks all of `$PATH`, including the `/mnt/c` entries, and cost about 70 ms here):
 
 ```bash
-# Ruby
+# not `command -v`: it walks the slow /mnt/c PATH entries on WSL. Same fallback as HISTFILE above.
 _rbenv="${RBENV_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/rbenv}"/bin/rbenv
 if [ -x "$_rbenv" ]; then
     eval "$("$_rbenv" init - bash)"
 fi
 unset _rbenv
+```
+
+Edit `bashrc`, replace:
+
+```bash
+    eval "$(register-python-argcomplete pipx)"
+```
+
+with:
+
+```bash
+    # cached, register-python-argcomplete starts Python on every shell
+    _pipx_comp="${XDG_CACHE_HOME:-$HOME/.cache}"/pipx-completion.bash
+    [ -s "$_pipx_comp" ] || register-python-argcomplete pipx >"$_pipx_comp"
+    # shellcheck source=/dev/null
+    . "$_pipx_comp"
+    unset _pipx_comp
 ```
 
 Edit `bashrc`, replace:
@@ -1259,12 +1196,12 @@ with:
 - [ ] **Step 4: Lint and run the full parity test**
 
 ```bash
-bash -n bashrc && shellcheck -s bash bashrc | head -20
+bash -n bashrc && echo "bashrc parses"
 tests/shell-parity.sh
-bash -ilc 'echo $HISTFILE; ls -d "${HISTFILE%/*}"'
+script -qec 'env -i HOME="$HOME" USER="$USER" TERM=xterm-256color PATH=/usr/bin:/bin bash -ilc "echo HISTFILE=\$HISTFILE; ls -d \${HISTFILE%/*}"' /dev/null </dev/null | tr -d '\r' | tail -2
 ```
 
-Expected: no syntax error (shellcheck notes already present in the Debian-derived file may remain; do not fix unrelated ones), `PASS zsh`, `PASS fish`, and a history path under `~/.local/state/bash` that exists.
+Expected: `bashrc parses`, `PASS zsh`, `PASS fish`, and a history path under `~/.local/state/bash` that exists. Do not fix shellcheck notes that were already in the Debian-derived file.
 
 - [ ] **Step 5: Commit**
 
@@ -1410,6 +1347,7 @@ Not covered here on purpose, left for the next plans: prompt parity (starship in
 
 ## Notes for plan 2
 
+- z4h runs `cmd.exe /c set` (a Windows-side process that dumps the Windows environment) on every zsh start, in `-z4h-init-wsl`, to find the Windows home for the `~w` shortcut. It adds to startup time and is visible to endpoint monitoring. z4h has no switch for it. Removing z4h removes it; `hash -d w=...` becomes a static path.
 - `z` (directory jumping) is currently z.lua, loaded by z4h in zsh only. bash has no `z`, and fish only has it if the `jethrokuan/z` fisher plugin is installed. Plan 2 replaces it with zoxide in all three shells (see the spec): install zoxide and a current fzf (`zi` needs fzf 0.51 or newer, the z4h one is 0.33) through mise, run `zoxide import z.lua "$_ZL_DATA"` once, add `z` to the parity test, then drop `_ZL_DATA` from `profile` and fish.
 - Removing z4h also removes what it provides: the login shell `/usr/local/bin/zsh` (a root-owned musl build, `/usr/bin/zsh` does not exist; check `bootstrap/Linux/install-zsh.sh`) and `fzf` (comes from `~/.cache/zsh4humans/v5/fzf`). Plan 2 must install zsh and fzf from a supported source and `chsh` back before z4h goes.
 - The asdf blocks in all three shells (including the second `compinit` in zsh) disappear with the mise migration.

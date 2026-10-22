@@ -16,9 +16,12 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=1000
-HISTFILE="$XDG_STATE_HOME"/bash/history
+HISTSIZE=50000
+HISTFILESIZE=50000
+# ~/.profile sources this file before it defines the XDG variables, hence the fallback.
+# The directory has to exist, otherwise bash silently saves nothing.
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}"/bash/history
+mkdir -p "${HISTFILE%/*}"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -80,24 +83,6 @@ if [ -x /usr/bin/dircolors ]; then
     else
         eval "$(dircolors -b)"
     fi
-
-    alias ls='ls --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias diff='diff --color=auto'
-    alias ip='ip --color=auto'
-
-    export LESS_TERMCAP_mb=$'\E[1;31m'  # begin blink
-    export LESS_TERMCAP_md=$'\E[1;36m'  # begin bold
-    export LESS_TERMCAP_me=$'\E[0m'     # reset bold/blink
-    export LESS_TERMCAP_so=$'\E[01;33m' # begin reverse video
-    export LESS_TERMCAP_se=$'\E[0m'     # reset reverse video
-    export LESS_TERMCAP_us=$'\E[1;32m'  # begin underline
-    export LESS_TERMCAP_ue=$'\E[0m'     # reset underline
 fi
 
 # Alias definitions.
@@ -142,13 +127,21 @@ source "$BASH_COMPLETION_USER_FILE"/alacritty
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 # Ruby
-if command -v rbenv 1>/dev/null 2>&1; then
-    eval "$(rbenv init -)"
+# not `command -v`: it walks the slow /mnt/c PATH entries on WSL. Same fallback as HISTFILE above.
+_rbenv="${RBENV_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/rbenv}"/bin/rbenv
+if [ -x "$_rbenv" ]; then
+    eval "$("$_rbenv" init - bash)"
 fi
+unset _rbenv
 
 # Python
 if command -v pipx 1>/dev/null 2>&1; then
-    eval "$(register-python-argcomplete pipx)"
+    # cached, register-python-argcomplete starts Python on every shell
+    _pipx_comp="${XDG_CACHE_HOME:-$HOME/.cache}"/pipx-completion.bash
+    [ -s "$_pipx_comp" ] || register-python-argcomplete pipx >"$_pipx_comp"
+    # shellcheck source=/dev/null
+    . "$_pipx_comp"
+    unset _pipx_comp
 fi
 
 # asdf
@@ -159,4 +152,4 @@ if command -v asdf 1>/dev/null 2>&1; then
     . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.bash
 fi
 
-. "$HOME/.local/share/../bin/env"
+[ -r "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
