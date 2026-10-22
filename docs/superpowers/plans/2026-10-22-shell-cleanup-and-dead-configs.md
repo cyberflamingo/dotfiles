@@ -16,6 +16,7 @@
 
 - Work on branch `chezmoi-migration`. Before each commit, `git config user.email` must print `19971275+cyberflamingo@users.noreply.github.com`.
 - `~/.profile`, `~/.bashrc`, `~/.aliases`, `~/.config/zsh`, `~/.config/fish` and `~/.config/git` are symlinks into this repo. Every edit is live in the user's shells immediately.
+- Keep the user's existing comments and notes. Make the smallest edit that fixes the code: change or delete a line only when it is broken or moves elsewhere, delete a comment only together with the code it describes, and add comments only for new code. Never replace a whole file to reorganise or reword it.
 - Stage files by name. Never `git add -A` or `git commit -a`.
 - Never print token values. When checking `profile` or `work.env`, print variable names only.
 - Do not run `powershell.exe`, registry reads or other Windows-side probes (user rule: they trigger SOC alerts).
@@ -425,7 +426,13 @@ for p in (string split " " -- $PARITY_PATHS)
 end'
 
 dump() {
-    local shell=$1 snippet raw cmd
+    local shell=$1 snippet raw cmd dir
+    local existing=()
+    # fish_add_path skips directories that do not exist, bash does not: only
+    # compare the ones that exist on this machine.
+    for dir in "${PATH_DIRS[@]}"; do
+        [ -d "$dir" ] && existing+=("$dir")
+    done
     case $shell in
         bash) snippet=$BASH_SNIPPET ;;
         zsh) snippet=$ZSH_SNIPPET ;;
@@ -443,7 +450,7 @@ dump() {
     # shellcheck disable=SC2016
     cmd+=' PARITY_VARS="$PARITY_VARS" PARITY_ALIASES="$PARITY_ALIASES" PARITY_PATHS="$PARITY_PATHS"'
     cmd+=" $shell -ilc \"\$PARITY_SNIPPET\""
-    raw=$(PARITY_VARS="${VARS[*]}" PARITY_ALIASES="${ALIASES[*]}" PARITY_PATHS="${PATH_DIRS[*]}" \
+    raw=$(PARITY_VARS="${VARS[*]}" PARITY_ALIASES="${ALIASES[*]}" PARITY_PATHS="${existing[*]}" \
         PARITY_SNIPPET="$snippet" \
         script -qec "$cmd" /dev/null </dev/null | tr -d '\r')
     [ -n "${PARITY_DEBUG:-}" ] && printf '%s\n' "$raw" >&2
@@ -637,54 +644,61 @@ fish -n config/fish/config.fish && echo "fish config parses"
 
 Expected: `fish config parses`. Add `fish -n config/fish/config.fish` to every later fish edit step as the first check.
 
-- [ ] **Step 1: Replace `aliases`**
+- [ ] **Step 1: Make minimal edits to `aliases`**
 
-Read `aliases` first, then write the whole file:
+Keep the user's comments and layout; change only what is broken or needed. Edit `aliases`, replace:
 
 ```sh
-# Aliases shared by bash, zsh and fish.
-# Keep every line in the form `alias name='value'`: no functions and no
-# shell-specific syntax, so that all three shells can source this file.
-
-# Listing
+# Imported from bashrc and zshrc
+# some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias dir='command ls -lSrah'
-alias da='du -sch'
+```
 
-# Colors
+with:
+
+```sh
+# Imported from bashrc and zshrc
+# Only plain `alias name=value` lines here: bash, zsh and fish all source this file.
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# color support, moved here from bashrc and the fish config
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 alias ip='ip --color=auto'
-
-# Safer commands
-alias copy='cp -i'
-alias move='mv -i'
-alias rmv='gio trash'
-
-# Navigation. fish has no $OLDPWD and defines its own rmcdir in config.fish.
-alias ...='cd ../../'
-alias rmcdir='cd ..; rmdir $OLDPWD || cd $OLDPWD'
-
-# Use `-m` instead of `pip` for more consistency
-alias mpip='python3 -m pip'
-
-# Tools that don't follow the XDG base directory spec
-alias dosbox='dosbox -conf "$XDG_CONFIG_HOME"/dosbox/dosbox.conf'
-alias stonky='stonky --config "$XDG_CONFIG_HOME"/stonky/stonky.cfg'
-alias fleets='ENV_FILE_PATH="$XDG_CONFIG_HOME"/fleets/prod.env fleets'
-# alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
-alias monerod='monerod --data-dir "$XDG_DATA_HOME"/bitmonero'
-
-# Output ISO-8601 date
-alias isodate='date --iso-8601=seconds'
-
-alias codium='flatpak run com.vscodium.codium --enable-features=UseOzonePlatform --ozone-platform=wayland'
 ```
 
-This fixes two bugs from the old file: `alias move="vm -i"` (typo for `mv`) and `move_to_trash`, which checked for a command named `gioo` and so always failed. It also drops `fgrep`/`egrep` colors (modern grep warns that those names are obsolescent).
+Edit `aliases`, replace:
+
+```sh
+alias move="vm -i"
+# safe remove
+move_to_trash() {
+    if ! [ -x "$(command -v gioo)" ]; then
+        echo "Command 'gio' not found, exiting."
+        return 127
+    fi
+
+    echo "Moving files or directories to the trash..."
+    gio trash "$@"
+}
+alias rmv="move_to_trash"
+```
+
+with:
+
+```sh
+alias move="mv -i"
+# safe remove
+alias rmv="gio trash"
+```
+
+This fixes two bugs: `vm` was a typo for `mv`, and `move_to_trash` checked for a command named `gioo`, so it always failed. A function also cannot be parsed by fish, which made fish skip the whole file. The color aliases for `fgrep`, `egrep`, `dir` and `vdir` are not carried over (modern grep warns that `fgrep` and `egrep` are obsolescent).
 
 - [ ] **Step 2: Make fish rely on the shared file for aliases**
 
@@ -713,7 +727,8 @@ Edit `config/fish/config.fish`, replace:
 with:
 
 ```fish
-    # LS_COLORS (the color aliases live in ~/.aliases)
+    # enable color support of ls and also add handy aliases
+    # (the aliases themselves now live in ~/.aliases)
     if test -x /usr/bin/dircolors
         test -r ~/.dircolors && eval (dircolors -c ~/.dircolors) || eval (dircolors -c)
     end

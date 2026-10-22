@@ -60,7 +60,13 @@ for p in (string split " " -- $PARITY_PATHS)
 end'
 
 dump() {
-    local shell=$1 snippet raw cmd
+    local shell=$1 snippet raw cmd dir
+    local existing=()
+    # fish_add_path skips directories that do not exist, bash does not: only
+    # compare the ones that exist on this machine.
+    for dir in "${PATH_DIRS[@]}"; do
+        [ -d "$dir" ] && existing+=("$dir")
+    done
     case $shell in
         bash) snippet=$BASH_SNIPPET ;;
         zsh) snippet=$ZSH_SNIPPET ;;
@@ -78,7 +84,7 @@ dump() {
     # shellcheck disable=SC2016
     cmd+=' PARITY_VARS="$PARITY_VARS" PARITY_ALIASES="$PARITY_ALIASES" PARITY_PATHS="$PARITY_PATHS"'
     cmd+=" $shell -ilc \"\$PARITY_SNIPPET\""
-    raw=$(PARITY_VARS="${VARS[*]}" PARITY_ALIASES="${ALIASES[*]}" PARITY_PATHS="${PATH_DIRS[*]}" \
+    raw=$(PARITY_VARS="${VARS[*]}" PARITY_ALIASES="${ALIASES[*]}" PARITY_PATHS="${existing[*]}" \
         PARITY_SNIPPET="$snippet" \
         script -qec "$cmd" /dev/null </dev/null | tr -d '\r')
     [ -n "${PARITY_DEBUG:-}" ] && printf '%s\n' "$raw" >&2
