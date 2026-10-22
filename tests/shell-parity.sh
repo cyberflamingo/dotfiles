@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Check that bash, zsh and fish expose the same environment variables, PATH
-# entries and aliases. Starts real interactive login shells (inside a pty, as
-# z4h expects one) against $HOME and only reads state.
+# entries, aliases and commands. Starts real interactive login shells (inside a
+# pty) against $HOME and only reads state.
 #
 # Usage: tests/shell-parity.sh [shell ...]    (default: bash zsh fish)
 # Set PARITY_DEBUG=1 to print each shell's raw output to stderr.
@@ -18,15 +18,19 @@ VARS=(
     PSQLRC PSQL_HISTORY PGPASSFILE PGSERVICEFILE
     GEM_HOME GEM_SPEC_CACHE RBENV_ROOT
     BUNDLE_USER_CONFIG BUNDLE_USER_CACHE BUNDLE_USER_PLUGIN
-    VSCODE_PORTABLE WEGORC WINEPREFIX _ZL_DATA SSB_HOME BUN_INSTALL
+    VSCODE_PORTABLE WEGORC WINEPREFIX SSB_HOME BUN_INSTALL
 )
 
 # fish ships its own ll, la, l and grep, so those would pass without our
 # config. Only names fish does not define are listed.
 ALIASES=(copy move rmv da dir mpip rmcdir isodate)
 
+# Commands every shell must find (functions count: zoxide defines z as one)
+COMMANDS=(z mise starship fzf)
+
 PATH_DIRS=(
     "$HOME/.local/bin"
+    "$HOME/.local/share/mise/shims"
     "$HOME/.local/share/cargo/bin"
     "$HOME/.local/share/go/bin"
     "$HOME/.local/share/gem/bin"
@@ -39,13 +43,15 @@ PATH_DIRS=(
 BASH_SNIPPET='
 for v in $PARITY_VARS; do printf "PARITY:var:%s=%s\n" "$v" "${!v-}"; done
 for a in $PARITY_ALIASES; do alias "$a" >/dev/null 2>&1 && printf "PARITY:alias:%s\n" "$a"; done
-for p in $PARITY_PATHS; do case ":$PATH:" in *":$p:"*) printf "PARITY:path:%s\n" "$p" ;; esac; done'
+for p in $PARITY_PATHS; do case ":$PATH:" in *":$p:"*) printf "PARITY:path:%s\n" "$p" ;; esac; done
+for c in $PARITY_COMMANDS; do type -t "$c" >/dev/null 2>&1 && printf "PARITY:cmd:%s\n" "$c"; done'
 
 # shellcheck disable=SC2016
 ZSH_SNIPPET='
 for v in ${=PARITY_VARS}; do print -r -- "PARITY:var:$v=${(P)v}"; done
 for a in ${=PARITY_ALIASES}; do (( ${+aliases[$a]} + ${+functions[$a]} )) && print -r -- "PARITY:alias:$a"; done
-for p in ${=PARITY_PATHS}; do [[ ":$PATH:" == *":$p:"* ]] && print -r -- "PARITY:path:$p"; done'
+for p in ${=PARITY_PATHS}; do [[ ":$PATH:" == *":$p:"* ]] && print -r -- "PARITY:path:$p"; done
+for c in ${=PARITY_COMMANDS}; do (( ${+functions[$c]} + ${+commands[$c]} + ${+aliases[$c]} )) && print -r -- "PARITY:cmd:$c"; done'
 
 # shellcheck disable=SC2016
 FISH_SNIPPET='
@@ -57,6 +63,9 @@ for a in (string split " " -- $PARITY_ALIASES)
 end
 for p in (string split " " -- $PARITY_PATHS)
     contains -- $p $PATH; and printf "PARITY:path:%s\n" $p
+end
+for c in (string split " " -- $PARITY_COMMANDS)
+    type -q $c; and printf "PARITY:cmd:%s\n" $c
 end'
 
 dump() {
@@ -83,8 +92,11 @@ dump() {
     cmd+=' PATH=/usr/local/bin:/usr/bin:/bin'
     # shellcheck disable=SC2016
     cmd+=' PARITY_VARS="$PARITY_VARS" PARITY_ALIASES="$PARITY_ALIASES" PARITY_PATHS="$PARITY_PATHS"'
+    # shellcheck disable=SC2016
+    cmd+=' PARITY_COMMANDS="$PARITY_COMMANDS"'
     cmd+=" $shell -ilc \"\$PARITY_SNIPPET\""
     raw=$(PARITY_VARS="${VARS[*]}" PARITY_ALIASES="${ALIASES[*]}" PARITY_PATHS="${existing[*]}" \
+        PARITY_COMMANDS="${COMMANDS[*]}" \
         PARITY_SNIPPET="$snippet" \
         script -qec "$cmd" /dev/null </dev/null | tr -d '\r')
     [ -n "${PARITY_DEBUG:-}" ] && printf '%s\n' "$raw" >&2
