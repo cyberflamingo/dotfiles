@@ -18,6 +18,7 @@ alias move="mv -i"
 alias rmv="gio trash"
 
 # Grml-Zsh aliases
+alias ..='cd ..'
 alias ...='cd ../../'
 
 # general

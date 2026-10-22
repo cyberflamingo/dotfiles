@@ -141,15 +141,11 @@ export WEGORC=$XDG_CONFIG_HOME/wego/wegorc
 # Wine
 export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
 
-# z.lua
-export _ZL_DATA=$XDG_DATA_HOME/zlua
-
 # Zoom
 export SSB_HOME=$XDG_DATA_HOME/zoom
 
-# asdf
-export ASDF_DATA_DIR="$XDG_CONFIG_HOME/asdf"
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+# mise (shims for non-interactive use; interactive shells run `mise activate`)
+export PATH="$XDG_DATA_HOME/mise/shims:$PATH"
 
 [ -r "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 

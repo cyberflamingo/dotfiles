@@ -1,0 +1,11 @@
+# https://starship.rs/config/  (a starting point, not a copy of the old p10k look)
+add_newline = true
+# git on a repo under /mnt/c can be slow
+command_timeout = 800
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[cmd_duration]
+min_time = 2000
