@@ -116,6 +116,10 @@ Quick install vs full install, done last: package lists live in `.chezmoidata/` 
 - gitleaks as a pre-commit hook, plus review of `git diff --cached` before each commit.
 - The cutover to the real home happens last, after `chezmoi diff` shows only intended changes.
 
+## Repository hygiene
+
+Pre-commit hooks (pinned to SHAs) and a CI workflow on GitHub-hosted runners: gitleaks (staged files locally, full history in CI), private-key detection, a local denylist hook for work terms, shellcheck and shfmt for the scripts we own, actionlint for workflows. Dependabot keeps the pinned Actions current. No devcontainer. Plan 2 adds a CI job that runs `chezmoi apply` in a clean runner and the parity test. See `docs/superpowers/plans/2026-10-22-repo-hygiene.md`.
+
 ## Guardrails
 
 - Never commit `profile` or `config/git/config` from the current working tree as they are.
