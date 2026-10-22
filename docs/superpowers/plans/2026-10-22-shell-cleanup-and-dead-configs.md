@@ -21,6 +21,7 @@
 - Do not run `powershell.exe`, registry reads or other Windows-side probes (user rule: they trigger SOC alerts).
 - Commit messages: short subject, optional body, then this trailer:
   `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`
+- The agent's Bash tool runs zsh, which does not word-split unquoted variables. Write explicit path lists or arrays; a command like `git diff -- $files` silently matches nothing. Check that any scan reports a non-zero count of what it scanned.
 - Leave `config/kak/plugins/plug.kak` (dirty submodule pointer) unstaged. Spec step 4 replaces submodules.
 
 ## File structure
@@ -276,9 +277,8 @@ Ask with AskUserQuestion:
 - [ ] **Step 12: Scan everything to be committed**
 
 ```bash
-files='profile aliases bashrc config/git/config .gitignore config/fish/config.fish config/zsh/.zshrc config/zsh/.zshrc.local config/kak/kakrc config/git/gitignore_global'
-# shellcheck disable=SC2086
-git diff -- $files | grep '^+' > /tmp/added-lines.txt
+git diff -- profile aliases bashrc config/git/config .gitignore config/fish/config.fish config/zsh/.zshrc config/zsh/.zshrc.local config/kak/kakrc config/git/gitignore_global | grep '^+' > /tmp/added-lines.txt
+echo "added lines scanned: $(wc -l < /tmp/added-lines.txt)"   # must be greater than 0
 hits=$(
     grep -niE 'ghp_|glpat-|xox[bp]-|AKIA|BEGIN .*PRIVATE KEY|_TOKEN=|_KEY=|SECRET' /tmp/added-lines.txt
     grep -niFf ~/.config/shell/denylist.txt /tmp/added-lines.txt
@@ -291,7 +291,7 @@ fi
 rm -f /tmp/added-lines.txt
 ```
 
-Expected: `no secrets or work identifiers in diff`. A hit prints only the line number in the added-lines list (never the text): find it with `git diff -- $files | grep '^+' | sed -n '<n>p'` in the terminal, remove it from the tracked file and move it to `work.env` or `config.work` before committing. The denylist from Step 7c must exist, otherwise the second grep checks nothing.
+Expected: a positive `added lines scanned` count, then `no secrets or work identifiers in diff`. A count of 0 means the scan checked nothing. A hit prints only the line number in the added-lines list (never the text): find it by rerunning the `git diff ... | grep '^+'` pipeline into `sed -n '<n>p'` in the terminal, remove it from the tracked file and move it to `work.env` or `config.work` before committing. The denylist from Step 7c must exist, otherwise the second grep checks nothing.
 
 - [ ] **Step 13: Commit in two parts**
 
