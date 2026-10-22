@@ -43,7 +43,7 @@ The templates read `op://Private/dotfiles-work-env/notesPlain` and `op://Private
 | `home/.chezmoi.toml.tmpl` | Create | Per-machine data (`work`, `wsl`) and the `op.exe` setting. |
 | `home/.chezmoiignore` | Create | Desktop-only files on WSL. |
 | `home/.chezmoiexternal.toml` | Create | Pinned `plug.kak` archive, replacing the submodule. |
-| `home/private_dot_config/private_shell/private_work.env.tmpl` | Create | Renders the work env note when `.work`. |
+| `home/dot_config/private_shell/private_work.env.tmpl` | Create | Renders the work env note when `.work`. (`.config` itself must stay `dot_config`: chezmoi rejects a target directory that is `dot_config` in one place and `private_dot_config` in another.) |
 | `home/dot_config/git/private_config.work.tmpl` | Create | Renders the work git note when `.work`. |
 | `tests/clean-room.sh` | Create | Applies the dotfiles in a fresh Ubuntu container and runs the parity test. |
 | `.gitignore`, `.pre-commit-config.yaml`, `.gitmodules` | Modify | Remove stale entries, follow the moved paths. |
@@ -94,6 +94,26 @@ chezmoi --help | grep -E -- '--config|--destination|--override-data|--source' | 
 
 Expected: `--promptBool`, `--promptDefaults`, `-S, --source`, `-c, --config`, `-D, --destination`, `--override-data` all listed. If `--promptBool` is missing, use `--promptDefaults` plus `--override-data` wherever this plan says `--promptBool`.
 
+- [ ] **Step 4: Write the scratch-apply helper**
+
+chezmoi keeps a persistent state file keyed by destination path. Without a fresh one per run, a recreated scratch directory makes chezmoi ask "has changed since chezmoi last wrote it?" and fail for lack of a TTY. Write `/tmp/run-scratch.sh`:
+
+```bash
+#!/usr/bin/env bash
+# usage: [EXCLUDE=...] run-scratch.sh DEST [extra chezmoi flags]
+# Applies the worktree into DEST with a throwaway config and state file.
+set -euo pipefail
+dest=${1:?destination}
+shift
+printf 'sourceDir = "/home/alex/src/dotfiles-chezmoi"\n[data]\n    work = false\n    wsl = false\n' >/tmp/scratch-chezmoi.toml
+rm -rf "$dest" /tmp/scratch-state.boltdb
+mkdir -p "$dest"
+chezmoi --config /tmp/scratch-chezmoi.toml --persistent-state /tmp/scratch-state.boltdb \
+    --destination "$dest" --source /home/alex/src/dotfiles-chezmoi "$@" apply --exclude="${EXCLUDE:-scripts}"
+```
+
+Lint it with shellcheck and shfmt like the other scripts. With `--config` pointing at `/tmp`, nothing is written to the real `~/.config/chezmoi`; the only thing created in `~` is chezmoi's download cache under `~/.cache/chezmoi`.
+
 ---
 
 ### Task 2: Move the dotbot-linked files into `home/`
@@ -113,7 +133,7 @@ echo "attribute-like names:"; git ls-files | grep -E '(^|/)(dot_|private_|execut
 echo "symlinks and gitlinks in the index:"; git ls-files -s | awk '$1=="120000" || $1=="160000" {print $1, $4}'
 ```
 
-Expected: `none`, `none`, and exactly one gitlink: `160000 config/kak/plugins/plug.kak` (the other submodules live under `meta/` and are not affected). Anything else: stop and ask the user how to name it.
+Expected: `none`, `none`, and ten gitlinks: `config/kak/plugins/plug.kak` (replaced by an external in this plan) and the nine dotbot submodules under `meta/` (untouched until plan 2c). Any other symlink, gitlink or attribute-like name: stop and ask the user how to name it.
 
 - [ ] **Step 2: Write the move script**
 
@@ -175,7 +195,7 @@ git status --short | awk '{print $1}' | sort | uniq -c
 ls home
 ```
 
-Expected: `lint ok`, `moved N files` (the tracked files under `config/`, `gnupg/` and `local/bin/` plus the six root files, about 90), a status of `R` entries only, and `home` containing `dot_aliases`, `dot_bash_logout`, `dot_bashrc`, `dot_config`, `dot_editorconfig`, `dot_local`, `dot_profile`, `dot_zshenv`, `private_dot_gnupg`.
+Expected: `lint ok`, `moved 62 files` (the tracked files under `config/`, `gnupg/` and `local/bin/` plus the six root files), a status of `R` entries only, and `home` containing `dot_aliases`, `dot_bash_logout`, `dot_bashrc`, `dot_config`, `dot_editorconfig`, `dot_local`, `dot_profile`, `dot_zshenv`, `private_dot_gnupg`.
 
 - [ ] **Step 4: Remove the submodule that an external replaces, add `.chezmoiroot`**
 
@@ -239,9 +259,7 @@ echo "checked $checked files, $bad problems"
 
 ```bash
 shellcheck /tmp/equiv-check.sh && shfmt -i 4 -bn -ci -d /tmp/equiv-check.sh && echo "lint ok"
-rm -rf /tmp/scratch-home && mkdir /tmp/scratch-home
-printf 'sourceDir = "/home/alex/src/dotfiles-chezmoi"\n[data]\n    work = false\n    wsl = false\n' >/tmp/scratch-chezmoi.toml
-chezmoi --config /tmp/scratch-chezmoi.toml --destination /tmp/scratch-home --source /home/alex/src/dotfiles-chezmoi apply --exclude=externals,scripts
+EXCLUDE=externals,scripts bash /tmp/run-scratch.sh /tmp/scratch-home
 bash /tmp/equiv-check.sh origin/main /tmp/scratch-home
 ```
 
@@ -258,7 +276,7 @@ The tree is consistent only after Task 3 adds the templates and fixes the stale 
 Run in the worktree.
 
 **Files:**
-- Create: `home/.chezmoi.toml.tmpl`, `home/.chezmoiignore`, `home/.chezmoiexternal.toml`, `home/private_dot_config/private_shell/private_work.env.tmpl`, `home/dot_config/git/private_config.work.tmpl`
+- Create: `home/.chezmoi.toml.tmpl`, `home/.chezmoiignore`, `home/.chezmoiexternal.toml`, `home/dot_config/private_shell/private_work.env.tmpl`, `home/dot_config/git/private_config.work.tmpl`
 - Modify: `.gitignore`, `.pre-commit-config.yaml`
 
 - [ ] **Step 1: The chezmoi config template**
@@ -266,12 +284,12 @@ Run in the worktree.
 Write `home/.chezmoi.toml.tmpl`:
 
 ```
-{{- $work := promptBoolOnce . "work" "Is this a work machine" -}}
+{{- $work := promptBoolOnce . "work" "Is this a work machine" false -}}
 {{- $wsl := false -}}
 {{- if eq .chezmoi.os "linux" -}}
 {{-   $wsl = .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
 {{- end -}}
-sourceDir = {{ .chezmoi.sourceDir | quote }}
+sourceDir = {{ .chezmoi.workingTree | quote }}
 
 [data]
     work = {{ $work }}
@@ -318,7 +336,7 @@ The angle-bracket text above is a stand-in for the hash: it must be replaced by 
 
 - [ ] **Step 4: The two work templates (one generic line each)**
 
-Write `home/private_dot_config/private_shell/private_work.env.tmpl`:
+Write `home/dot_config/private_shell/private_work.env.tmpl` (the `private_` attribute goes on the `shell` directory and the file, never on `.config`):
 
 ```
 {{- if .work }}
@@ -346,8 +364,7 @@ Edit `.pre-commit-config.yaml`: change both `files: ^(tests|local/bin)/` lines t
 
 ```bash
 cd /home/alex/src/dotfiles-chezmoi
-rm -rf /tmp/scratch-home && mkdir /tmp/scratch-home
-chezmoi --config /tmp/scratch-chezmoi.toml --destination /tmp/scratch-home --source /home/alex/src/dotfiles-chezmoi apply --exclude=scripts
+bash /tmp/run-scratch.sh /tmp/scratch-home
 bash /tmp/equiv-check.sh origin/main /tmp/scratch-home
 ls /tmp/scratch-home/.config/kak/plugins/plug.kak | head -3
 test ! -e /tmp/scratch-home/.config/shell/work.env && echo "no work.env when work=false"
@@ -358,8 +375,7 @@ Expected: `checked N files, 0 problems`, a `plug.kak` directory listing, and `no
 - [ ] **Step 7: Check the WSL ignore list**
 
 ```bash
-rm -rf /tmp/scratch-home2 && mkdir /tmp/scratch-home2
-chezmoi --config /tmp/scratch-chezmoi.toml --override-data '{"wsl": true}' --destination /tmp/scratch-home2 --source /home/alex/src/dotfiles-chezmoi apply --exclude=scripts,externals
+EXCLUDE=scripts,externals bash /tmp/run-scratch.sh /tmp/scratch-home2 --override-data '{"wsl": true}'
 ls /tmp/scratch-home2/.config | tr '\n' ' '; echo
 ```
 
@@ -437,7 +453,7 @@ chown -R tester:tester /home/tester/dotfiles
 su - tester -c '
     set -euo pipefail
     cd ~/dotfiles
-    chezmoi init --source ~/dotfiles --promptBool work=false --apply --exclude=scripts
+    chezmoi init --source ~/dotfiles --promptDefaults --apply --exclude=scripts
     echo "--- applied files:"; chezmoi managed | wc -l
     echo "--- parity (bash, fish):"
     ~/dotfiles/tests/shell-parity.sh bash fish
@@ -542,7 +558,7 @@ Expected: no errors. `config/mozc/...` becomes `~/.config/mozc/...`, and so on.
 - [ ] **Step 4: Initialise, review the diff, apply**
 
 ```bash
-chezmoi init --source /home/alex/src/dotfiles-chezmoi --promptBool work=true
+chezmoi init --source /home/alex/src/dotfiles-chezmoi --promptBool 'Is this a work machine=true'
 chezmoi diff | head -80
 ```
 
@@ -589,7 +605,7 @@ The links point into the live checkout, which still has the old layout, so the o
 ```bash
 cd /home/alex/src/dotfiles
 git merge --ff-only origin/main        # safe now: no symlink points into this tree any more
-chezmoi init --source /home/alex/src/dotfiles --promptBool work=true
+chezmoi init --source /home/alex/src/dotfiles --promptBool 'Is this a work machine=true'
 chezmoi diff | head -20                # expect no differences
 git worktree remove /home/alex/src/dotfiles-chezmoi
 ```
