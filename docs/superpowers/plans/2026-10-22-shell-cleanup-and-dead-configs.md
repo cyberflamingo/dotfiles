@@ -550,6 +550,59 @@ Expected: a `zprof` table (name, calls, time) listing the most expensive functio
 
 ---
 
+### Task 3b: Remove nvm (found by the Task 3 profile)
+
+The profile showed nvm as the largest startup cost (zsh `nvm_auto` 361 ms, about 70 ms more in bash). `node` already resolves to the asdf shim (22.17.0), because asdf's PATH entry comes later in `profile` than `nvm.sh`; the nvm install (22.14.0) is dead weight. The spec drops nvm anyway.
+
+**Files:**
+- Modify: `profile`
+
+- [ ] **Step 1: Confirm node comes from asdf in a clean login shell**
+
+```bash
+env -i HOME="$HOME" PATH=/usr/bin:/bin bash -lc 'command -v node; node --version'
+```
+
+Expected: `.../asdf/shims/node` and `v22.17.0`. If it prints an nvm path, stop and ask the user which Node they want before removing nvm.
+
+- [ ] **Step 2: Remove the nvm block from `profile`**
+
+Edit `profile`, delete these lines and the blank line after them:
+
+```sh
+# nvm
+export NVM_DIR="$XDG_DATA_HOME"/nvm
+# shellcheck source=/dev/null
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+```
+
+- [ ] **Step 3: Check that node is unchanged and startup improved**
+
+```bash
+env -i HOME="$HOME" PATH=/usr/bin:/bin bash -lc 'command -v node; node --version'
+hyperfine -i --warmup 3 --runs 20 -N 'bash -ilc exit' 'zsh -ilc exit' --export-markdown /tmp/startup-after-nvm.md
+```
+
+Expected: the same asdf node, and a lower mean for bash and zsh than in `/tmp/startup-before.md`.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add profile
+git commit -F - <<'EOF'
+Remove nvm
+
+node already comes from asdf; sourcing nvm.sh cost about 400 ms per
+shell start. The unused ~/.local/share/nvm directory can be deleted.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+EOF
+```
+
+Leave `~/.local/share/nvm` on disk; the user can delete it. The nvm install step in `meta/configs/default.conf.yaml` and the `jorgebucaran/nvm.fish` line in `config/fish/fish_plugins` go in plan 2 with the rest of the bootstrap.
+
+---
+
 ### Task 4: One aliases file that all three shells can read
 
 **Files:**
@@ -817,6 +870,22 @@ with:
 
     # z.lua
     set -x _ZL_DATA $XDG_DATA_HOME/zlua
+```
+
+Edit `config/fish/config.fish`, replace:
+
+```fish
+    if command -v rbenv 1>/dev/null 2>&1
+        rbenv init - fish | source
+    end
+```
+
+with (a file test avoids the `$PATH` walk that makes `command -v` slow on WSL):
+
+```fish
+    if test -x "$RBENV_ROOT/bin/rbenv"
+        "$RBENV_ROOT/bin/rbenv" init - fish | source
+    end
 ```
 
 Edit `config/fish/config.fish`, replace:
@@ -1181,6 +1250,26 @@ if command -v pipx 1>/dev/null 2>&1; then
     . "$_pipx_comp"
     unset _pipx_comp
 fi
+```
+
+Edit `bashrc`, replace (on WSL `command -v` for an absent command walks all of `$PATH`, including the `/mnt/c` entries, and cost about 70 ms here; test the file instead):
+
+```bash
+# Ruby
+if command -v rbenv 1>/dev/null 2>&1; then
+    eval "$(rbenv init -)"
+fi
+```
+
+with:
+
+```bash
+# Ruby
+_rbenv="${RBENV_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/rbenv}"/bin/rbenv
+if [ -x "$_rbenv" ]; then
+    eval "$("$_rbenv" init - bash)"
+fi
+unset _rbenv
 ```
 
 Edit `bashrc`, replace:
