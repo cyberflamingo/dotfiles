@@ -14,9 +14,9 @@ Branch: `chezmoi-migration`
 
 In scope: WSL2 (work laptop), personal Linux desktop, Windows (work laptop).
 
-Also in scope: the Turris OS router (OpenWrt-based), and dnsmasq and dnscrypt-proxy on the personal Linux desktop.
+Also in scope: the Turris OS router (OpenWrt-based), reached over SSH, and privoxy, dnsmasq and dnscrypt-proxy on the personal Linux desktop.
 
-Dropped: macOS, Kali, server and privoxy (`bootstrap/macOS`, `meta/configs/{mac,kali,server}`, `etc/privoxy`, the `.macos` config variants).
+Dropped: macOS, Kali and server (`bootstrap/macOS`, `meta/configs/{mac,kali,server}`, the `.macos` config variants).
 
 Known gaps in what stays: dnsmasq only exists as a macOS variant and needs a Linux version; the dnscrypt `blocklists.txt` that the old install copied was deleted from the repo in 2022 and needs a replacement.
 
@@ -73,7 +73,7 @@ zsh is the default shell. bash and fish stay for machines too slow for zsh.
 
 ## System files
 
-Files outside `$HOME` (dnscrypt, dnsmasq, NetworkManager, `ssh_config.d`, the router config) live in a `system/` tree that chezmoi ignores. A `run_onchange_` script installs them on Linux with `sudo install`. The router is deployed by a script that copies the files from the desktop; how this is done today is still to be confirmed.
+Files outside `$HOME` (privoxy, dnscrypt, dnsmasq, NetworkManager, `ssh_config.d`, the router config) live in a `system/` tree that chezmoi ignores. A `run_onchange_` script installs them on Linux with `sudo install`. The router is deployed over SSH by a script run from the desktop (`scp`/`ssh` using a named host alias), so nothing needs to be installed on the router.
 
 ## Shared files
 
@@ -123,6 +123,5 @@ Quick install vs full install, done last: package lists live in `.chezmoidata/` 
 
 ## Open items
 
-- How the Turris router is deployed today (files copied by hand, or the repo cloned on the router).
 - Which personal secrets actually need to be in files (drives how much Proton Pass integration is needed).
 - Headless login and credential storage for `pass-cli` on WSL and no-GUI machines.
