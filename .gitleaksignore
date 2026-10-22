@@ -1,0 +1,7 @@
+# Reviewed false positives (gitleaks fingerprints: commit:file:rule:line).
+# minisign_key is the public key that verifies the signed dnscrypt resolver lists.
+# The privoxy match is an Amazon redirect URL inside an example comment of privoxy's stock default.action.
+117594699c336e9e97be479b6a1876c4ffb17f18:etc/dnscrypt-proxy/dnscrypt-proxy.toml:generic-api-key:218
+12a5cb16c9b56e36008e9f52c4d6f85182ff89f7:sortThatShit/install/macOS/config/dnscrypt-proxy.toml:generic-api-key:463
+12a5cb16c9b56e36008e9f52c4d6f85182ff89f7:sortThatShit/install/macOS/config/dnscrypt-proxy.toml:generic-api-key:473
+f2e2f68d5e31044ce58ae4c645d815daf9c9ce04:etc/privoxy/default.action:generic-api-key:1609
