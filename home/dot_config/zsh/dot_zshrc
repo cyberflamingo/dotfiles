@@ -1,69 +1,17 @@
-# Personal Zsh configuration file. It is strongly recommended to keep all
-# shell customization and configuration (including exported environment
-# variables such as PATH) in this file or in files sourced from it.
-#
-# Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
+# Interactive zsh, no framework. Plugins are pinned archives that chezmoi extracts to
+# ~/.local/share/zsh/plugins, the prompt is starship (~/.config/starship.toml).
+# Environment lives in ~/.profile and aliases in ~/.aliases, shared with bash and fish.
 
-# Periodic auto-update on Zsh startup: 'ask' or 'no'.
-# You can manually run `z4h update` to update everything.
-zstyle ':z4h:' auto-update      'no'
-# Ask whether to auto-update this often; has no effect if auto-update is 'no'.
-zstyle ':z4h:' auto-update-days '28'
+## Options: the set zsh4humans applied, minus its internal ones
+setopt always_to_end auto_cd auto_param_slash auto_pushd c_bases auto_menu \
+    extended_glob extended_history hist_expire_dups_first hist_find_no_dups \
+    hist_ignore_dups hist_ignore_space hist_verify interactive_comments multios \
+    no_bg_nice no_flow_control no_prompt_bang prompt_cr prompt_percent prompt_sp \
+    share_history typeset_silent hist_save_no_dups no_auto_remove_slash \
+    no_list_types no_beep
 
-# Keyboard type: 'mac' or 'pc'.
-zstyle ':z4h:bindkey' keyboard  'pc'
-
-# Start tmux if not already in tmux.
-# zstyle ':z4h:' start-tmux       command tmux -u new -A -D -t z4h
-zstyle ':z4h:' start-tmux       no
-zstyle ':z4h:' prompt-at-bottom 'yes'
-# Mark up shell's output with semantic information.
-zstyle ':z4h:' term-shell-integration 'yes'
-
-# Right-arrow key accepts one character ('partial-accept') from
-# command autosuggestions or the whole thing ('accept')?
-zstyle ':z4h:autosuggestions' forward-char 'accept'
-
-# Recursively traverse directories when TAB-completing files.
-zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
-
-# Improve ssh completions
-zstyle ':completion:*:ssh:argument-1:'       tag-order  hosts users
-zstyle ':completion:*:scp:argument-rest:'    tag-order  hosts files users
-zstyle ':completion:*:(ssh|scp|rdp):*:hosts' hosts
-
-# Enable direnv to automatically source .envrc files.
-zstyle ':z4h:direnv'         enable 'no'
-# Show "loading" and "unloading" notifications from direnv.
-zstyle ':z4h:direnv:success' notify 'yes'
-
-# Enable ('yes') or disable ('no') automatic teleportation of z4h over
-# SSH when connecting to these hosts.
-zstyle ':z4h:ssh:example-hostname1'   enable 'yes'
-zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
-# The default value if none of the overrides above match the hostname.
-zstyle ':z4h:ssh:*'                   enable 'no'
-
-# Send these files over to the remote host when connecting over SSH to the
-# enabled hosts.
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
-
-# Clone additional Git repositories from GitHub.
-#
-# This doesn't do anything apart from cloning the repository and keeping it
-# up-to-date. Cloned files can be used after `z4h init`. This is just an
-# example. If you don't plan to use Oh My Zsh, delete this line.
-z4h install ohmyzsh/ohmyzsh || return
-z4h install skywind3000/z.lua || return
-
-# Alacritty (must be on fpath before `z4h init`, which runs compinit)
-fpath+=${ZDOTDIR:-~}/.zsh_functions
-
-# Install or update core components (fzf, zsh-autosuggestions, etc.) and
-# initialize Zsh. After this point console I/O is unavailable until Zsh
-# is fully initialized. Everything that requires user interaction or can
-# perform network I/O must be done above. Everything else is best done below.
-z4h init || return
+# zsh does not read ~/.profile by itself
+[[ -r ~/.profile ]] && source ~/.profile
 
 # Extend PATH.
 path=(~/bin $path)
@@ -71,42 +19,30 @@ path=(~/bin $path)
 # Export environment variables.
 export GPG_TTY=$TTY
 
+# Tools managed by mise (node, go, uv, starship, zoxide, fzf)
+[[ -x $HOME/.local/bin/mise ]] && eval "$("$HOME"/.local/bin/mise activate zsh)"
+
+## Completion: plugin completions and the Alacritty ones on fpath, then compinit
+zsh_plugins=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins
+fpath=("$zsh_plugins"/zsh-completions/src "$ZDOTDIR"/.zsh_functions $fpath)
+autoload -Uz compinit
+[[ -d $XDG_CACHE_HOME/zsh ]] || mkdir -p -- "$XDG_CACHE_HOME"/zsh
+_zcompdump=$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
+# Rebuild the dump once a day, otherwise skip the security scan
+if [[ -n $_zcompdump(#qN.mh+24) ]]; then
+    compinit -d "$_zcompdump"
+else
+    compinit -C -d "$_zcompdump"
+fi
+unset _zcompdump
+
+# Improve ssh completions
+zstyle ':completion:*:ssh:argument-1:'       tag-order  hosts users
+zstyle ':completion:*:scp:argument-rest:'    tag-order  hosts files users
+zstyle ':completion:*:(ssh|scp|rdp):*:hosts' hosts
+
 # Source additional local files if they exist.
-z4h source ~/.profile
-z4h source "$ZDOTDIR"/.zshrc.local
-
-# Use additional Git repositories pulled in with `z4h install`.
-#
-# This is just an example that you should delete. It does nothing useful.
-# z4h source ohmyzsh/ohmyzsh/lib/diagnostics.zsh  # source an individual file
-# z4h load   ohmyzsh/ohmyzsh/plugins/emoji-clock  # load a plugin
-z4h source ohmyzsh/ohmyzsh/lib/clipboard.zsh
-z4h source ohmyzsh/ohmyzsh/lib/functions.zsh
-z4h source skywind3000/z.lua/z.lua.plugin.zsh
-
-z4h load   ohmyzsh/ohmyzsh/plugins/copypath
-z4h load   ohmyzsh/ohmyzsh/plugins/npm
-z4h load   ohmyzsh/ohmyzsh/plugins/pip
-z4h load   ohmyzsh/ohmyzsh/plugins/sudo
-z4h load   ohmyzsh/ohmyzsh/plugins/systemadmin
-z4h load   ohmyzsh/ohmyzsh/plugins/web-search
-
-# Define key bindings.
-z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
-z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
-
-z4h bindkey undo Ctrl+/ Shift+Tab  # undo the last command line change
-z4h bindkey redo Alt+/             # redo the last undone command line change
-
-z4h bindkey z4h-cd-back    Alt+Left   # cd into the previous directory
-z4h bindkey z4h-cd-forward Alt+Right  # cd into the next directory
-z4h bindkey z4h-cd-up      Alt+Up     # cd into the parent directory
-z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
-
-#k# jump to after first word (for adding options)
-z4h bindkey jump_after_first_word Ctrl+F
-#k# A smart shortcut for \kbd{fg<enter>}
-z4h bindkey grml-zsh-fg           Ctrl+Z
+source "$ZDOTDIR"/.zshrc.local
 
 # Autoload functions.
 autoload -Uz zmv
@@ -115,10 +51,19 @@ autoload -Uz zmv
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 compdef _directories md
 
-z4h source "$ZDOTDIR"/.zshrc.grml # Grml-Zsh functions
+source "$ZDOTDIR"/.zshrc.grml # Grml-Zsh functions
 
 # Define named directories: ~w <=> Windows home directory on WSL.
-[[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
+# Found on PATH (entries under /mnt/c/Users/<name>/AppData), so no Windows process is started.
+if [[ -n $WSL_DISTRO_NAME ]]; then
+    for _p in $path; do
+        if [[ $_p == /mnt/c/Users/*/AppData/* ]]; then
+            hash -d w=${_p%%/AppData/*}
+            break
+        fi
+    done
+    unset _p
+fi
 
 # Define aliases.
 # alias tree='tree -a .git'
@@ -126,7 +71,7 @@ z4h source "$ZDOTDIR"/.zshrc.grml # Grml-Zsh functions
 # Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} -A"
 
-z4h source "$ZDOTDIR"/.aliases.grml # Grml-Zsh aliases
+source "$ZDOTDIR"/.aliases.grml # Grml-Zsh aliases
 
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
@@ -139,10 +84,93 @@ setopt noglobdots        # * shouldn't match dotfiles. ever.
 setopt noshwordsplit     # use zsh style word splitting
 setopt noclobber         # prevent from overwriting an existing file
 
-# Prompt (p10k)
-# Make transient prompt work consistently when closing an SSH connection
-z4h bindkey z4h-eof Ctrl+D
-setopt ignore_eof
+## Key bindings. Widgets are defined before the plugins load, so that they can wrap them.
+bindkey -e
+bindkey '^[[H' beginning-of-line;  bindkey '^[[1~' beginning-of-line   # Home
+bindkey '^[[F' end-of-line;        bindkey '^[[4~' end-of-line         # End
+bindkey '^[[3~' delete-char                                            # Delete
 
-# Smoother rendering for two-line prompt with an empty line before it
-POSTEDIT=$'\n\n\e[2A'
+# Up/Down search the history for the text before the cursor
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search;   bindkey '^[OA' up-line-or-beginning-search;   bindkey '^P' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search; bindkey '^[OB' down-line-or-beginning-search; bindkey '^N' down-line-or-beginning-search
+
+# Ctrl+Backspace kills a short word, Ctrl+Alt+Backspace a whole shell word
+backward-kill-subword() { local WORDCHARS=; zle backward-kill-word }
+zle -N backward-kill-subword
+bindkey '^H' backward-kill-subword
+bindkey '^[^?' backward-kill-word;  bindkey '^[^H' backward-kill-word
+
+bindkey '^_' undo;  bindkey '^[[Z' undo  # undo the last command line change
+bindkey '^[/' redo                       # redo the last undone command line change
+
+#k# jump to after first word (for adding options)
+bindkey '^F' jump_after_first_word
+#k# A smart shortcut for \kbd{fg<enter>}
+bindkey '^Z' grml-zsh-fg
+
+# Esc Esc: put sudo in front of the command line (or of the last command)
+sudo-command-line() {
+    [[ -z $BUFFER ]] && LBUFFER="$(fc -ln -1)"
+    if [[ $BUFFER == sudo\ * ]]; then
+        LBUFFER="${LBUFFER#sudo }"
+    else
+        LBUFFER="sudo $LBUFFER"
+    fi
+}
+zle -N sudo-command-line
+bindkey '\e\e' sudo-command-line
+
+# Alt+Left/Right/Up/Down: cd into the previous, next, parent or a child directory
+typeset -ga _dir_back _dir_fwd
+typeset -g _dir_skip=
+_dir_track() {
+    if [[ -n $_dir_skip ]]; then _dir_skip=; return; fi
+    _dir_back+=("$OLDPWD")
+    _dir_fwd=()
+}
+chpwd_functions+=(_dir_track)
+cd-back() {
+    (( $#_dir_back )) || return
+    local d=$_dir_back[-1]
+    _dir_back[-1]=()
+    _dir_fwd+=("$PWD")
+    _dir_skip=1
+    builtin cd -- "$d" && zle reset-prompt
+}
+cd-forward() {
+    (( $#_dir_fwd )) || return
+    local d=$_dir_fwd[-1]
+    _dir_fwd[-1]=()
+    _dir_back+=("$PWD")
+    _dir_skip=1
+    builtin cd -- "$d" && zle reset-prompt
+}
+cd-up() { builtin cd .. && zle reset-prompt }
+cd-down() {
+    local d
+    zle -I
+    d=$(print -rl -- *(-/N) | fzf --height=40% --reverse) || { zle reset-prompt; return }
+    [[ -n $d ]] && builtin cd -- "$d"
+    zle reset-prompt
+}
+for _w in cd-back cd-forward cd-up cd-down; zle -N $_w
+unset _w
+bindkey '^[[1;3D' cd-back;  bindkey '^[[1;3C' cd-forward
+bindkey '^[[1;3A' cd-up;    bindkey '^[[1;3B' cd-down
+
+## Terminal title
+_set_title() { print -Pn '\e]0;%n@%m: %~\a' }
+precmd_functions+=(_set_title)
+
+## fzf (Ctrl-R, Ctrl-T, Alt-C), then fzf-tab on Tab, then the rest
+(( $+commands[fzf] )) && source <(fzf --zsh)
+source "$zsh_plugins"/fzf-tab/fzf-tab.plugin.zsh
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+source "$zsh_plugins"/zsh-autosuggestions/zsh-autosuggestions.zsh
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+
+## zsh-syntax-highlighting has to be sourced last
+source "$zsh_plugins"/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
