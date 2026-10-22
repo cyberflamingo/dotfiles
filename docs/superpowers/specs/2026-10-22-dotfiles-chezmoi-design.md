@@ -66,9 +66,10 @@ zsh is the default shell. bash and fish stay for machines too slow for zsh.
 
 - One shared layer provides env (XDG, PATH), aliases, and tool init (mise, starship, fzf). Aliases and env come from a single data file rendered into POSIX and fish formats, so the shells cannot drift.
 - Only interactive UX is per-shell: plugins, keybindings, completion, history settings.
+- Directory jumping: the `z` command comes from zoxide in all three shells (`zoxide init <shell>`), replacing z.lua (provided by z4h in zsh; last release June 2020) and the fish `z` plugin. zoxide and a current fzf (`zi` needs fzf 0.51 or newer; the z4h one is 0.33) are installed through mise. One-time `zoxide import z.lua` of the existing `_ZL_DATA` file keeps the history.
 - Prompt is starship in all three shells. Slow machines can fall back to a plain prompt.
 - zsh4humans is removed. Plain `.zshrc` with plugins (autosuggestions, syntax highlighting, completions, fzf integration) as pinned `.chezmoiexternal.toml` entries. No plugin manager, no runtime downloads, no auto-update.
-- Parity checklist (verified per shell): PATH and XDG variables, aliases, prompt, mise activation, fzf bindings, history size and options, word-movement and delete keybindings, ssh/git completion.
+- Parity checklist (verified per shell): PATH and XDG variables, aliases, prompt, mise activation, `z` command, fzf bindings, history size and options, word-movement and delete keybindings, ssh/git completion.
 - Known problems in the current zsh setup to remove: `.zshenv` z4h bootstrap fetching an unpinned branch, auto-update every 28 days, unused ssh-teleport placeholders, a second `compinit` in `.zshrc.local`, the Debian bashrc paste, `HISTSIZE=1000`, and startup-time evals (`dircolors`, `rbenv`, pipx argcomplete, asdf completions).
 
 ## System files
