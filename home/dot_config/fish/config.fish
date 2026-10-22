@@ -106,9 +106,6 @@ if status is-login
     set -x GEM_HOME $XDG_DATA_HOME/gem
     fish_add_path --append "$GEM_HOME/bin"
     set -x GEM_SPEC_CACHE $XDG_CACHE_HOME/gem
-    # rbenv
-    set -x RBENV_ROOT $XDG_DATA_HOME/rbenv
-    fish_add_path --append "$RBENV_ROOT/bin"
     # Bundler
     set -x BUNDLE_USER_CONFIG $XDG_CONFIG_HOME/bundle
     set -x BUNDLE_USER_CACHE $XDG_CACHE_HOME/bundle
@@ -183,11 +180,6 @@ if status is-interactive
     # Nix
     # if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
     # fisher install lilyball/nix-env.fish
-
-    # Ruby
-    if test -x "$RBENV_ROOT/bin/rbenv" # not `command -v`: it walks the slow /mnt/c PATH entries on WSL
-        "$RBENV_ROOT/bin/rbenv" init - fish | source
-    end
 
     # Python
     if command -v pipx 1>/dev/null 2>&1
