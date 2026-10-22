@@ -144,12 +144,9 @@ if command -v pipx 1>/dev/null 2>&1; then
     unset _pipx_comp
 fi
 
-# mise, then the tools it installs
-if [ -x "$HOME/.local/bin/mise" ]; then
-    eval "$("$HOME/.local/bin/mise" activate bash)"
-    command -v fzf 1>/dev/null 2>&1 && eval "$(fzf --bash)"
-    command -v zoxide 1>/dev/null 2>&1 && eval "$(zoxide init bash)"
-    command -v starship 1>/dev/null 2>&1 && eval "$(starship init bash)"
-fi
+# the tools mise installs (their directories are put on PATH by ~/.profile)
+command -v fzf 1>/dev/null 2>&1 && eval "$(fzf --bash)"
+command -v zoxide 1>/dev/null 2>&1 && eval "$(zoxide init bash)"
+command -v starship 1>/dev/null 2>&1 && eval "$(starship init bash --print-full-init)"
 
 [ -r "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"

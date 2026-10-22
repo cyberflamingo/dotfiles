@@ -781,6 +781,16 @@ Expected: `0` for each file. (z4h's own `cmd.exe /c set` is in the z4h cache, wh
 
 ---
 
+## Changes after measuring (2026-10-22)
+
+Applying Task 6 showed startup got slower: with `mise activate` bash went from 37 to 121 ms, fish from 35 to 88 ms and zsh from 150 to 166 ms. Cause, measured: `mise activate` 22 ms plus the `mise hook-env` it runs at once (25 ms) in every shell; a mise shim costs 27 ms per call and a prompt through one 44 ms instead of 14 ms, so shims are not an option for the prompt tools.
+
+Decision (user): no `mise activate`. `~/.profile` (and the fish login block) put the real bin directories of the installed tools on `PATH`, read from a cache file `~/.cache/mise-bin-paths` that is rebuilt when `~/.config/mise/config.toml` or `~/.local/share/mise/installs` is newer (remove the file to force it). The shims stay behind them for non-interactive use. Per-directory tool versions are the price: a project's own version needs `mise exec`. Result: bash 54 ms, zsh 107 ms, fish 32 ms.
+
+Related changes in the same commit: `.bashrc` is sourced at the end of `~/.profile` (it needs the PATH, and the earlier `HISTFILE` fallback becomes harmless); `LESS='-iRFXMx4'` (z4h set it) in profile and fish, and `LESS` in the parity test; `starship init <shell> --print-full-init` is called directly because the plain form spawns it a second time.
+
+Also learned while applying: the first verification used `bash -lc 'env'`, which inherits the caller's environment, so it hid differences (removed NVM and token variables looked like losses). Compare environment names with `env -i`, as the parity test does.
+
 ## Self-review against the spec
 
 | Spec item | Task |
