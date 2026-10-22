@@ -83,6 +83,8 @@ if status is-login
 
     # LESS
     set -x LESSHISTFILE -
+    # what zsh4humans used to set: case-insensitive search, raw colors, quit if one screen
+    set -x LESS '-iRFXMx4'
 
     # minikube
     set -x MINIKUBE_HOME "$XDG_DATA_HOME"/minikube
@@ -129,8 +131,19 @@ if status is-login
     # Zoom
     set -x SSB_HOME $XDG_DATA_HOME/zoom
 
-    # mise (shims for non-interactive use; interactive shells run `mise activate`)
+    # mise: shims for non-interactive use, and the real bin directories of the installed
+    # tools in front of them (see ~/.profile for why there is no `mise activate`)
     fish_add_path --prepend "$XDG_DATA_HOME/mise/shims"
+    if test -x "$HOME/.local/bin/mise"
+        set -l mise_cache "$XDG_CACHE_HOME/mise-bin-paths"
+        if not test -s "$mise_cache"; or test "$XDG_CONFIG_HOME/mise/config.toml" -nt "$mise_cache"; or test "$XDG_DATA_HOME/mise/installs" -nt "$mise_cache"
+            mkdir -p "$XDG_CACHE_HOME"
+            env -C "$HOME" "$HOME/.local/bin/mise" bin-paths 2>/dev/null | paste -sd: >"$mise_cache.tmp"; and mv -f "$mise_cache.tmp" "$mise_cache"
+        end
+        set -l mise_path
+        read -l mise_path <"$mise_cache" 2>/dev/null
+        test -n "$mise_path"; and set -gx PATH (string split : -- $mise_path) $PATH
+    end
 end
 
 # Commands to run in interactive sessions can go here
@@ -183,19 +196,16 @@ if status is-interactive
         end
     end
 
-    # mise, then the tools it installs
-    if test -x "$HOME/.local/bin/mise"
-        "$HOME/.local/bin/mise" activate fish | source
-        command -q fzf; and fzf --fish | source
-        command -q zoxide; and zoxide init fish | source
-    end
+    # the tools mise installs (their directories are put on PATH by the login block above)
+    command -q fzf; and fzf --fish | source
+    command -q zoxide; and zoxide init fish | source
 
     # Keybindings vi or default (emac?)
     # fish_vi_key_bindings
     # fish_default_key_bindings
 
     if command -v starship 1>/dev/null 2>&1
-        starship init fish | source
+        starship init fish --print-full-init | source
     end
 end
 

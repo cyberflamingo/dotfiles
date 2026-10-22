@@ -19,9 +19,6 @@ path=(~/bin $path)
 # Export environment variables.
 export GPG_TTY=$TTY
 
-# Tools managed by mise (node, go, uv, starship, zoxide, fzf)
-[[ -x $HOME/.local/bin/mise ]] && eval "$("$HOME"/.local/bin/mise activate zsh)"
-
 ## Completion: plugin completions and the Alacritty ones on fpath, then compinit
 zsh_plugins=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins
 fpath=("$zsh_plugins"/zsh-completions/src "$ZDOTDIR"/.zsh_functions $fpath)
@@ -170,7 +167,7 @@ precmd_functions+=(_set_title)
 source "$zsh_plugins"/fzf-tab/fzf-tab.plugin.zsh
 (( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
 source "$zsh_plugins"/zsh-autosuggestions/zsh-autosuggestions.zsh
-(( $+commands[starship] )) && eval "$(starship init zsh)"
+(( $+commands[starship] )) && eval "$(starship init zsh --print-full-init)"
 
 ## zsh-syntax-highlighting has to be sourced last
 source "$zsh_plugins"/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

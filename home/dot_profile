@@ -12,15 +12,6 @@ else
     umask 027
 fi
 
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-        # shellcheck source=/dev/null
-        . "$HOME/.bashrc"
-    fi
-fi
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
     PATH="$HOME/bin:$PATH"
@@ -89,6 +80,8 @@ export PATH="$PATH:$JAVA_HOME/bin"
 
 # LESS
 export LESSHISTFILE=-
+# what zsh4humans used to set: case-insensitive search, raw colors, quit if one screen
+export LESS='-iRFXMx4'
 # printf instead of $'...', which is not POSIX
 LESS_TERMCAP_mb=$(printf '\033[1;31m')  # begin blink
 LESS_TERMCAP_md=$(printf '\033[1;36m')  # begin bold
@@ -144,8 +137,24 @@ export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
 # Zoom
 export SSB_HOME=$XDG_DATA_HOME/zoom
 
-# mise (shims for non-interactive use; interactive shells run `mise activate`)
+# mise: shims for non-interactive use (they cost ~27 ms per call), and the real bin
+# directories of the installed tools in front of them. `mise activate` would do the
+# latter too but costs ~47 ms per shell start on WSL. The directory list is cached and
+# rebuilt when the mise config or the installs directory is newer; to force it, remove
+# ~/.cache/mise-bin-paths. A project's own tool version needs `mise exec`.
 export PATH="$XDG_DATA_HOME/mise/shims:$PATH"
+if [ -x "$HOME/.local/bin/mise" ]; then
+    _mise_cache=$XDG_CACHE_HOME/mise-bin-paths
+    if [ ! -s "$_mise_cache" ] || [ "$XDG_CONFIG_HOME/mise/config.toml" -nt "$_mise_cache" ] ||
+        [ "$XDG_DATA_HOME/mise/installs" -nt "$_mise_cache" ]; then
+        mkdir -p "$XDG_CACHE_HOME"
+        (cd "$HOME" && "$HOME/.local/bin/mise" bin-paths 2>/dev/null | paste -sd: >"$_mise_cache.tmp") &&
+            mv -f "$_mise_cache.tmp" "$_mise_cache"
+    fi
+    IFS= read -r _mise_path <"$_mise_cache" 2>/dev/null
+    [ -n "$_mise_path" ] && export PATH="$_mise_path:$PATH"
+    unset _mise_cache _mise_path
+fi
 
 [ -r "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
@@ -162,4 +171,14 @@ fi
 if [ -r "$XDG_CONFIG_HOME/shell/work.env" ]; then
     # shellcheck source=/dev/null
     . "$XDG_CONFIG_HOME/shell/work.env"
+fi
+
+# if running bash
+# (last on purpose: .bashrc needs the PATH and variables set above)
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+        # shellcheck source=/dev/null
+        . "$HOME/.bashrc"
+    fi
 fi
