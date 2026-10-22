@@ -796,9 +796,9 @@ EOF
 **Files:**
 - Modify: `profile`, `config/fish/config.fish`
 
-- [ ] **Step 1: Add the shared settings to `profile`**
+- [ ] **Step 1: Add the shared less colors and `PAGER` to `profile`**
 
-Edit `profile`, replace:
+The `LESS_TERMCAP_*` exports exist in `bashrc` and `.zshrc.local` but not in fish. Put one copy in `profile` (printf instead of `$'...'`, which is not POSIX; the user's trailing comments are kept). Edit `profile`, replace:
 
 ```sh
 # LESS
@@ -810,23 +810,26 @@ with:
 ```sh
 # LESS
 export LESSHISTFILE=-
-export PAGER=less
-
-# Colors for man pages (through less) and GCC diagnostics
-LESS_TERMCAP_mb=$(printf '\033[1;31m') # begin blink
-LESS_TERMCAP_md=$(printf '\033[1;36m') # begin bold
-LESS_TERMCAP_me=$(printf '\033[0m')    # reset bold/blink
+# printf instead of $'...', which is not POSIX
+LESS_TERMCAP_mb=$(printf '\033[1;31m')  # begin blink
+LESS_TERMCAP_md=$(printf '\033[1;36m')  # begin bold
+LESS_TERMCAP_me=$(printf '\033[0m')     # reset bold/blink
 LESS_TERMCAP_so=$(printf '\033[01;33m') # begin reverse video
-LESS_TERMCAP_se=$(printf '\033[0m')    # reset reverse video
-LESS_TERMCAP_us=$(printf '\033[1;32m') # begin underline
-LESS_TERMCAP_ue=$(printf '\033[0m')    # reset underline
+LESS_TERMCAP_se=$(printf '\033[0m')     # reset reverse video
+LESS_TERMCAP_us=$(printf '\033[1;32m')  # begin underline
+LESS_TERMCAP_ue=$(printf '\033[0m')     # reset underline
 export LESS_TERMCAP_mb LESS_TERMCAP_md LESS_TERMCAP_me LESS_TERMCAP_so LESS_TERMCAP_se LESS_TERMCAP_us LESS_TERMCAP_ue
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Pager
+PAGER=$(command -v less)
+export PAGER
 ```
+
+`GCC_COLORS` already matches in all three shells, so it stays where it is.
 
 - [ ] **Step 2: Align `config/fish/config.fish`**
 
-Edit `config/fish/config.fish`, replace:
+Each edit keeps the existing comments. Edit `config/fish/config.fish`, replace:
 
 ```fish
     if test "$EUID" = 0
@@ -836,16 +839,19 @@ Edit `config/fish/config.fish`, replace:
     end
 ```
 
-with:
+with (`profile` uses 027 for both):
 
 ```fish
-    umask 027
+    if test "$EUID" = 0
+        umask 027
+    else
+        umask 027
+    end
 ```
 
 Edit `config/fish/config.fish`, replace:
 
 ```fish
-    # Pager
     set -u less (which less)
     set -x PAGER $less
 ```
@@ -853,17 +859,17 @@ Edit `config/fish/config.fish`, replace:
 with:
 
 ```fish
-    # Pager
-    set -x PAGER less
+    set -u less (which less)
+    set -x PAGER $less
 
-    # Colors for man pages (through less) and GCC diagnostics
-    set -x LESS_TERMCAP_mb (printf '\033[1;31m')
-    set -x LESS_TERMCAP_md (printf '\033[1;36m')
-    set -x LESS_TERMCAP_me (printf '\033[0m')
-    set -x LESS_TERMCAP_so (printf '\033[01;33m')
-    set -x LESS_TERMCAP_se (printf '\033[0m')
-    set -x LESS_TERMCAP_us (printf '\033[1;32m')
-    set -x LESS_TERMCAP_ue (printf '\033[0m')
+    # Colors for man pages (through less)
+    set -x LESS_TERMCAP_mb (printf '\033[1;31m') # begin blink
+    set -x LESS_TERMCAP_md (printf '\033[1;36m') # begin bold
+    set -x LESS_TERMCAP_me (printf '\033[0m') # reset bold/blink
+    set -x LESS_TERMCAP_so (printf '\033[01;33m') # begin reverse video
+    set -x LESS_TERMCAP_se (printf '\033[0m') # reset reverse video
+    set -x LESS_TERMCAP_us (printf '\033[1;32m') # begin underline
+    set -x LESS_TERMCAP_ue (printf '\033[0m') # reset underline
 ```
 
 Edit `config/fish/config.fish`, replace:
@@ -887,20 +893,18 @@ with:
     set -x _ZL_DATA $XDG_DATA_HOME/zlua
 ```
 
-Edit `config/fish/config.fish`, replace:
+Edit `config/fish/config.fish`, replace (a file test avoids the `$PATH` walk that makes `command -v` slow on WSL, where `/mnt/c` entries are on the PATH):
 
 ```fish
     if command -v rbenv 1>/dev/null 2>&1
         rbenv init - fish | source
-    end
 ```
 
-with (a file test avoids the `$PATH` walk that makes `command -v` slow on WSL):
+with:
 
 ```fish
-    if test -x "$RBENV_ROOT/bin/rbenv"
+    if test -x "$RBENV_ROOT/bin/rbenv" # not `command -v`: it walks the slow /mnt/c PATH entries on WSL
         "$RBENV_ROOT/bin/rbenv" init - fish | source
-    end
 ```
 
 Edit `config/fish/config.fish`, replace:
@@ -917,29 +921,24 @@ with:
     end
 ```
 
-If the user chose "keep npmrc empty" in Task 0 Step 11, also delete the `set -x NPM_CONFIG_USERCONFIG $XDG_CONFIG_HOME/npm/npmrc` line and its `# npm` comment from `config/fish/config.fish`.
-
-- [ ] **Step 3: Add the PATH entry that bash and zsh already get**
-
-Check `profile` puts Bun on PATH (`export PATH="$BUN_INSTALL/bin:$PATH"`, line near `# Bun`). If the user kept it as is, nothing to do. The test lists `$HOME/.bun/bin` and every shell must now have it.
-
-- [ ] **Step 4: Run the parity test**
+- [ ] **Step 3: Run the parity test**
 
 ```bash
-tests/shell-parity.sh bash fish
+fish -n config/fish/config.fish && bash -n profile && echo "parse ok"
+tests/shell-parity.sh
 ```
 
-Expected: `PASS fish`. Remaining diff lines are real drift: fix the side that is wrong (usually the fish file) and rerun until it passes. Typical remaining candidates are `LESSOPEN` (fish needs `eval (SHELL=/bin/sh lesspipe)` to have run, which `config.fish` already does when `/usr/bin/lesspipe` exists) and `LS_COLORS` (compare `dircolors -b` vs `-c` output if they differ).
+Expected: `parse ok`, `PASS zsh`, `PASS fish`. Remaining diff lines are real drift: fix the side that is wrong and rerun.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
 git add profile config/fish/config.fish
 git commit -F - <<'EOF'
 Bring fish env in line with profile
 
-Same umask (027), PAGER, LESS_TERMCAP_*, WINEPREFIX and Bun. Move
-GCC and less colors into profile. Guard starship init.
+Same umask (027), PAGER, LESS_TERMCAP_*, WINEPREFIX and Bun. Check
+rbenv by file instead of walking PATH. Guard starship init.
 
 Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
 EOF

@@ -1,8 +1,8 @@
 if status is-login
     if test "$EUID" = 0
-        umask 002
+        umask 027
     else
-        umask 022
+        umask 027
     end
 
     # set fish_add_path --prepend so it includes user's private bin if it exists
@@ -38,6 +38,15 @@ if status is-login
     # Pager
     set -u less (which less)
     set -x PAGER $less
+
+    # Colors for man pages (through less)
+    set -x LESS_TERMCAP_mb (printf '\033[1;31m') # begin blink
+    set -x LESS_TERMCAP_md (printf '\033[1;36m') # begin bold
+    set -x LESS_TERMCAP_me (printf '\033[0m') # reset bold/blink
+    set -x LESS_TERMCAP_so (printf '\033[01;33m') # begin reverse video
+    set -x LESS_TERMCAP_se (printf '\033[0m') # reset reverse video
+    set -x LESS_TERMCAP_us (printf '\033[1;32m') # begin underline
+    set -x LESS_TERMCAP_ue (printf '\033[0m') # reset underline
 
     # Aspell
     set -x ASPELL_CONF "per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; \
@@ -113,6 +122,13 @@ if status is-login
     # Wego
     set -x WEGORC $XDG_CONFIG_HOME/wego/wegorc
 
+    # Wine
+    set -x WINEPREFIX "$XDG_DATA_HOME"/wineprefixes/default
+
+    # Bun
+    set -x BUN_INSTALL "$HOME/.bun"
+    fish_add_path --append "$BUN_INSTALL/bin"
+
     # z.lua
     set -x _ZL_DATA $XDG_DATA_HOME/zlua
 
@@ -159,8 +175,8 @@ if status is-interactive
     # fisher install lilyball/nix-env.fish
 
     # Ruby
-    if command -v rbenv 1>/dev/null 2>&1
-        rbenv init - fish | source
+    if test -x "$RBENV_ROOT/bin/rbenv" # not `command -v`: it walks the slow /mnt/c PATH entries on WSL
+        "$RBENV_ROOT/bin/rbenv" init - fish | source
     end
 
     # Python
@@ -197,7 +213,9 @@ if status is-interactive
     # fish_vi_key_bindings
     # fish_default_key_bindings
 
-    starship init fish | source
+    if command -v starship 1>/dev/null 2>&1
+        starship init fish | source
+    end
 end
 
 # Executed when login shell exits.
