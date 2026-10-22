@@ -51,7 +51,7 @@ The repo is public. No work hostnames, work email, internal tool names or tokens
 - chezmoi's destination is `%USERPROFILE%`. Files under `AppData/Local/...` in the source land in `%LOCALAPPDATA%`. Scripts and templates read the variable via `$env:LOCALAPPDATA` or `{{ env "LOCALAPPDATA" }}`.
 - `C/ProgramData/bin` is removed. `C:\ProgramData` is outside the destination and is machine-wide, not per-user.
 - `decentsec` is deleted. A managed laptop gets its baseline from IT.
-- `upall` is rewritten as a non-elevated `winget upgrade --all` (no Windows Update, no Chocolatey, no pause, no UAC prompt). It is launched at logon by a `.cmd` in `AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/`.
+- `upall` is rewritten as a non-elevated `winget upgrade --all` (no pause, no UAC prompt). Chocolatey is no longer used. Windows Update is left to the OS and the organisation's update policy, not scripted. It is launched at logon by a `.cmd` in `AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/`.
 - The Windows chezmoi instance is separate from the WSL one: same repo, separate clone and `chezmoi.toml`.
 
 ## Migration order
@@ -81,5 +81,4 @@ Cleanup items folded into steps 2 to 4: pick the primary shell and decide whethe
 
 ## Open items
 
-- Confirm winget is allowed on the work laptop before writing the `upall` rewrite.
 - Decide the primary shell (zsh assumed) and whether bash and fish remain.
