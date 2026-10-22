@@ -339,20 +339,20 @@ The angle-bracket text above is a stand-in for the hash: it must be replaced by 
 Write `home/dot_config/private_shell/private_work.env.tmpl` (the `private_` attribute goes on the `shell` directory and the file, never on `.config`):
 
 ```
-{{- if .work }}
-{{ onepasswordRead "op://Private/dotfiles-work-env/notesPlain" }}
+{{- if .work -}}
+{{ onepasswordRead "op://Private/dotfiles-work-env/notesPlain" | trim }}
 {{ end -}}
 ```
 
 Write `home/dot_config/git/private_config.work.tmpl`:
 
 ```
-{{- if .work }}
-{{ onepasswordRead "op://Private/dotfiles-work-git/notesPlain" }}
+{{- if .work -}}
+{{ onepasswordRead "op://Private/dotfiles-work-git/notesPlain" | trim }}
 {{ end -}}
 ```
 
-On a machine where `.work` is false the templates render nothing and chezmoi does not create the files; `config/git/config` includes `config.work` and git ignores a missing include.
+`| trim` drops whatever trailing whitespace the note has, so the rendered file is the note plus exactly one newline, with no leading blank line (the first version of these templates rendered both, which made the output differ from the existing local files). On a machine where `.work` is false the templates render nothing and chezmoi does not create the files; `config/git/config` includes `config.work` and git ignores a missing include.
 
 - [ ] **Step 5: Remove stale entries**
 
@@ -519,9 +519,45 @@ Ask the user for an explicit go before every step. It replaces the live symlinks
 
 - [ ] **Step 1: Pre-checks the user must confirm**
 
-- The two 1Password Secure Notes exist, and the user has run in their own terminal `op.exe read op://Private/dotfiles-work-env/notesPlain >/dev/null && echo ok` and the same for `dotfiles-work-git`. Both print `ok`.
+- The two 1Password Secure Notes exist, and the user has run the notes check from Step 1b in their own terminal: both lines print `match`.
 - The tokens that were in `work.env` are stored in the notes (rotation can follow).
 - Task 4's clean-room test passes.
+
+The local `~/.config/shell/work.env` and `config.work` do **not** need to be deleted: once the notes render to exactly the same bytes, `chezmoi apply` rewrites them with identical content. The cutover snapshot (Step 2) keeps a copy anyway.
+
+- [ ] **Step 1b: Check that the notes render to the existing files (the user runs this)**
+
+`op.exe` output is secret, so the agent does not run it. Write `/tmp/work-notes-check.sh` for the user:
+
+```bash
+#!/usr/bin/env bash
+# Compare what the two 1Password notes render to with the current local files.
+# Prints short hashes only, never contents. Run it yourself: it calls op.exe.
+#
+# Usage: bash /tmp/work-notes-check.sh [source-dir]    (default: the chezmoi worktree)
+set -euo pipefail
+
+src=${1:-$HOME/src/dotfiles-chezmoi}
+cfg=$(mktemp --suffix=.toml)
+trap 'rm -f "$cfg"' EXIT
+printf '[data]\n    work = true\n    wsl = true\n[onepassword]\n    command = "op.exe"\n' >"$cfg"
+
+check() { # template (relative to home/), local file
+    local tmpl=$1 file=$2 a b
+    a=$(chezmoi --config "$cfg" --source "$src" execute-template <"$src/home/$tmpl" | sha256sum | cut -c1-12)
+    b=$(sha256sum <"$file" | cut -c1-12)
+    if [ "$a" = "$b" ]; then
+        echo "match   $file ($a)"
+    else
+        echo "DIFFER  $file (note renders to $a, file is $b)"
+    fi
+}
+
+check dot_config/private_shell/private_work.env.tmpl "$HOME/.config/shell/work.env"
+check dot_config/git/private_config.work.tmpl "$HOME/.config/git/config.work"
+```
+
+The user runs `! bash /tmp/work-notes-check.sh`. Both lines must say `match`. A `DIFFER` means the note text is not identical to the local file (most often a copy-paste difference): the user edits the note, or the local file, until they agree. Do not continue until both match.
 
 - [ ] **Step 2: Snapshot the current state**
 
@@ -559,10 +595,10 @@ Expected: no errors. `config/mozc/...` becomes `~/.config/mozc/...`, and so on.
 
 ```bash
 chezmoi init --source /home/alex/src/dotfiles-chezmoi --promptBool 'Is this a work machine=true'
-chezmoi diff | head -80
+chezmoi diff --exclude=templates | head -80
 ```
 
-Ask the user to read the diff summary (new files, and differences only where a runtime file from Step 3 was also tracked). Then:
+`--exclude=templates` keeps the two files rendered from 1Password out of the diff, so no secret is printed; Step 1b already proved they equal the existing files. Ask the user to read the diff summary (new files, and differences only where a runtime file from Step 3 was also tracked). Then:
 
 ```bash
 chezmoi apply
@@ -631,6 +667,17 @@ Expected: an empty or trivial `chezmoi diff`. Edits from now on happen in `/home
 | Cutover with rollback, without losing ignored runtime files | 6 |
 
 Not here, by design: z4h removal, mise/uv/zoxide, starship (plan 2b); the `system/` tree, the router deploy script, the dnsmasq and dnscrypt fixes, the Windows `upall` rewrite, dotbot removal, the kakoune source clone external (plan 2c); a CI job for the clean-room test (blocked by the account billing lock; add it when Actions run again).
+
+## Updating the pinned `plug.kak`
+
+`home/.chezmoiexternal.toml` pins the archive by commit and checksum, so nothing changes until it is edited. To update:
+
+```bash
+git ls-remote https://github.com/robertmeta/plug.kak HEAD            # new commit SHA
+curl -fsSL https://github.com/robertmeta/plug.kak/archive/<sha>.tar.gz | sha256sum
+```
+
+Put the new SHA in the `url` and the printed hash in `checksum.sha256`, then run `chezmoi apply`: chezmoi sees a new URL and downloads it. Check what changed upstream first (`git log` on the compare page); the pin exists so that a compromised or broken upstream cannot reach the shell by itself. Any other pinned external works the same way. A monthly reminder, or a scheduled workflow, can compare the pins with upstream once CI runs again.
 
 ## Known risks
 

@@ -30,6 +30,10 @@ changed a file in `~` directly, `chezmoi re-add` copies it back.
 
 Checks: `pre-commit run --all-files`, `tests/shell-parity.sh`, `tests/clean-room.sh`.
 
+Pinned downloads (kakoune's `plug.kak`) are listed with commit and checksum in
+`home/.chezmoiexternal.toml`. To update one: put the new commit in the URL, the new `sha256sum` of
+the archive in `checksum.sha256`, then `chezmoi apply`.
+
 ## TODO
 
 A lot.
