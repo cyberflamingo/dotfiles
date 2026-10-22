@@ -399,16 +399,20 @@ PATH_DIRS=(
     "$HOME/.bun/bin"
 )
 
+# The snippets run inside the shell under test, so they must stay unexpanded.
+# shellcheck disable=SC2016
 BASH_SNIPPET='
 for v in $PARITY_VARS; do printf "PARITY:var:%s=%s\n" "$v" "${!v-}"; done
 for a in $PARITY_ALIASES; do alias "$a" >/dev/null 2>&1 && printf "PARITY:alias:%s\n" "$a"; done
 for p in $PARITY_PATHS; do case ":$PATH:" in *":$p:"*) printf "PARITY:path:%s\n" "$p" ;; esac; done'
 
+# shellcheck disable=SC2016
 ZSH_SNIPPET='
 for v in ${=PARITY_VARS}; do print -r -- "PARITY:var:$v=${(P)v}"; done
 for a in ${=PARITY_ALIASES}; do (( ${+aliases[$a]} + ${+functions[$a]} )) && print -r -- "PARITY:alias:$a"; done
 for p in ${=PARITY_PATHS}; do [[ ":$PATH:" == *":$p:"* ]] && print -r -- "PARITY:path:$p"; done'
 
+# shellcheck disable=SC2016
 FISH_SNIPPET='
 for v in (string split " " -- $PARITY_VARS)
     printf "PARITY:var:%s=%s\n" $v (string join " " -- $$v)
@@ -421,16 +425,27 @@ for p in (string split " " -- $PARITY_PATHS)
 end'
 
 dump() {
-    local shell=$1 snippet raw
+    local shell=$1 snippet raw cmd
     case $shell in
         bash) snippet=$BASH_SNIPPET ;;
         zsh) snippet=$ZSH_SNIPPET ;;
         fish) snippet=$FISH_SNIPPET ;;
-        *) echo "unknown shell: $shell" >&2; return 2 ;;
+        *)
+            echo "unknown shell: $shell" >&2
+            return 2
+            ;;
     esac
+    # env -i: only the shell's own startup files may set variables. Without it
+    # every shell inherits the caller's environment and the test proves nothing.
+    # shellcheck disable=SC2016
+    cmd='env -i HOME="$HOME" USER="$USER" LOGNAME="$USER" TERM=xterm-256color LANG=C.UTF-8'
+    cmd+=' PATH=/usr/local/bin:/usr/bin:/bin'
+    # shellcheck disable=SC2016
+    cmd+=' PARITY_VARS="$PARITY_VARS" PARITY_ALIASES="$PARITY_ALIASES" PARITY_PATHS="$PARITY_PATHS"'
+    cmd+=" $shell -ilc \"\$PARITY_SNIPPET\""
     raw=$(PARITY_VARS="${VARS[*]}" PARITY_ALIASES="${ALIASES[*]}" PARITY_PATHS="${PATH_DIRS[*]}" \
         PARITY_SNIPPET="$snippet" \
-        script -qec "$shell -ilc \"\$PARITY_SNIPPET\"" /dev/null </dev/null | tr -d '\r')
+        script -qec "$cmd" /dev/null </dev/null | tr -d '\r')
     [ -n "${PARITY_DEBUG:-}" ] && printf '%s\n' "$raw" >&2
     printf '%s\n' "$raw" | grep -a -o 'PARITY:.*' | sed 's/^PARITY://' | tr -s ' ' | sort
 }
