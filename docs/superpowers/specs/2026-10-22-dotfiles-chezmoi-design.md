@@ -14,7 +14,11 @@ Branch: `chezmoi-migration`
 
 In scope: WSL2 (work laptop), personal Linux desktop, Windows (work laptop).
 
-Dropped: macOS, Kali, server, OpenWrt, and the privoxy, dnsmasq and dnscrypt configs (`bootstrap/macOS`, `meta/configs/{mac,kali,server,openwrt}`, `etc/`).
+Also in scope: the Turris OS router (OpenWrt-based), and dnsmasq and dnscrypt-proxy on the personal Linux desktop.
+
+Dropped: macOS, Kali, server and privoxy (`bootstrap/macOS`, `meta/configs/{mac,kali,server}`, `etc/privoxy`, the `.macos` config variants).
+
+Known gaps in what stays: dnsmasq only exists as a macOS variant and needs a Linux version; the dnscrypt `blocklists.txt` that the old install copied was deleted from the repo in 2022 and needs a replacement.
 
 ## Machine model
 
@@ -39,12 +43,44 @@ The repo is public. No work hostnames, work email, internal tool names or tokens
 - Tokens and endpoints render to `private_dot_config/shell/work.env` (mode 0600), sourced by `profile` if present.
 - Tokens still end up in plaintext in that file, as they do today. Moving to lazy `op read` calls is a possible later step.
 
+## Personal secrets
+
+Personal (non-work) secrets come from Proton Pass CLI (`pass-cli`) through chezmoi's generic secret functions (`secret.command = "pass-cli"`, `secretJSON "item" "view" ... "--output=json"`). Work secrets keep using the native 1Password functions. Only one generic secret command can be configured, which is fine because 1Password does not use it.
+
+- Inventory first: only add a personal secret to a template if a file actually needs it.
+- `pass-cli` is installed from a pinned release with a checksum (`.chezmoiexternal.toml`), not `curl | bash`.
+- Not yet verified: headless login and credential storage on WSL and no-GUI machines. Test this before relying on it. Requires a paid Proton Pass plan.
+
+## Toolchains
+
+mise replaces asdf and nvm; uv handles Python.
+
+- mise manages Node, Go and other runtimes, and installs prebuilt CLI tools through its `aqua:` backend (shfmt, ripgrep, fd, delta, ...), replacing the cargo and `go install` steps. Config is `~/.config/mise/config.toml`, rendered from a template.
+- uv manages Python versions, virtualenvs and tools (`uv tool` replaces `requirements-pipx.txt`).
+- Interactive shells use `mise activate`; non-interactive contexts use shims.
+- Migration: `mise generate config --tool-versions` from the existing asdf versions; remove asdf, its plugin `set-env` hooks, and `ASDF_DATA_DIR` (currently under `$XDG_CONFIG_HOME`).
+
+## Shell layer
+
+zsh is the default shell. bash and fish stay for machines too slow for zsh.
+
+- One shared layer provides env (XDG, PATH), aliases, and tool init (mise, starship, fzf). Aliases and env come from a single data file rendered into POSIX and fish formats, so the shells cannot drift.
+- Only interactive UX is per-shell: plugins, keybindings, completion, history settings.
+- Prompt is starship in all three shells. Slow machines can fall back to a plain prompt.
+- zsh4humans is removed. Plain `.zshrc` with plugins (autosuggestions, syntax highlighting, completions, fzf integration) as pinned `.chezmoiexternal.toml` entries. No plugin manager, no runtime downloads, no auto-update.
+- Parity checklist (verified per shell): PATH and XDG variables, aliases, prompt, mise activation, fzf bindings, history size and options, word-movement and delete keybindings, ssh/git completion.
+- Known problems in the current zsh setup to remove: `.zshenv` z4h bootstrap fetching an unpinned branch, auto-update every 28 days, unused ssh-teleport placeholders, a second `compinit` in `.zshrc.local`, the Debian bashrc paste, `HISTSIZE=1000`, and startup-time evals (`dircolors`, `rbenv`, pipx argcomplete, asdf completions).
+
+## System files
+
+Files outside `$HOME` (dnscrypt, dnsmasq, NetworkManager, `ssh_config.d`, the router config) live in a `system/` tree that chezmoi ignores. A `run_onchange_` script installs them on Linux with `sudo install`. The router is deployed by a script that copies the files from the desktop; how this is done today is still to be confirmed.
+
 ## Shared files
 
 - `profile`, `aliases`, shell rc files become templates. WSL-only settings (`DISPLAY`, the `op.exe` alias, `ssh.exe` as `core.sshCommand`, the 1Password signing program path) sit in `{{ if .wsl }}` blocks.
 - `.chezmoiignore` skips the desktop-only files (conky, glava, autostart, mozc, gsettings) on WSL and Windows, and Windows-only files elsewhere.
 - Submodules (kakoune `plug.kak`) and the kakoune source clone become pinned entries in `.chezmoiexternal.toml`.
-- Package installs (apt, asdf plugins) become `run_onchange_` scripts. Package lists are refreshed for Ubuntu 24.04.
+- Package installs (apt; mise and uv handle toolchains and CLI tools) become `run_onchange_` scripts. Package lists are refreshed for Ubuntu 24.04.
 
 ## Windows
 
@@ -58,13 +94,19 @@ The repo is public. No work hostnames, work email, internal tool names or tokens
 
 Each step is its own commit.
 
-1. Delete the dead configs listed under Scope.
-2. Split `profile` and `config/git/config`: move work values to the 1Password item, keep the useful changes (asdf, Bun, WSL lines), discard the rest of the uncommitted diff (including the `.p10k.zsh` churn).
-3. Convert to the chezmoi source layout with `chezmoi add`, templating the shared files.
-4. Add `.chezmoiexternal.toml`, the `run_onchange_` package scripts, and the Windows `upall` rewrite.
-5. Remove dotbot, `meta/`, `install`, `bootstrap/`. Write a real README.
+1. Shell audit and cleanup on the current layout (z4h stays for now): measure zsh startup, delete the Debian/grml paste and the duplicate `compinit`, fix or drop the slow evals, write the parity checklist and bring bash and fish up to it.
+2. Delete the dead configs listed under Scope.
+3. chezmoi skeleton: convert to the source layout with `chezmoi add`, add `.chezmoi.toml.tmpl` and `.chezmoiignore`. Split `profile` and `config/git/config` into templates: work values to the 1Password item, keep the useful changes (Bun, WSL lines), discard the rest of the uncommitted diff (including the `.p10k.zsh` churn).
+4. Replace zsh4humans with plain zsh, pinned plugin externals and starship. Replace asdf, nvm and pipx with mise and uv.
+5. Add the `system/` tree and its install script (Linux), the router deploy script, the Linux dnsmasq config and dnscrypt blocklist replacement, and the Windows `upall` rewrite.
+6. Remove dotbot, `meta/`, `install`, `bootstrap/`. Write a real README.
+7. Quick install: split package lists into a minimal tier and a full tier (see Deferred).
 
-Cleanup items folded into steps 2 to 4: pick the primary shell and decide whether bash and fish stay, drop nvm in favor of asdf, replace the Debian/grml paste in `.zshrc.local`, restore the XDG npm config, convert `alacritty.yml` to TOML.
+Other cleanup folded into steps 3 to 5: restore the XDG npm config, convert `alacritty.yml` to TOML, refresh package lists for Ubuntu 24.04.
+
+## Deferred
+
+Quick install vs full install, done last: package lists live in `.chezmoidata/` with a minimal tier (shortest list needed to be productive) and a full tier. An install-tier value chosen at `chezmoi init` selects which tier the `run_onchange_` scripts apply.
 
 ## Testing
 
@@ -81,4 +123,6 @@ Cleanup items folded into steps 2 to 4: pick the primary shell and decide whethe
 
 ## Open items
 
-- Decide the primary shell (zsh assumed) and whether bash and fish remain.
+- How the Turris router is deployed today (files copied by hand, or the repo cloned on the router).
+- Which personal secrets actually need to be in files (drives how much Proton Pass integration is needed).
+- Headless login and credential storage for `pass-cli` on WSL and no-GUI machines.
