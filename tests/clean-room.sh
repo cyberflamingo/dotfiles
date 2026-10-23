@@ -24,7 +24,7 @@ mise_sha256=$4
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-apt-get install -y -qq --no-install-recommends ca-certificates curl git fish zsh less >/dev/null
+apt-get install -y -qq --no-install-recommends ca-certificates curl git fish zsh less sudo openssh-client gettext-base jq >/dev/null
 
 cd /tmp
 curl -fsSL -o chezmoi.tar.gz "https://github.com/twpayne/chezmoi/releases/download/v${chezmoi_version}/chezmoi_${chezmoi_version}_linux_amd64.tar.gz"
@@ -37,6 +37,7 @@ echo "${mise_sha256}  mise.tar.gz" | sha256sum --check
 tar -xzf mise.tar.gz mise/bin/mise
 
 useradd --create-home --shell /bin/bash tester
+echo 'tester ALL=(ALL) NOPASSWD:ALL' >/etc/sudoers.d/tester
 install -d -o tester -g tester /home/tester/.local /home/tester/.local/bin
 install -m 0755 -o tester -g tester mise/bin/mise /home/tester/.local/bin/mise
 cp -a /src /home/tester/dotfiles
@@ -45,7 +46,11 @@ chown -R tester:tester /home/tester/dotfiles
 cat >/home/tester/run.sh <<'INNER'
 set -euo pipefail
 cd ~/dotfiles
-chezmoi init --source ~/dotfiles --promptDefaults --apply --exclude=scripts
+chezmoi init --source ~/dotfiles --promptDefaults \
+    --promptBool 'Does this machine have a desktop environment (not WSL)=true' \
+    --promptBool 'Install system files under /etc (needs sudo)=true' \
+    --apply --exclude=scripts
+chezmoi apply --include=scripts
 echo "--- applied files:"; chezmoi managed | wc -l
 ~/.local/bin/mise install starship zoxide fzf 2>&1 | tail -2
 echo "--- parity (bash, zsh, fish):"
@@ -54,6 +59,14 @@ echo "--- zsh smoke test:"
 out=$(script -qec "env -i HOME=$HOME USER=$USER TERM=xterm-256color LANG=C.UTF-8 PATH=/usr/bin:/bin zsh -ilc 'source $HOME/dotfiles/tests/zsh-smoke.zsh'" /dev/null </dev/null | tr -d '\r')
 printf '%s\n' "$out" | tail -8
 printf '%s\n' "$out" | grep -q SMOKE-OK
+echo "--- system files"
+test -f /etc/ssh/ssh_config.d/default.conf
+test -f /etc/NetworkManager/conf.d/ip6-privacy.conf
+ssh -G example.com | grep -qix 'identitiesonly yes'
+echo "ok"
+echo "--- script tests"
+bash ~/dotfiles/tests/deploy-router-test.sh
+bash ~/dotfiles/tests/mozilla-overrides-test.sh
 INNER
 chown tester:tester /home/tester/run.sh
 su - tester -c 'bash /home/tester/run.sh'

@@ -44,9 +44,9 @@ config upsmon 'upsmon'
 #	option password upspassword
 
 config slave
-	option upsname $UPSNAME
-	option hostname $UPS_HOSTNAME
+	option upsname '$UPSNAME'
+	option hostname '$UPS_HOSTNAME'
 #	option port # optional port number
 #	option powervalue 1
-	option username $UPS_USERNAME
-	option password $UPS_PASSWORD
+	option username '$UPS_USERNAME'
+	option password '$UPS_PASSWORD'

@@ -1,0 +1,5 @@
+{{- if .desktop -}}
+#!/bin/sh
+# Runs when an override file changes. Hashes: {{ include "dot_config/mozilla-overrides/firefox-user-overrides.js" | sha256sum }} {{ include "dot_config/mozilla-overrides/firefox-user-overrides-dev.js" | sha256sum }} {{ include "dot_config/mozilla-overrides/thunderbird-user.js" | sha256sum }}
+"$HOME/.local/bin/mozilla-apply-overrides"
+{{ end -}}

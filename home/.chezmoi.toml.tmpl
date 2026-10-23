@@ -1,4 +1,10 @@
 {{- $work := promptBoolOnce . "work" "Is this a work machine" false -}}
+{{- $desktop := false -}}
+{{- $system := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   $desktop = promptBoolOnce . "desktop" "Does this machine have a desktop environment (not WSL)" false -}}
+{{-   $system = promptBoolOnce . "system_files" "Install system files under /etc (needs sudo)" false -}}
+{{- end -}}
 {{- $wsl := false -}}
 {{- if eq .chezmoi.os "linux" -}}
 {{-   $wsl = .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
@@ -7,7 +13,10 @@ sourceDir = {{ .chezmoi.workingTree | quote }}
 
 [data]
     work = {{ $work }}
+    desktop = {{ $desktop }}
+    system_files = {{ $system }}
     wsl = {{ $wsl }}
+    windows = {{ eq .chezmoi.os "windows" }}
 {{ if $wsl }}
 # 1Password lives on the Windows side
 [onepassword]
