@@ -1,0 +1,34 @@
+{{- if and .system_files (eq .chezmoi.os "linux") -}}
+#!/usr/bin/env bash
+# Install the files under system/ into /etc. Runs on every apply, but sudo is only
+# used for a file that differs from the installed one.
+set -euo pipefail
+
+src={{ printf "%s/system" .chezmoi.workingTree | quote }}
+sudo=sudo
+[ "$(id -u)" -eq 0 ] && sudo=
+
+changed_nm=0
+install_tree() { # $1 = directory under system/ that mirrors /
+    local tree=$1 f dest
+    [ -d "$src/$tree" ] || return 0
+    while IFS= read -r -d '' f; do
+        dest=${f#"$src/$tree"}
+        if ! cmp -s "$f" "$dest"; then
+            echo "installing $dest"
+            # shellcheck disable=SC2086
+            $sudo install -D -m 0644 -o root -g root "$f" "$dest"
+            case $dest in /etc/NetworkManager/*) changed_nm=1 ;; esac
+        fi
+    done < <(find "$src/$tree" -type f -print0)
+}
+
+install_tree linux
+{{ if .desktop -}}
+install_tree linux-desktop
+{{ end -}}
+if [ "$changed_nm" -eq 1 ] && command -v nmcli >/dev/null 2>&1; then
+    # shellcheck disable=SC2086
+    $sudo nmcli general reload conf || true
+fi
+{{ end -}}

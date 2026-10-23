@@ -4,3 +4,14 @@
 .config/glava
 .config/mozc
 {{ end }}
+{{ if not .desktop }}
+.config/mozilla-overrides
+.local/bin/mozilla-apply-overrides
+{{ end }}
+{{ if .windows }}
+**
+!AppData
+!AppData/**
+{{ else }}
+AppData
+{{ end }}
