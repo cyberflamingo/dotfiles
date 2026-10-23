@@ -16,9 +16,9 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=50000
-HISTFILESIZE=50000
-# ~/.profile sources this file before it defines the XDG variables, hence the fallback.
+HISTSIZE=10000
+HISTFILESIZE=10000
+# The fallback covers a shell that did not read ~/.profile (XDG_STATE_HOME unset).
 # The directory has to exist, otherwise bash silently saves nothing.
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}"/bash/history
 mkdir -p "${HISTFILE%/*}"
@@ -125,14 +125,6 @@ source "$BASH_COMPLETION_USER_FILE"/alacritty
 # Nix
 # shellcheck source=/dev/null
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-
-# Ruby
-# not `command -v`: it walks the slow /mnt/c PATH entries on WSL. Same fallback as HISTFILE above.
-_rbenv="${RBENV_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/rbenv}"/bin/rbenv
-if [ -x "$_rbenv" ]; then
-    eval "$("$_rbenv" init - bash)"
-fi
-unset _rbenv
 
 # Python
 if command -v pipx 1>/dev/null 2>&1; then
