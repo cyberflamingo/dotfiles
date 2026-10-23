@@ -1,0 +1,63 @@
+#!/bin/sh
+# Copy the managed override files into the Firefox and Thunderbird profiles.
+#   Firefox: a profile whose name contains "dev" gets firefox-user-overrides-dev.js,
+#            every other profile gets firefox-user-overrides.js (both as user-overrides.js).
+#   Thunderbird: every profile gets thunderbird-user.js (as user.js).
+# user-overrides.js is read by the arkenfox/ghacks updater.sh: run it afterwards to merge.
+# Usage: mozilla-apply-overrides [-n]    (-n shows what would be copied)
+set -eu
+
+src=${XDG_CONFIG_HOME:-$HOME/.config}/mozilla-overrides
+dry=0
+[ "${1:-}" = "-n" ] && dry=1
+tab=$(printf '\t')
+
+# $1 = directory with a profiles.ini; prints "name<TAB>absolute path" per profile
+profiles() {
+    [ -r "$1/profiles.ini" ] || return 0
+    awk -v base="$1" '
+        function flush() {
+            if (path != "") print name "\t" (rel == "1" ? base "/" path : path)
+            name = ""; path = ""; rel = "1"
+        }
+        BEGIN { rel = "1" }
+        /^\[/ { flush(); insec = ($0 ~ /^\[Profile/); next }
+        insec && /^Name=/ { name = substr($0, 6) }
+        insec && /^Path=/ { path = substr($0, 6) }
+        insec && /^IsRelative=/ { rel = substr($0, 12) }
+        END { flush() }
+    ' "$1/profiles.ini"
+}
+
+copy() { # $1 = source file, $2 = destination file
+    if [ ! -r "$1" ]; then
+        echo "missing $1" >&2
+        return 0
+    fi
+    if [ "$dry" -eq 1 ]; then
+        echo "would copy $1 -> $2"
+    else
+        cp -f "$1" "$2" && echo "copied $1 -> $2"
+    fi
+}
+
+for dir in "$HOME/.mozilla/firefox" \
+    "$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox" \
+    "$HOME/snap/firefox/common/.mozilla/firefox"; do
+    profiles "$dir" | while IFS="$tab" read -r name path; do
+        [ -d "$path" ] || continue
+        case $name in
+            *dev* | *Dev*) copy "$src/firefox-user-overrides-dev.js" "$path/user-overrides.js" ;;
+            *) copy "$src/firefox-user-overrides.js" "$path/user-overrides.js" ;;
+        esac
+    done
+done
+
+for dir in "$HOME/.thunderbird" \
+    "$HOME/.var/app/org.mozilla.Thunderbird/.thunderbird" \
+    "$HOME/snap/thunderbird/common/.thunderbird"; do
+    profiles "$dir" | while IFS="$tab" read -r _ path; do
+        [ -d "$path" ] || continue
+        copy "$src/thunderbird-user.js" "$path/user.js"
+    done
+done
