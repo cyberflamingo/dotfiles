@@ -1,8 +1,0 @@
-ansito
-black
-# fawkes
-# ialauncher
-jedi
-mypy
-proselint
-# youtube-dl
