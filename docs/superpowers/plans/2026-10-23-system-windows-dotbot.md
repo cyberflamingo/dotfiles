@@ -150,7 +150,11 @@ AppData
 - [ ] **Step 4: Render and check**
 
 ```bash
-chezmoi execute-template --init --promptDefaults --source /home/alex/src/dotfiles < home/.chezmoi.toml.tmpl
+chezmoi execute-template --init \
+    --promptBool 'Is this a work machine=false' \
+    --promptBool 'Does this machine have a desktop environment (not WSL)=false' \
+    --promptBool 'Install system files under /etc (needs sudo)=false' \
+    --source /home/alex/src/dotfiles < home/.chezmoi.toml.tmpl
 ```
 
 Expected: `[data]` now has `work`, `desktop`, `system_files`, `wsl` and `windows = false`, all false except `wsl = true` on this machine.
@@ -311,7 +315,7 @@ template=$repo/system/openwrt/nut_monitor
 pass_cli=${PASS_CLI:-pass-cli}
 vault=${PASS_VAULT:-Personal}
 item=${PASS_ITEM:-router-ups}
-scp_opts=${SCP_OPTS:--O}
+scp_opts=${SCP_OPTS--O}
 
 dry_run=0
 restart=0
@@ -975,6 +979,14 @@ git push -u origin retire-dotbot
 | Parity of platforms through data flags | 1 |
 
 Not here by design: privoxy redo, COSMIC capture, package lists and tiers (plan 2d), a CI job (blocked by the account billing lock).
+
+## Execution notes (Part 1)
+
+- `chezmoi execute-template` has no `--promptDefaults` (only `chezmoi init` does); Task 1 Step 4 answers the prompts with `--promptBool`.
+- `SCP_OPTS` defaults with `${SCP_OPTS--O}` (unset only), so an explicitly empty value really drops `-O`.
+- The router test stubs find their log directory through `STUB_LOG` instead of baked-in paths.
+- `system/linux/etc/ssh/ssh_config.d/default.conf` was a full copy of `ssh_config` with its own `Include /etc/ssh/ssh_config.d/*.conf`; installed there it included itself and broke every ssh call. The clean room caught it (`ssh -G`); the line is removed.
+- `--promptBool` combines with `--promptDefaults` on `chezmoi init`; no fallback was needed.
 
 ## Known risks
 
