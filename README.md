@@ -23,7 +23,21 @@ chezmoi init --apply cyberflamingo/dotfiles
 ```
 
 `chezmoi init` asks once whether this is a work machine. Work values are read from 1Password
-(`op`, or `op.exe` on WSL); a personal machine reads nothing.
+(`op`, or `op.exe` on WSL); a personal machine reads nothing. On Linux it also asks whether the
+machine has a desktop (Mozilla overrides, NetworkManager files) and whether to install the files
+under `system/` into `/etc` (uses sudo).
+
+On Windows, install chezmoi with `winget install twpayne.chezmoi`, run
+`chezmoi init --apply cyberflamingo/dotfiles` and answer `false` to the Linux questions. Only
+`AppData` is applied there (a Startup script that runs `winget upgrade --all`).
+
+| Path | What |
+| --- | --- |
+| `home/` | the chezmoi source, applied to `~` |
+| `system/` | files for `/etc`, and the OpenWrt router config |
+| `tools/` | scripts, e.g. `deploy-router.sh` (fills in the secrets from Proton Pass, then uploads) |
+| `tests/` | shell parity, zsh smoke, clean-room and script tests |
+| `extras/` | old files that are not applied (privoxy, to be redone) |
 
 Edit the files in the source directory (`chezmoi cd`, then `home/`), and run `chezmoi apply`. If you
 changed a file in `~` directly, `chezmoi re-add` copies it back.
