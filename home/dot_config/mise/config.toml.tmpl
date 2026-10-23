@@ -7,8 +7,14 @@ uv = "0.13.4"
 starship = "1.27.0"
 zoxide = "0.10.0"
 fzf = "0.74.5"
+"pipx:ruff" = "0.17.1"
+"pipx:ty" = "0.0.90"
 {{ if .work }}
 # Work only: CLIs that used to be global npm packages under asdf (same versions)
 "npm:@googleworkspace/cli" = "0.22.5" # gws
 "npm:@devcontainers/cli" = "0.86.0" # devcontainer
+{{ end -}}
+{{ if not .work }}
+# Personal only
+"pipx:ansito" = "0.1.0"
 {{ end -}}
