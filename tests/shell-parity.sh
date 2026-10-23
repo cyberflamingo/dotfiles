@@ -16,7 +16,7 @@ VARS=(
     CARGO_HOME GOPATH GOBIN JAVA_HOME _JAVA_OPTIONS MINIKUBE_HOME
     TERMINFO TERMINFO_DIRS NPM_CONFIG_USERCONFIG
     PSQLRC PSQL_HISTORY PGPASSFILE PGSERVICEFILE
-    GEM_HOME GEM_SPEC_CACHE RBENV_ROOT
+    GEM_HOME GEM_SPEC_CACHE
     BUNDLE_USER_CONFIG BUNDLE_USER_CACHE BUNDLE_USER_PLUGIN
     VSCODE_PORTABLE WEGORC WINEPREFIX SSB_HOME BUN_INSTALL
 )
@@ -25,8 +25,11 @@ VARS=(
 # config. Only names fish does not define are listed.
 ALIASES=(copy move rmv da dir mpip rmcdir isodate)
 
-# Commands every shell must find (functions count: zoxide defines z as one)
+# Commands every shell must find (functions count: zoxide defines z as one).
+# Extra ones for a given machine: PARITY_EXTRA_COMMANDS='gws snyk' tests/shell-parity.sh
 COMMANDS=(z mise starship fzf)
+read -ra extra_commands <<<"${PARITY_EXTRA_COMMANDS:-}"
+COMMANDS+=("${extra_commands[@]}")
 
 PATH_DIRS=(
     "$HOME/.local/bin"
@@ -34,7 +37,6 @@ PATH_DIRS=(
     "$HOME/.local/share/cargo/bin"
     "$HOME/.local/share/go/bin"
     "$HOME/.local/share/gem/bin"
-    "$HOME/.local/share/rbenv/bin"
     "$HOME/.bun/bin"
 )
 
