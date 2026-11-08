@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -uf -o pipefail
+
+preload="/etc/ld.so.preload"
+sec=1
+
+# Comment first line of target
+comment() {
+    sudo sed --in-place '1 s/^/# /' $preload
+}
+
+# Uncomment first line of target
+uncomment() {
+    sudo sed --in-place '1 s/^# //' $preload
+}
+
+if [ "$(head -c 1 $preload)" == "#" ]; then
+    # When commented
+    $1 &
+else
+    # When uncommented
+    comment
+    $1 &
+fi
+
+sleep $sec
+uncomment
+
+if [ "$(head -c 1 $preload)" == "#" ]; then
+    echo "Uncommenting of $preload was unsuccessful"
+    exit 1
+fi

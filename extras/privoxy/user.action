@@ -109,9 +109,11 @@ allow-ads   = -block -filter{banners-by-size} -filter{banners-by-link}
 #
 stupid-server.example.com/
 
-# Synology UI
+# Internal network devices
 #
+192.168.1.1
 192.168.1.184
+192.168.8.1
 
 # System76's ppa
 #

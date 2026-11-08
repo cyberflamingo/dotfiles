@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+apparmor_folder="/etc/apparmor.d/*"
+
+for file in $apparmor_folder; do
+    if [ -f "$file" ]; then
+        sudo apparmor_parser -r "$file"
+        if [ $? -eq 1 ]; then
+            echo " --> $file"
+        fi
+    fi
+done
