@@ -132,16 +132,6 @@ source "$BASH_COMPLETION_USER_FILE"/alacritty
 # shellcheck source=/dev/null
 if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
-# Python
-if command -v pipx 1>/dev/null 2>&1; then
-    # cached, register-python-argcomplete starts Python on every shell
-    _pipx_comp="${XDG_CACHE_HOME:-$HOME/.cache}"/pipx-completion.bash
-    [ -s "$_pipx_comp" ] || register-python-argcomplete pipx >"$_pipx_comp"
-    # shellcheck source=/dev/null
-    . "$_pipx_comp"
-    unset _pipx_comp
-fi
-
 # the tools mise installs (their directories are put on PATH by ~/.profile)
 command -v fzf 1>/dev/null 2>&1 && eval "$(fzf --bash)"
 command -v zoxide 1>/dev/null 2>&1 && eval "$(zoxide init bash)"
