@@ -78,6 +78,9 @@ export PATH="$PATH:$JAVA_HOME/bin"
 # Maven
 # mvn -gs "$XDG_CONFIG_HOME"/maven/settings.xml
 
+# Hardened malloc, to enable once built and installed
+# export LD_PRELOAD=/usr/local/lib/libhardened_malloc.so
+
 # LESS
 export LESSHISTFILE=-
 # what zsh4humans used to set: case-insensitive search, raw colors, quit if one screen
