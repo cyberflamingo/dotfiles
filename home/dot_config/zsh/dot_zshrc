@@ -70,6 +70,9 @@ alias ls="${aliases[ls]:-ls} -A"
 
 source "$ZDOTDIR"/.aliases.grml # Grml-Zsh aliases
 
+# Machine-local aliases (games, private paths). Not tracked in git.
+[[ -r $XDG_CONFIG_HOME/shell/personal.aliases ]] && source $XDG_CONFIG_HOME/shell/personal.aliases
+
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
