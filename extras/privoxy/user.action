@@ -113,6 +113,11 @@ stupid-server.example.com/
 #
 192.168.1.184
 
+# Internal network devices
+#
+192.168.1.1
+192.168.8.1
+
 # System76's ppa
 #
 ppa.launchpad.net/system76/pop/ubuntu/
