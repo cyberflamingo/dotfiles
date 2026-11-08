@@ -181,13 +181,6 @@ if status is-interactive
     # if [ -e "$HOME"/.nix-profile/etc/profile.d/nix.sh ]; then . "$HOME"/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
     # fisher install lilyball/nix-env.fish
 
-    # Python
-    if command -v pipx 1>/dev/null 2>&1
-        if not test -f ~/.config/fish/completions/pipx.fish
-            register-python-argcomplete --shell fish pipx >~/.config/fish/completions/pipx.fish
-        end
-    end
-
     # the tools mise installs (their directories are put on PATH by the login block above)
     command -q fzf; and fzf --fish | source
     command -q zoxide; and zoxide init fish | source
