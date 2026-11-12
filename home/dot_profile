@@ -173,6 +173,12 @@ if [ -r "$XDG_CONFIG_HOME/shell/work.env" ]; then
     . "$XDG_CONFIG_HOME/shell/work.env"
 fi
 
+# Personal secrets from Proton Pass (chezmoi writes it when proton_pass is true). Not tracked in git.
+if [ -r "$XDG_CONFIG_HOME/shell/personal.env" ]; then
+    # shellcheck source=/dev/null
+    . "$XDG_CONFIG_HOME/shell/personal.env"
+fi
+
 # if running bash
 # (last on purpose: .bashrc needs the PATH and variables set above)
 if [ -n "$BASH_VERSION" ]; then

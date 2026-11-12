@@ -23,7 +23,9 @@ chezmoi init --apply cyberflamingo/dotfiles
 ```
 
 `chezmoi init` asks once whether this is a work machine. Work values are read from 1Password
-(`op`, or `op.exe` on WSL); a personal machine reads nothing. On Linux it also asks whether the
+(`op`, or `op.exe` on WSL). A personal machine is asked whether to read its private env vars from
+a Proton Pass note (`pass-cli`, logged in; vault `Secure Notes`, item `dotfiles-personal-env`, field
+`note`), and reads nothing if the answer is no. On Linux it also asks whether the
 machine has a desktop (Mozilla overrides, NetworkManager files) and whether to install the files
 under `system/` into `/etc` (uses sudo).
 
