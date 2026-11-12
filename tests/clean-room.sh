@@ -66,6 +66,7 @@ ssh -G example.com | grep -qix 'identitiesonly yes'
 echo "ok"
 echo "--- script tests"
 bash ~/dotfiles/tests/deploy-router-test.sh
+bash ~/dotfiles/tests/personal-env-test.sh
 bash ~/dotfiles/tests/mozilla-overrides-test.sh
 INNER
 chown tester:tester /home/tester/run.sh

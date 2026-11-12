@@ -45,11 +45,12 @@ The repo is public. No work hostnames, work email, internal tool names or tokens
 
 ## Personal secrets
 
-Personal (non-work) secrets come from Proton Pass CLI (`pass-cli`) through chezmoi's generic secret functions (`secret.command = "pass-cli"`, `secretJSON "item" "view" ... "--output=json"`). Work secrets keep using the native 1Password functions. Only one generic secret command can be configured, which is fine because 1Password does not use it.
+Personal (non-work) secrets come from Proton Pass CLI (`pass-cli`) through chezmoi's native `protonPass` functions (chezmoi 2.69 and later; this replaces the generic `secret.command` idea). `protonPass "pass://VAULT/ITEM/FIELD"` takes exactly one argument and returns the field untrimmed, so templates pipe it through `trim`. Work secrets keep using the native 1Password functions.
 
-- No personal secret is stored in a file today. This is groundwork only: no template reads from Proton Pass yet.
-- Groundwork: `secret.command = "pass-cli"` in the personal profile of `.chezmoi.toml.tmpl`, `pass-cli` installed from a pinned release with a checksum (`.chezmoiexternal.toml`, not `curl | bash`), and a short README note with the template pattern to use when the first secret appears.
-- Verify as part of the groundwork: `pass-cli login`, then reading one test item, on the personal Linux desktop and on WSL. Headless login and credential storage on no-GUI machines are not yet confirmed. Requires a paid Proton Pass plan.
+- Personal env vars are one Proton Pass note, same shape as the work item: vault `Secure Notes`, title `dotfiles-personal-env`, field `note`, holding the env file. `home/dot_config/private_shell/private_personal.env.tmpl` renders it to `~/.config/shell/personal.env` (mode 0600), sourced by `profile` if present.
+- It is gated on `proton_pass`, asked once by `chezmoi init` on non-work machines and false by default, so a machine without a logged-in `pass-cli` (a fresh install, the clean-room test) never calls it. `tests/personal-env-test.sh` covers this with a stub `pass-cli`.
+- `pass-cli` itself is still installed by hand. Installing it from a pinned release with a checksum (`.chezmoiexternal.toml`, not `curl | bash`) is not done yet.
+- Verify: `pass-cli login`, then reading one test item, on the personal Linux desktop and on WSL. Headless login and credential storage on no-GUI machines are not yet confirmed. Requires a paid Proton Pass plan.
 
 ## Toolchains
 

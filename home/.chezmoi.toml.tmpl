@@ -1,4 +1,8 @@
 {{- $work := promptBoolOnce . "work" "Is this a work machine" false -}}
+{{- $proton := false -}}
+{{- if not $work -}}
+{{-   $proton = promptBoolOnce . "proton_pass" "Read personal secrets from Proton Pass (pass-cli, logged in)" false -}}
+{{- end -}}
 {{- $desktop := false -}}
 {{- $system := false -}}
 {{- if eq .chezmoi.os "linux" -}}
@@ -13,6 +17,7 @@ sourceDir = {{ .chezmoi.workingTree | quote }}
 
 [data]
     work = {{ $work }}
+    proton_pass = {{ $proton }}
     desktop = {{ $desktop }}
     system_files = {{ $system }}
     wsl = {{ $wsl }}
